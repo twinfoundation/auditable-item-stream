@@ -1,0 +1,8 @@
+{
+	"baseUrl": "https://schema.gtsc.io/ais/",
+	"sources": ["./src/models/**/*.ts"],
+	"types": ["IAuditableItemStream", "IAuditableItemStreamEntry"],
+	"externalReferences": {
+		"IJsonLd(.*)": "https://schema.gtsc.io/json-ld/JsonLd$1"
+	}
+}
