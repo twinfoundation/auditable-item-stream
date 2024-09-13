@@ -49,4 +49,22 @@ export class AuditableItemStreamEntry {
 	 */
 	@property({ type: "object", itemTypeRef: JsonLdTypes.NodeObject })
 	public metadata?: IJsonLdNodeObject;
+
+	/**
+	 * The index of the entry in the stream.
+	 */
+	@property({ type: "integer" })
+	public index!: number;
+
+	/**
+	 * The hash of the entry.
+	 */
+	@property({ type: "string" })
+	public hash!: string;
+
+	/**
+	 * The signature of the entry.
+	 */
+	@property({ type: "string" })
+	public signature!: string;
 }

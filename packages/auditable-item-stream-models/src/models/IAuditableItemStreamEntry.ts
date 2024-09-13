@@ -35,4 +35,24 @@ export interface IAuditableItemStreamEntry {
 	 * The metadata to associate with the entry as JSON-LD.
 	 */
 	metadata?: IJsonLdNodeObject;
+
+	/**
+	 * The index of the entry in the stream.
+	 */
+	index: number;
+
+	/**
+	 * The hash of the entry.
+	 */
+	hash: string;
+
+	/**
+	 * The signature of the entry.
+	 */
+	signature: string;
+
+	/**
+	 * The immutable storage id containing the signature for the entry.
+	 */
+	immutableStorageId?: string;
 }

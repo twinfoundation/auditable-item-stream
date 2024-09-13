@@ -49,13 +49,19 @@ export class AuditableItemStreamClient
 	 * Create a new stream.
 	 * @param metadata The metadata for the stream as JSON-LD.
 	 * @param entries Entries to store in the stream.
+	 * @param options Options for creating the stream.
+	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
+	 * A value of 0 will disable immutable checks, 1 will be every item, or <n> for an interval.
 	 * @returns The id of the new stream item.
 	 */
 	public async create(
 		metadata?: IJsonLdNodeObject,
 		entries?: {
 			metadata?: IJsonLdNodeObject;
-		}[]
+		}[],
+		options?: {
+			immutableInterval?: number;
+		}
 	): Promise<string> {
 		const response = await this.fetch<IAuditableItemStreamCreateRequest, ICreatedResponse>(
 			"/",
@@ -63,7 +69,8 @@ export class AuditableItemStreamClient
 			{
 				body: {
 					metadata,
-					entries
+					entries,
+					immutableInterval: options?.immutableInterval
 				}
 			}
 		);

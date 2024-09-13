@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 import {
 	AuditableItemStreamTypes,
+	type IAuditableItemStreamEntryCredential,
 	type IAuditableItemStream,
 	type IAuditableItemStreamComponent,
 	type IAuditableItemStreamEntry
@@ -20,6 +21,7 @@ import {
 	Validation,
 	type IValidationFailure
 } from "@gtsc/core";
+import { Blake2b } from "@gtsc/crypto";
 import {
 	JsonLdHelper,
 	JsonLdProcessor,
@@ -113,6 +115,12 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	private readonly _assertionMethodId: string;
 
 	/**
+	 * The default interval for the integrity checks.
+	 * @internal
+	 */
+	private readonly _defaultImmutableInterval: number;
+
+	/**
 	 * Create a new instance of AuditableItemStreamService.
 	 * @param options The dependencies for the auditable item stream connector.
 	 * @param options.config The configuration for the connector.
@@ -152,12 +160,16 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		this._config = options?.config ?? {};
 		this._vaultKeyId = this._config.vaultKeyId ?? "auditable-item-stream";
 		this._assertionMethodId = this._config.assertionMethodId ?? "auditable-item-stream";
+		this._defaultImmutableInterval = this._config.defaultImmutableInterval ?? 10;
 	}
 
 	/**
 	 * Create a new stream.
 	 * @param metadata The metadata for the stream as JSON-LD.
 	 * @param entries Entries to store in the stream.
+	 * @param options Options for creating the stream.
+	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
+	 * A value of 0 will disable integrity checks, 1 will be every item, or <n> for an interval.
 	 * @param identity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the new stream item.
@@ -167,6 +179,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		entries?: {
 			metadata?: IJsonLdNodeObject;
 		}[],
+		options?: {
+			immutableInterval?: number;
+		},
 		identity?: string,
 		nodeIdentity?: string
 	): Promise<string> {
@@ -185,7 +200,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const context: IAuditableItemStreamServiceContext = {
 				now: Date.now(),
 				userIdentity: identity,
-				nodeIdentity
+				nodeIdentity,
+				indexCounter: 0,
+				immutableInterval: options?.immutableInterval ?? this._defaultImmutableInterval
 			};
 
 			const streamModel: IAuditableItemStream = {
@@ -193,16 +210,17 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				nodeIdentity,
 				created: context.now,
 				updated: context.now,
-				metadata
+				metadata,
+				immutableInterval: context.immutableInterval
 			};
-
-			await this._streamStorage.set(this.streamModelToEntity(streamModel));
 
 			if (Is.arrayValue(entries)) {
 				for (const entry of entries) {
-					await this.setEntry(context, streamModel.id, entry);
+					await this.setEntry(context, id, entry);
 				}
 			}
+
+			await this._streamStorage.set(this.streamModelToEntity(streamModel, context.indexCounter));
 
 			return new Urn(AuditableItemStreamService.NAMESPACE, id).toString();
 		} catch (error) {
@@ -319,7 +337,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const context: IAuditableItemStreamServiceContext = {
 				now: Date.now(),
 				userIdentity: identity,
-				nodeIdentity
+				nodeIdentity,
+				indexCounter: streamEntity.indexCounter,
+				immutableInterval: streamEntity.immutableInterval
 			};
 
 			const streamModel = await this.streamEntityToModel(streamEntity);
@@ -328,7 +348,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				streamModel.metadata = metadata;
 				streamModel.updated = context.now;
 
-				await this._streamStorage.set(this.streamModelToEntity(streamModel));
+				await this._streamStorage.set(this.streamModelToEntity(streamModel, context.indexCounter));
 			}
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "updateFailed", undefined, error);
@@ -452,7 +472,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const context: IAuditableItemStreamServiceContext = {
 				now: Date.now(),
 				userIdentity: identity,
-				nodeIdentity
+				nodeIdentity,
+				indexCounter: streamEntity.indexCounter,
+				immutableInterval: streamEntity.immutableInterval
 			};
 
 			const createdId = await this.setEntry(context, streamEntity.id, {
@@ -461,7 +483,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const streamModel = await this.streamEntityToModel(streamEntity);
 			streamModel.updated = context.now;
-			await this._streamStorage.set(this.streamModelToEntity(streamModel));
+			await this._streamStorage.set(this.streamModelToEntity(streamModel, context.indexCounter));
 
 			return new Urn(AuditableItemStreamService.NAMESPACE, [streamModel.id, createdId]).toString();
 		} catch (error) {
@@ -584,7 +606,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const context: IAuditableItemStreamServiceContext = {
 				now: Date.now(),
 				userIdentity: identity,
-				nodeIdentity
+				nodeIdentity,
+				indexCounter: streamEntity.indexCounter,
+				immutableInterval: streamEntity.immutableInterval
 			};
 
 			await this.setEntry(context, streamEntity.id, {
@@ -594,7 +618,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const streamModel = await this.streamEntityToModel(streamEntity);
 			streamModel.updated = context.now;
-			await this._streamStorage.set(this.streamModelToEntity(streamModel));
+			await this._streamStorage.set(this.streamModelToEntity(streamModel, context.indexCounter));
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "updatingEntryFailed", undefined, error);
 		}
@@ -654,7 +678,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				const context: IAuditableItemStreamServiceContext = {
 					now: Date.now(),
 					userIdentity: identity,
-					nodeIdentity
+					nodeIdentity,
+					indexCounter: streamEntity.indexCounter,
+					immutableInterval: streamEntity.immutableInterval
 				};
 
 				await this.setEntry(context, streamEntity.id, {
@@ -664,7 +690,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 				const streamModel = await this.streamEntityToModel(streamEntity);
 				streamModel.updated = context.now;
-				await this._streamStorage.set(this.streamModelToEntity(streamModel));
+				await this._streamStorage.set(this.streamModelToEntity(streamModel, context.indexCounter));
 			}
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "removingEntryFailed", undefined, error);
@@ -729,16 +755,22 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	/**
 	 * Map the stream model to an entity.
 	 * @param streamModel The stream model.
+	 * @param indexCounter The index counter.
 	 * @returns The entity.
 	 * @internal
 	 */
-	private streamModelToEntity(streamModel: IAuditableItemStream): AuditableItemStream {
+	private streamModelToEntity(
+		streamModel: IAuditableItemStream,
+		indexCounter: number
+	): AuditableItemStream {
 		const entity: AuditableItemStream = {
 			id: streamModel.id,
 			created: streamModel.created,
 			updated: streamModel.updated,
 			nodeIdentity: streamModel.nodeIdentity,
-			metadata: streamModel.metadata
+			metadata: streamModel.metadata,
+			immutableInterval: streamModel.immutableInterval,
+			indexCounter
 		};
 
 		return entity;
@@ -760,7 +792,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			created: streamEntryModel.created,
 			updated: streamEntryModel.updated,
 			deleted: streamEntryModel.deleted,
-			metadata: streamEntryModel.metadata
+			metadata: streamEntryModel.metadata,
+			userIdentity: streamEntryModel.userIdentity,
+			index: streamEntryModel.index,
+			hash: streamEntryModel.hash,
+			signature: streamEntryModel.signature
 		};
 		return streamEntryEntity;
 	}
@@ -777,7 +813,8 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			created: streamEntity.created,
 			updated: streamEntity.updated,
 			nodeIdentity: streamEntity.nodeIdentity,
-			metadata: streamEntity.metadata
+			metadata: streamEntity.metadata,
+			immutableInterval: streamEntity.immutableInterval
 		};
 
 		return model;
@@ -797,7 +834,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			created: streamEntryEntity.created,
 			updated: streamEntryEntity.updated,
 			deleted: streamEntryEntity.deleted,
-			metadata: streamEntryEntity.metadata
+			metadata: streamEntryEntity.metadata,
+			userIdentity: streamEntryEntity.userIdentity,
+			index: streamEntryEntity.index,
+			hash: streamEntryEntity.hash,
+			signature: streamEntryEntity.signature
 		};
 		return streamEntryModel;
 	}
@@ -828,12 +869,49 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			created: entry.created ?? context.now,
 			deleted: entry.deleted,
 			metadata: entry.metadata,
-			userIdentity: context.userIdentity
+			userIdentity: context.userIdentity,
+			hash: entry.hash ?? "",
+			signature: entry.signature ?? "",
+			index: entry.index ?? context.indexCounter++
 		};
 
 		// If the created date is not the same as the context now, then we are updating the entry.
 		if (model.created !== context.now) {
 			model.updated = context.now;
+		}
+
+		const entryHash = this.calculateEntryHash(model);
+
+		const signature = await this._vaultConnector.sign(
+			`${context.nodeIdentity}/${this._vaultKeyId}`,
+			entryHash
+		);
+
+		model.hash = Converter.bytesToBase64(entryHash);
+		model.signature = Converter.bytesToBase64(signature);
+
+		if (context.immutableInterval > 0 && model.index % context.immutableInterval === 0) {
+			const credentialData: IAuditableItemStreamEntryCredential = {
+				created: model.created,
+				userIdentity: context.userIdentity,
+				hash: model.hash,
+				signature: model.signature,
+				index: model.index
+			};
+
+			// Create the verifiable credential
+			const verifiableCredential = await this._identityConnector.createVerifiableCredential(
+				context.nodeIdentity,
+				`${context.nodeIdentity}#${this._assertionMethodId}`,
+				undefined,
+				AuditableItemStreamTypes.StreamEntryCredential,
+				credentialData
+			);
+
+			model.immutableStorageId = await this._integrityImmutableStorage.store(
+				context.nodeIdentity,
+				Converter.utf8ToBytes(verifiableCredential.jwt)
+			);
 		}
 
 		await this._streamEntryStorage.set(this.streamEntryModelToEntity(streamId, model));
@@ -1008,5 +1086,35 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			entryJsonLd.metadata = entry.metadata;
 		}
 		return entryJsonLd;
+	}
+
+	/**
+	 * Calculate the entry hash.
+	 * @param entry The entry to calculate the hash for.
+	 * @returns The hash.
+	 * @internal
+	 */
+	private calculateEntryHash(entry: IAuditableItemStreamEntry): Uint8Array {
+		const b2b = new Blake2b(Blake2b.SIZE_256);
+
+		b2b.update(Converter.utf8ToBytes(entry.id.toString()));
+		b2b.update(Converter.utf8ToBytes(entry.created.toString()));
+		if (Is.integer(entry.updated)) {
+			b2b.update(Converter.utf8ToBytes(entry.updated.toString()));
+		}
+		if (Is.integer(entry.deleted)) {
+			b2b.update(Converter.utf8ToBytes(entry.deleted.toString()));
+		}
+		if (Is.integer(entry.index)) {
+			b2b.update(Converter.utf8ToBytes(entry.index.toString()));
+		}
+		if (Is.stringValue(entry.userIdentity)) {
+			b2b.update(ObjectHelper.toBytes(entry.userIdentity));
+		}
+		if (Is.objectValue(entry.metadata)) {
+			b2b.update(ObjectHelper.toBytes(entry.metadata));
+		}
+
+		return b2b.digest();
 	}
 }

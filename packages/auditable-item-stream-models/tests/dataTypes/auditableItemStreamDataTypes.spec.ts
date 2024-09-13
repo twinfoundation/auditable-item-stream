@@ -19,7 +19,8 @@ describe("AuditableItemStreamDataTypes", () => {
 			AuditableItemStreamTypes.Stream,
 			{
 				id: "foo",
-				created: 1234567890
+				created: 1234567890,
+				immutableInterval: 10
 			},
 			validationFailures
 		);

@@ -36,4 +36,9 @@ export interface IAuditableItemStream {
 	 * Entries in the stream.
 	 */
 	entries?: IAuditableItemStreamEntry[];
+
+	/**
+	 * After how many entries do we add immutable checks.
+	 */
+	immutableInterval: number;
 }

@@ -19,4 +19,14 @@ export interface IAuditableItemStreamServiceContext {
 	 * The identity of the node.
 	 */
 	nodeIdentity: string;
+
+	/**
+	 * The index counter.
+	 */
+	indexCounter: number;
+
+	/**
+	 * The immutable check interval.
+	 */
+	immutableInterval: number;
 }

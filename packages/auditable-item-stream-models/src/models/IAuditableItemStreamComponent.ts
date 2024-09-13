@@ -15,6 +15,9 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * Create a new stream.
 	 * @param metadata The metadata for the stream as JSON-LD.
 	 * @param entries Entries to store in the stream.
+	 * @param options Options for creating the stream.
+	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
+	 * A value of 0 will disable immutable checks, 1 will be every item, or <n> for an interval.
 	 * @param identity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the new stream item.
@@ -24,6 +27,9 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		entries?: {
 			metadata?: IJsonLdNodeObject;
 		}[],
+		options?: {
+			immutableInterval?: number;
+		},
 		identity?: string,
 		nodeIdentity?: string
 	): Promise<string>;

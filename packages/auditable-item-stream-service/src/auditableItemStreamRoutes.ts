@@ -638,6 +638,9 @@ export async function auditableItemStreamCreate(
 	const id = await component.create(
 		request.body?.metadata,
 		request.body?.entries,
+		{
+			immutableInterval: request.body?.immutableInterval
+		},
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);

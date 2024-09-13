@@ -49,3 +49,35 @@ The identity of the user which added the entry to the stream.
 > `optional` **metadata**: `IJsonLdNodeObject`
 
 The metadata to associate with the entry as JSON-LD.
+
+***
+
+### index
+
+> **index**: `number`
+
+The index of the entry in the stream.
+
+***
+
+### hash
+
+> **hash**: `string`
+
+The hash of the entry.
+
+***
+
+### signature
+
+> **signature**: `string`
+
+The signature of the entry.
+
+***
+
+### immutableStorageId?
+
+> `optional` **immutableStorageId**: `string`
+
+The immutable storage id containing the signature for the entry.

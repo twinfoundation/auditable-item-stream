@@ -67,3 +67,27 @@ The identity of the user that added the entry.
 > `optional` **metadata**: `IJsonLdNodeObject`
 
 Metadata to associate with the entry as JSON-LD.
+
+***
+
+### index
+
+> **index**: `number`
+
+The index of the entry in the stream.
+
+***
+
+### hash
+
+> **hash**: `string`
+
+The hash of the entry.
+
+***
+
+### signature
+
+> **signature**: `string`
+
+The signature of the entry.

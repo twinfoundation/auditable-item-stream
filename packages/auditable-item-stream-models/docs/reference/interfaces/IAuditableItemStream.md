@@ -49,3 +49,11 @@ The metadata to associate with the entry as JSON-LD.
 > `optional` **entries**: [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md)[]
 
 Entries in the stream.
+
+***
+
+### immutableInterval
+
+> **immutableInterval**: `number`
+
+After how many entries do we add immutable checks.

@@ -21,3 +21,10 @@ The metadata to be used in the stream as JSON-LD.
 > `optional` **entries**: `object`[]
 
 The entries for the stream.
+
+#### immutableInterval?
+
+> `optional` **immutableInterval**: `number`
+
+After how many entries do we add immutable checks, defaults to service configured value.
+A value of 0 will disable immutable checks, 1 will be every item, or <n> for an interval.

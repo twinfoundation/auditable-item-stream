@@ -29,3 +29,9 @@ Represents auditable item stream.
 > `readonly` **StreamEntry**: `"https://schema.gtsc.io/aig/AuditableItemStreamEntry"` = `"https://schema.gtsc.io/aig/AuditableItemStreamEntry"`
 
 Represents auditable item stream entry.
+
+### StreamEntryCredential
+
+> `readonly` **StreamEntryCredential**: `"https://schema.gtsc.io/aig/AuditableItemStreamEntryCredential"` = `"https://schema.gtsc.io/aig/AuditableItemStreamEntryCredential"`
+
+Represents auditable item stream entry credential.

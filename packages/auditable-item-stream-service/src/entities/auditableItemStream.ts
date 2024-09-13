@@ -37,4 +37,16 @@ export class AuditableItemStream {
 	 */
 	@property({ type: "object", itemTypeRef: JsonLdTypes.NodeObject })
 	public metadata?: IJsonLdNodeObject;
+
+	/**
+	 * The counter for the entry index.
+	 */
+	@property({ type: "integer" })
+	public indexCounter!: number;
+
+	/**
+	 * After how many entries do we add immutable checks.
+	 */
+	@property({ type: "integer" })
+	public immutableInterval!: number;
 }

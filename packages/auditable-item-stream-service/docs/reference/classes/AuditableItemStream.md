@@ -51,3 +51,19 @@ The timestamp of when the stream was last updated.
 > `optional` **metadata**: `IJsonLdNodeObject`
 
 Metadata to associate with the stream as JSON-LD.
+
+***
+
+### indexCounter
+
+> **indexCounter**: `number`
+
+The counter for the entry index.
+
+***
+
+### immutableInterval
+
+> **immutableInterval**: `number`
+
+After how many entries do we add immutable checks.

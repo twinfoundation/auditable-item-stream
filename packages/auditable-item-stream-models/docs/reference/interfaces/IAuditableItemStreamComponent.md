@@ -10,7 +10,7 @@ Interface describing an auditable item stream contract.
 
 ### create()
 
-> **create**(`metadata`?, `entries`?, `identity`?, `nodeIdentity`?): `Promise`\<`string`\>
+> **create**(`metadata`?, `entries`?, `options`?, `identity`?, `nodeIdentity`?): `Promise`\<`string`\>
 
 Create a new stream.
 
@@ -23,6 +23,15 @@ The metadata for the stream as JSON-LD.
 • **entries?**: `object`[]
 
 Entries to store in the stream.
+
+• **options?**
+
+Options for creating the stream.
+
+• **options.immutableInterval?**: `number`
+
+After how many entries do we add immutable checks, defaults to service configured value.
+A value of 0 will disable immutable checks, 1 will be every item, or <n> for an interval.
 
 • **identity?**: `string`
 

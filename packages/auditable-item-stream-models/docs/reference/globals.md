@@ -9,6 +9,7 @@
 - [IAuditableItemStream](interfaces/IAuditableItemStream.md)
 - [IAuditableItemStreamComponent](interfaces/IAuditableItemStreamComponent.md)
 - [IAuditableItemStreamEntry](interfaces/IAuditableItemStreamEntry.md)
+- [IAuditableItemStreamEntryCredential](interfaces/IAuditableItemStreamEntryCredential.md)
 - [IAuditableItemStreamCreateEntryRequest](interfaces/IAuditableItemStreamCreateEntryRequest.md)
 - [IAuditableItemStreamCreateRequest](interfaces/IAuditableItemStreamCreateRequest.md)
 - [IAuditableItemStreamDeleteEntryRequest](interfaces/IAuditableItemStreamDeleteEntryRequest.md)
