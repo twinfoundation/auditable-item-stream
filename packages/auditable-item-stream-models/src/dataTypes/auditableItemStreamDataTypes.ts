@@ -4,6 +4,7 @@ import { DataTypeHandlerFactory } from "@gtsc/data-core";
 import type { JSONSchema7 } from "json-schema";
 import { AuditableItemStreamTypes } from "../models/auditableItemStreamTypes";
 import AuditableItemStreamSchema from "../schemas/AuditableItemStream.json";
+import AuditableItemStreamCredentialSchema from "../schemas/AuditableItemStreamCredential.json";
 import AuditableItemStreamEntrySchema from "../schemas/AuditableItemStreamEntry.json";
 import AuditableItemStreamEntryCredentialSchema from "../schemas/AuditableItemStreamEntryCredential.json";
 
@@ -19,6 +20,11 @@ export class AuditableItemStreamDataTypes {
 			type: AuditableItemStreamTypes.Stream,
 			defaultValue: {},
 			jsonSchema: async () => AuditableItemStreamSchema as JSONSchema7
+		}));
+		DataTypeHandlerFactory.register(AuditableItemStreamTypes.StreamCredential, () => ({
+			type: AuditableItemStreamTypes.StreamCredential,
+			defaultValue: {},
+			jsonSchema: async () => AuditableItemStreamCredentialSchema as JSONSchema7
 		}));
 		DataTypeHandlerFactory.register(AuditableItemStreamTypes.StreamEntry, () => ({
 			type: AuditableItemStreamTypes.StreamEntry,

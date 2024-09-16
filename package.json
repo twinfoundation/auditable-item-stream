@@ -1,6 +1,6 @@
 {
 	"name": "@gtsc/auditable-item-stream",
-	"version": "0.0.5-next.2",
+	"version": "0.0.5-next.3",
 	"description": "Auditable Item Stream",
 	"repository": {
 		"type": "git",
