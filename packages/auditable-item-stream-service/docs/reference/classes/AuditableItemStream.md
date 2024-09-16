@@ -22,14 +22,6 @@ The id of the stream.
 
 ***
 
-### nodeIdentity?
-
-> `optional` **nodeIdentity**: `string`
-
-The identity of the node which controls the stream.
-
-***
-
 ### created
 
 > **created**: `number`
@@ -43,6 +35,22 @@ The timestamp of when the stream was created.
 > `optional` **updated**: `number`
 
 The timestamp of when the stream was last updated.
+
+***
+
+### nodeIdentity
+
+> **nodeIdentity**: `string`
+
+The identity of the node which controls the stream.
+
+***
+
+### userIdentity
+
+> **userIdentity**: `string`
+
+The identity of the user which created the stream.
 
 ***
 
@@ -67,3 +75,27 @@ The counter for the entry index.
 > **immutableInterval**: `number`
 
 After how many entries do we add immutable checks.
+
+***
+
+### hash
+
+> **hash**: `string`
+
+The hash of the entry.
+
+***
+
+### signature
+
+> **signature**: `string`
+
+The signature of the entry.
+
+***
+
+### immutableStorageId?
+
+> `optional` **immutableStorageId**: `string`
+
+The immutable storage id.

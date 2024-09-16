@@ -672,7 +672,7 @@ export async function auditableItemStreamGet(
 	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? MimeTypes.JsonLd : MimeTypes.Json;
+	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const result = await component.get(
@@ -686,7 +686,7 @@ export async function auditableItemStreamGet(
 
 	return {
 		headers: {
-			[HeaderTypes.ContentType]: mimeType
+			[HeaderTypes.ContentType]: mimeType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 		},
 		body: result
 	};
@@ -745,7 +745,7 @@ export async function auditableItemStreamList(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? MimeTypes.JsonLd : MimeTypes.Json;
+	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.query(
 		convertConditionsQueryString(request.query?.conditions),
@@ -759,7 +759,7 @@ export async function auditableItemStreamList(
 
 	return {
 		headers: {
-			[HeaderTypes.ContentType]: mimeType
+			[HeaderTypes.ContentType]: mimeType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 		},
 		body: result
 	};
@@ -889,7 +889,7 @@ export async function auditableItemStreamGetEntry(
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.entryId), request.pathParams.entryId);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? MimeTypes.JsonLd : MimeTypes.Json;
+	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const result = await component.getEntry(
@@ -900,7 +900,7 @@ export async function auditableItemStreamGetEntry(
 
 	return {
 		headers: {
-			[HeaderTypes.ContentType]: mimeType
+			[HeaderTypes.ContentType]: mimeType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 		},
 		body: result
 	};
@@ -928,7 +928,7 @@ export async function auditableItemStreamListEntries(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? MimeTypes.JsonLd : MimeTypes.Json;
+	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.getEntries(
 		request.pathParams.id,
@@ -944,7 +944,7 @@ export async function auditableItemStreamListEntries(
 
 	return {
 		headers: {
-			[HeaderTypes.ContentType]: mimeType
+			[HeaderTypes.ContentType]: mimeType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 		},
 		body: result
 	};

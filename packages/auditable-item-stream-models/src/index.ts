@@ -17,5 +17,6 @@ export * from "./models/api/IAuditableItemStreamUpdateRequest";
 export * from "./models/auditableItemStreamTypes";
 export * from "./models/IAuditableItemStream";
 export * from "./models/IAuditableItemStreamComponent";
+export * from "./models/IAuditableItemStreamCredential";
 export * from "./models/IAuditableItemStreamEntry";
 export * from "./models/IAuditableItemStreamEntryCredential";

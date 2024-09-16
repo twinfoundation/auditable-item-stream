@@ -17,7 +17,8 @@ import type {
 	IAuditableItemStreamListRequest,
 	IAuditableItemStreamListResponse,
 	IAuditableItemStreamUpdateEntryRequest,
-	IAuditableItemStreamUpdateRequest
+	IAuditableItemStreamUpdateRequest,
+	JsonReturnType
 } from "@gtsc/auditable-item-stream-models";
 import { Guards, Is } from "@gtsc/core";
 import type { IJsonLdDocument, IJsonLdNodeObject } from "@gtsc/data-json-ld";
@@ -88,15 +89,18 @@ export class AuditableItemStreamClient
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found
 	 */
-	public async get(
+	public async get<T extends "json" | "jsonld" = "json">(
 		id: string,
 		options?: {
 			includeEntries?: boolean;
 			includeDeleted?: boolean;
 		},
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
-	): Promise<(IAuditableItemStream | IJsonLdDocument) & { cursor?: string }> {
+		responseType?: T
+	): Promise<
+		JsonReturnType<T, IAuditableItemStream, IJsonLdDocument> & {
+			cursor?: string;
+		}
+	> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<
@@ -104,7 +108,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamGetResponse
 		>("/:id", "GET", {
 			headers: {
-				Accept: responseType ?? MimeTypes.Json
+				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},
 			pathParams: {
 				id
@@ -112,7 +116,9 @@ export class AuditableItemStreamClient
 			query: options
 		});
 
-		return response.body;
+		return response.body as JsonReturnType<T, IAuditableItemStream, IJsonLdDocument> & {
+			cursor?: string;
+		};
 	}
 
 	/**
@@ -145,20 +151,23 @@ export class AuditableItemStreamClient
 	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The entities, which can be partial if a limited keys list was provided.
 	 */
-	public async query(
+	public async query<T extends "json" | "jsonld" = "json">(
 		conditions?: IComparator[],
 		orderBy?: "created" | "updated",
 		orderByDirection?: SortDirection,
 		properties?: (keyof IAuditableItemStream)[],
 		cursor?: string,
 		pageSize?: number,
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
+		responseType?: T
 	): Promise<{
 		/**
 		 * The entities, which can be partial if a limited keys list was provided.
 		 */
-		entities: (Partial<Omit<IAuditableItemStream, "entries">> | IJsonLdDocument)[];
+		entities: JsonReturnType<
+			T,
+			Partial<Omit<IAuditableItemStream, "entries">>[],
+			IJsonLdDocument[]
+		>;
 		/**
 		 * An optional cursor, when defined can be used to call find to get more entities.
 		 */
@@ -169,7 +178,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamListResponse
 		>("/", "GET", {
 			headers: {
-				Accept: responseType ?? MimeTypes.Json
+				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},
 			query: {
 				conditions: this.convertConditionsQueryString(conditions),
@@ -181,7 +190,20 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body;
+		return response.body as {
+			/**
+			 * The entities, which can be partial if a limited keys list was provided.
+			 */
+			entities: JsonReturnType<
+				T,
+				Partial<Omit<IAuditableItemStream, "entries">>[],
+				IJsonLdDocument[]
+			>;
+			/**
+			 * An optional cursor, when defined can be used to call find to get more entities.
+			 */
+			cursor?: string;
+		};
 	}
 
 	/**
@@ -217,12 +239,11 @@ export class AuditableItemStreamClient
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	public async getEntry(
+	public async getEntry<T extends "json" | "jsonld" = "json">(
 		id: string,
 		entryId: string,
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
-	): Promise<IAuditableItemStreamEntry | IJsonLdDocument> {
+		responseType?: T
+	): Promise<JsonReturnType<T, IAuditableItemStreamEntry, IJsonLdDocument>> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
@@ -231,7 +252,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamGetEntryResponse
 		>("/:id/:entryId", "GET", {
 			headers: {
-				Accept: responseType ?? MimeTypes.Json
+				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},
 			pathParams: {
 				id,
@@ -239,7 +260,7 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body;
+		return response.body as JsonReturnType<T, IAuditableItemStreamEntry, IJsonLdDocument>;
 	}
 
 	/**
@@ -307,7 +328,7 @@ export class AuditableItemStreamClient
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	public async getEntries(
+	public async getEntries<T extends "json" | "jsonld" = "json">(
 		id: string,
 		options?: {
 			conditions?: IComparator[];
@@ -316,10 +337,9 @@ export class AuditableItemStreamClient
 			cursor?: string;
 			order?: SortDirection;
 		},
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
+		responseType?: T
 	): Promise<{
-		entries: IAuditableItemStreamEntry[] | IJsonLdDocument[];
+		entries: JsonReturnType<T, IAuditableItemStreamEntry[], IJsonLdDocument[]>;
 		cursor?: string;
 	}> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
@@ -329,7 +349,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamListEntriesResponse
 		>("/:id/:entryId", "GET", {
 			headers: {
-				Accept: responseType ?? MimeTypes.Json
+				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},
 			pathParams: {
 				id
@@ -343,7 +363,10 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body;
+		return response.body as {
+			entries: JsonReturnType<T, IAuditableItemStreamEntry[], IJsonLdDocument[]>;
+			cursor?: string;
+		};
 	}
 
 	/**

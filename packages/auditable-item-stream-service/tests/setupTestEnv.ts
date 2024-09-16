@@ -1,7 +1,11 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import path from "node:path";
-import { Converter, RandomHelper } from "@gtsc/core";
+import type {
+	IAuditableItemStreamCredential,
+	IAuditableItemStreamEntryCredential
+} from "@gtsc/auditable-item-stream-models";
+import { Converter, Is, ObjectHelper, RandomHelper } from "@gtsc/core";
 import { Bip39 } from "@gtsc/crypto";
 import { MemoryEntityStorageConnector } from "@gtsc/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@gtsc/entity-storage-models";
@@ -12,6 +16,7 @@ import {
 } from "@gtsc/identity-connector-entity-storage";
 import { IdentityConnectorFactory } from "@gtsc/identity-models";
 import { nameof } from "@gtsc/nameof";
+import type { IDidVerifiableCredential } from "@gtsc/standards-w3c-did";
 import {
 	EntityStorageVaultConnector,
 	type VaultKey,
@@ -19,6 +24,7 @@ import {
 	initSchema as initSchemaVault
 } from "@gtsc/vault-connector-entity-storage";
 import { VaultConnectorFactory, VaultKeyType } from "@gtsc/vault-models";
+import { type IJwtHeader, type IJwtPayload, Jwt } from "@gtsc/web";
 import * as dotenv from "dotenv";
 
 console.debug("Setting up test environment from .env and .env.dev files");
@@ -86,4 +92,44 @@ export async function setupTestEnv(): Promise<void> {
 		Converter.base64ToBytes("p519gRazpBYvzqviRrFRBUT+ZNRZ24FYgOLcGO+Nj4Q="),
 		Converter.base64ToBytes("DzFGb9pwkyom+MGrKeVCAV2CMEiy04z9bJLj48XGjWw=")
 	);
+}
+
+/**
+ * Decode the JWT to get the integrity data.
+ * @param immutableStore The immutable store to decode.
+ * @returns The integrity data.
+ */
+export async function decodeJwtToIntegrity(immutableStore: string): Promise<{
+	created: number;
+	userIdentity: string;
+	hash: string;
+	signature: string;
+	index?: number;
+}> {
+	const vcJwt = Converter.bytesToUtf8(Converter.base64ToBytes(immutableStore));
+	const decodedJwt = await Jwt.decode<
+		IJwtHeader,
+		IJwtPayload & {
+			vc: IDidVerifiableCredential<
+				IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential
+			>;
+		}
+	>(vcJwt);
+	const credentialData = Is.arrayValue(decodedJwt.payload?.vc?.credentialSubject)
+		? decodedJwt.payload?.vc?.credentialSubject[0]
+		: decodedJwt.payload?.vc?.credentialSubject ?? {
+				created: 0,
+				userIdentity: "",
+				hash: "",
+				signature: "",
+				index: 0
+			};
+
+	return {
+		created: credentialData.created,
+		userIdentity: credentialData.userIdentity,
+		hash: credentialData.hash,
+		signature: credentialData.signature,
+		index: ObjectHelper.propertyGet(credentialData, "index")
+	};
 }

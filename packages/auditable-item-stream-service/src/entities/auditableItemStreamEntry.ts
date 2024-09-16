@@ -67,4 +67,10 @@ export class AuditableItemStreamEntry {
 	 */
 	@property({ type: "string" })
 	public signature!: string;
+
+	/**
+	 * The immutable storage id.
+	 */
+	@property({ type: "string" })
+	public immutableStorageId?: string;
 }

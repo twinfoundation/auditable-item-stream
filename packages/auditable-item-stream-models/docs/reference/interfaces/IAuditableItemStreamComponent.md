@@ -10,7 +10,7 @@ Interface describing an auditable item stream contract.
 
 ### create()
 
-> **create**(`metadata`?, `entries`?, `options`?, `identity`?, `nodeIdentity`?): `Promise`\<`string`\>
+> **create**(`metadata`?, `entries`?, `options`?, `userIdentity`?, `nodeIdentity`?): `Promise`\<`string`\>
 
 Create a new stream.
 
@@ -33,7 +33,7 @@ Options for creating the stream.
 After how many entries do we add immutable checks, defaults to service configured value.
 A value of 0 will disable immutable checks, 1 will be every item, or <n> for an interval.
 
-• **identity?**: `string`
+• **userIdentity?**: `string`
 
 The identity to create the auditable item stream operation with.
 
@@ -51,7 +51,7 @@ The id of the new stream item.
 
 ### update()
 
-> **update**(`id`, `metadata`?, `identity`?, `nodeIdentity`?): `Promise`\<`void`\>
+> **update**(`id`, `metadata`?, `userIdentity`?, `nodeIdentity`?): `Promise`\<`void`\>
 
 Update a stream.
 
@@ -65,7 +65,7 @@ The id of the stream to update.
 
 The metadata for the stream as JSON-LD.
 
-• **identity?**: `string`
+• **userIdentity?**: `string`
 
 The identity to create the auditable item stream operation with.
 
@@ -83,9 +83,13 @@ Nothing.
 
 ### get()
 
-> **get**(`id`, `options`?, `responseType`?): `Promise`\<IJsonLdDocument \| IAuditableItemStream & `object`\>
+> **get**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<[`JsonReturnType`](../type-aliases/JsonReturnType.md)\<`T`, [`IAuditableItemStream`](IAuditableItemStream.md), `IJsonLdDocument`\> & `object`\>
 
 Get a stream header without the entries.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -105,13 +109,13 @@ Whether to include the entries, defaults to false.
 
 Whether to include deleted entries, defaults to false.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
-The response type to return, defaults to application/json.
+Should the response be JSON-LD.
 
 #### Returns
 
-`Promise`\<IJsonLdDocument \| IAuditableItemStream & `object`\>
+`Promise`\<[`JsonReturnType`](../type-aliases/JsonReturnType.md)\<`T`, [`IAuditableItemStream`](IAuditableItemStream.md), `IJsonLdDocument`\> & `object`\>
 
 The stream and entries if found.
 
@@ -123,9 +127,13 @@ NotFoundError if the stream is not found.
 
 ### query()
 
-> **query**(`conditions`?, `orderBy`?, `orderByDirection`?, `properties`?, `cursor`?, `pageSize`?, `responseType`?): `Promise`\<`object`\>
+> **query**\<`T`\>(`conditions`?, `orderBy`?, `orderByDirection`?, `properties`?, `cursor`?, `pageSize`?, `responseType`?): `Promise`\<`object`\>
 
 Query all the streams, will not return entries.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -153,7 +161,7 @@ The cursor to request the next page of entities.
 
 The maximum number of entities in a page.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
@@ -165,7 +173,7 @@ The entities, which can be partial if a limited keys list was provided.
 
 ##### entities
 
-> **entities**: (`IJsonLdDocument` \| `Partial`\<`Omit`\<[`IAuditableItemStream`](IAuditableItemStream.md), `"entries"`\>\>)[]
+> **entities**: [`JsonReturnType`](../type-aliases/JsonReturnType.md)\<`T`, `Partial`\<`Omit`\<[`IAuditableItemStream`](IAuditableItemStream.md), `"entries"`\>\>[], `IJsonLdDocument`[]\>
 
 The entities, which can be partial if a limited keys list was provided.
 
@@ -179,7 +187,7 @@ An optional cursor, when defined can be used to call find to get more entities.
 
 ### createEntry()
 
-> **createEntry**(`id`, `entryMetadata`?, `identity`?, `nodeIdentity`?): `Promise`\<`string`\>
+> **createEntry**(`id`, `entryMetadata`?, `userIdentity`?, `nodeIdentity`?): `Promise`\<`string`\>
 
 Create an entry in the stream.
 
@@ -193,7 +201,7 @@ The id of the stream to update.
 
 The metadata for the stream as JSON-LD.
 
-• **identity?**: `string`
+• **userIdentity?**: `string`
 
 The identity to create the auditable item stream operation with.
 
@@ -211,9 +219,13 @@ The id of the created entry, if not provided.
 
 ### getEntry()
 
-> **getEntry**(`id`, `entryId`, `responseType`?): `Promise`\<`IJsonLdDocument` \| [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md)\>
+> **getEntry**\<`T`\>(`id`, `entryId`, `responseType`?): `Promise`\<[`JsonReturnType`](../type-aliases/JsonReturnType.md)\<`T`, [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md), `IJsonLdDocument`\>\>
 
 Get the entry from the stream.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -225,13 +237,13 @@ The id of the stream to get.
 
 The id of the stream entry to get.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<`IJsonLdDocument` \| [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md)\>
+`Promise`\<[`JsonReturnType`](../type-aliases/JsonReturnType.md)\<`T`, [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md), `IJsonLdDocument`\>\>
 
 The stream and entries if found.
 
@@ -243,7 +255,7 @@ NotFoundError if the stream is not found.
 
 ### updateEntry()
 
-> **updateEntry**(`id`, `entryId`, `entryMetadata`?, `identity`?, `nodeIdentity`?): `Promise`\<`void`\>
+> **updateEntry**(`id`, `entryId`, `entryMetadata`?, `userIdentity`?, `nodeIdentity`?): `Promise`\<`void`\>
 
 Update an entry in the stream.
 
@@ -261,7 +273,7 @@ The id of the entry to update.
 
 The metadata for the entry as JSON-LD.
 
-• **identity?**: `string`
+• **userIdentity?**: `string`
 
 The identity to create the auditable item stream operation with.
 
@@ -311,9 +323,13 @@ Nothing.
 
 ### getEntries()
 
-> **getEntries**(`id`, `options`?, `responseType`?): `Promise`\<`object`\>
+> **getEntries**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`object`\>
 
 Get the entries for the stream.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -345,7 +361,7 @@ Cursor to use for next chunk of data.
 
 Retrieve the entries in ascending/descending time order, defaults to Ascending.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
@@ -357,7 +373,7 @@ The stream and entries if found.
 
 ##### entries
 
-> **entries**: [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md)[] \| `IJsonLdDocument`[]
+> **entries**: [`JsonReturnType`](../type-aliases/JsonReturnType.md)\<`T`, [`IAuditableItemStreamEntry`](IAuditableItemStreamEntry.md)[], `IJsonLdDocument`[]\>
 
 ##### cursor?
 

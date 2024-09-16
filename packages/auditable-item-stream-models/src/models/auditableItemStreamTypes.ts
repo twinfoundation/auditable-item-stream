@@ -22,6 +22,11 @@ export const AuditableItemStreamTypes = {
 	Stream: "https://schema.gtsc.io/aig/AuditableItemStream",
 
 	/**
+	 * Represents auditable item stream credential.
+	 */
+	StreamCredential: "https://schema.gtsc.io/aig/AuditableItemStreamCredential",
+
+	/**
 	 * Represents auditable item stream entry.
 	 */
 	StreamEntry: "https://schema.gtsc.io/aig/AuditableItemStreamEntry",

@@ -85,9 +85,13 @@ The id of the new stream item.
 
 ### get()
 
-> **get**(`id`, `options`?, `responseType`?): `Promise`\<IJsonLdDocument \| IAuditableItemStream & `object`\>
+> **get**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStream`, `IJsonLdDocument`\> & `object`\>
 
 Get a stream header without the entries.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -107,13 +111,13 @@ Whether to include the entries, defaults to false.
 
 Whether to include deleted entries, defaults to false.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<IJsonLdDocument \| IAuditableItemStream & `object`\>
+`Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStream`, `IJsonLdDocument`\> & `object`\>
 
 The stream and entries if found.
 
@@ -157,9 +161,13 @@ Nothing.
 
 ### query()
 
-> **query**(`conditions`?, `orderBy`?, `orderByDirection`?, `properties`?, `cursor`?, `pageSize`?, `responseType`?): `Promise`\<`object`\>
+> **query**\<`T`\>(`conditions`?, `orderBy`?, `orderByDirection`?, `properties`?, `cursor`?, `pageSize`?, `responseType`?): `Promise`\<`object`\>
 
 Query all the streams, will not return entries.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -187,7 +195,7 @@ The cursor to request the next page of entities.
 
 The maximum number of entities in a page.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
@@ -199,7 +207,7 @@ The entities, which can be partial if a limited keys list was provided.
 
 ##### entities
 
-> **entities**: (`IJsonLdDocument` \| `Partial`\<`Omit`\<`IAuditableItemStream`, `"entries"`\>\>)[]
+> **entities**: `JsonReturnType`\<`T`, `Partial`\<`Omit`\<`IAuditableItemStream`, `"entries"`\>\>[], `IJsonLdDocument`[]\>
 
 The entities, which can be partial if a limited keys list was provided.
 
@@ -245,9 +253,13 @@ The id of the created entry, if not provided.
 
 ### getEntry()
 
-> **getEntry**(`id`, `entryId`, `responseType`?): `Promise`\<`IJsonLdDocument` \| `IAuditableItemStreamEntry`\>
+> **getEntry**\<`T`\>(`id`, `entryId`, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStreamEntry`, `IJsonLdDocument`\>\>
 
 Get the entry from the stream.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -259,13 +271,13 @@ The id of the stream to get.
 
 The id of the stream entry to get.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<`IJsonLdDocument` \| `IAuditableItemStreamEntry`\>
+`Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStreamEntry`, `IJsonLdDocument`\>\>
 
 The stream and entries if found.
 
@@ -341,9 +353,13 @@ Nothing.
 
 ### getEntries()
 
-> **getEntries**(`id`, `options`?, `responseType`?): `Promise`\<`object`\>
+> **getEntries**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`object`\>
 
 Get the entries for the stream.
+
+#### Type parameters
+
+• **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
 #### Parameters
 
@@ -375,7 +391,7 @@ Cursor to use for next chunk of data.
 
 Retrieve the entries in ascending/descending time order, defaults to Ascending.
 
-• **responseType?**: `"application/json"` \| `"application/ld+json"`
+• **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
@@ -387,7 +403,7 @@ The stream and entries if found.
 
 ##### entries
 
-> **entries**: `IAuditableItemStreamEntry`[] \| `IJsonLdDocument`[]
+> **entries**: `JsonReturnType`\<`T`, `IAuditableItemStreamEntry`[], `IJsonLdDocument`[]\>
 
 ##### cursor?
 

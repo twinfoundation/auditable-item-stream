@@ -15,12 +15,6 @@ export class AuditableItemStream {
 	public id!: string;
 
 	/**
-	 * The identity of the node which controls the stream.
-	 */
-	@property({ type: "string" })
-	public nodeIdentity?: string;
-
-	/**
 	 * The timestamp of when the stream was created.
 	 */
 	@property({ type: "number", sortDirection: SortDirection.Descending })
@@ -31,6 +25,18 @@ export class AuditableItemStream {
 	 */
 	@property({ type: "number", sortDirection: SortDirection.Descending })
 	public updated?: number;
+
+	/**
+	 * The identity of the node which controls the stream.
+	 */
+	@property({ type: "string" })
+	public nodeIdentity!: string;
+
+	/**
+	 * The identity of the user which created the stream.
+	 */
+	@property({ type: "string" })
+	public userIdentity!: string;
 
 	/**
 	 * Metadata to associate with the stream as JSON-LD.
@@ -49,4 +55,22 @@ export class AuditableItemStream {
 	 */
 	@property({ type: "integer" })
 	public immutableInterval!: number;
+
+	/**
+	 * The hash of the entry.
+	 */
+	@property({ type: "string" })
+	public hash!: string;
+
+	/**
+	 * The signature of the entry.
+	 */
+	@property({ type: "string" })
+	public signature!: string;
+
+	/**
+	 * The immutable storage id.
+	 */
+	@property({ type: "string" })
+	public immutableStorageId?: string;
 }

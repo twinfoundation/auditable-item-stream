@@ -8,6 +8,7 @@
 
 - [IAuditableItemStream](interfaces/IAuditableItemStream.md)
 - [IAuditableItemStreamComponent](interfaces/IAuditableItemStreamComponent.md)
+- [IAuditableItemStreamCredential](interfaces/IAuditableItemStreamCredential.md)
 - [IAuditableItemStreamEntry](interfaces/IAuditableItemStreamEntry.md)
 - [IAuditableItemStreamEntryCredential](interfaces/IAuditableItemStreamEntryCredential.md)
 - [IAuditableItemStreamCreateEntryRequest](interfaces/IAuditableItemStreamCreateEntryRequest.md)
@@ -26,6 +27,7 @@
 
 ## Type Aliases
 
+- [JsonReturnType](type-aliases/JsonReturnType.md)
 - [AuditableItemStreamTypes](type-aliases/AuditableItemStreamTypes.md)
 
 ## Variables

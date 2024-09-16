@@ -91,3 +91,11 @@ The hash of the entry.
 > **signature**: `string`
 
 The signature of the entry.
+
+***
+
+### immutableStorageId?
+
+> `optional` **immutableStorageId**: `string`
+
+The immutable storage id.

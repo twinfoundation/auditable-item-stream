@@ -20,7 +20,11 @@ describe("AuditableItemStreamDataTypes", () => {
 			{
 				id: "foo",
 				created: 1234567890,
-				immutableInterval: 10
+				immutableInterval: 10,
+				signature: "foo",
+				hash: "bar",
+				nodeIdentity: "node",
+				userIdentity: "user"
 			},
 			validationFailures
 		);

@@ -28,11 +28,19 @@ The timestamp of when the stream was updated.
 
 ***
 
-### nodeIdentity?
+### nodeIdentity
 
-> `optional` **nodeIdentity**: `string`
+> **nodeIdentity**: `string`
 
 The identity of the node which controls the stream.
+
+***
+
+### userIdentity
+
+> **userIdentity**: `string`
+
+The identity of the user who created the stream.
 
 ***
 
@@ -41,6 +49,30 @@ The identity of the node which controls the stream.
 > `optional` **metadata**: `IJsonLdNodeObject`
 
 The metadata to associate with the entry as JSON-LD.
+
+***
+
+### hash
+
+> **hash**: `string`
+
+The hash of the stream.
+
+***
+
+### signature
+
+> **signature**: `string`
+
+The signature of the stream.
+
+***
+
+### immutableStorageId?
+
+> `optional` **immutableStorageId**: `string`
+
+The immutable storage id.
 
 ***
 

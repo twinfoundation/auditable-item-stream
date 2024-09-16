@@ -25,12 +25,32 @@ export interface IAuditableItemStream {
 	/**
 	 * The identity of the node which controls the stream.
 	 */
-	nodeIdentity?: string;
+	nodeIdentity: string;
+
+	/**
+	 * The identity of the user who created the stream.
+	 */
+	userIdentity: string;
 
 	/**
 	 * The metadata to associate with the entry as JSON-LD.
 	 */
 	metadata?: IJsonLdNodeObject;
+
+	/**
+	 * The hash of the stream.
+	 */
+	hash: string;
+
+	/**
+	 * The signature of the stream.
+	 */
+	signature: string;
+
+	/**
+	 * The immutable storage id.
+	 */
+	immutableStorageId?: string;
 
 	/**
 	 * Entries in the stream.

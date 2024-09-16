@@ -3,6 +3,7 @@
 	"sources": ["./src/models/**/*.ts"],
 	"types": [
 		"IAuditableItemStream",
+		"IAuditableItemStreamCredential",
 		"IAuditableItemStreamEntry",
 		"IAuditableItemStreamEntryCredential"
 	],

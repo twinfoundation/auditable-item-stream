@@ -3,9 +3,13 @@
 import type { IComponent } from "@gtsc/core";
 import type { IJsonLdDocument, IJsonLdNodeObject } from "@gtsc/data-json-ld";
 import type { IComparator, SortDirection } from "@gtsc/entity";
-import type { MimeTypes } from "@gtsc/web";
 import type { IAuditableItemStream } from "./IAuditableItemStream";
 import type { IAuditableItemStreamEntry } from "./IAuditableItemStreamEntry";
+
+/**
+ * The return type based on the response type.
+ */
+export type JsonReturnType<T, U, V> = T extends "json" ? U : V;
 
 /**
  * Interface describing an auditable item stream contract.
@@ -18,7 +22,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
 	 * A value of 0 will disable immutable checks, 1 will be every item, or <n> for an interval.
-	 * @param identity The identity to create the auditable item stream operation with.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the new stream item.
 	 */
@@ -30,7 +34,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		options?: {
 			immutableInterval?: number;
 		},
-		identity?: string,
+		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<string>;
 
@@ -38,14 +42,14 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * Update a stream.
 	 * @param id The id of the stream to update.
 	 * @param metadata The metadata for the stream as JSON-LD.
-	 * @param identity The identity to create the auditable item stream operation with.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
 	update(
 		id: string,
 		metadata?: IJsonLdNodeObject,
-		identity?: string,
+		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void>;
 
@@ -55,19 +59,22 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options Additional options for the get operation.
 	 * @param options.includeEntries Whether to include the entries, defaults to false.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
-	 * @param responseType The response type to return, defaults to application/json.
+	 * @param responseType Should the response be JSON-LD.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	get(
+	get<T extends "json" | "jsonld" = "json">(
 		id: string,
 		options?: {
 			includeEntries?: boolean;
 			includeDeleted?: boolean;
 		},
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
-	): Promise<(IAuditableItemStream | IJsonLdDocument) & { cursor?: string }>;
+		responseType?: T
+	): Promise<
+		JsonReturnType<T, IAuditableItemStream, IJsonLdDocument> & {
+			cursor?: string;
+		}
+	>;
 
 	/**
 	 * Query all the streams, will not return entries.
@@ -80,20 +87,24 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The entities, which can be partial if a limited keys list was provided.
 	 */
-	query(
+	query<T extends "json" | "jsonld" = "json">(
 		conditions?: IComparator[],
 		orderBy?: "created" | "updated",
 		orderByDirection?: SortDirection,
 		properties?: (keyof IAuditableItemStream)[],
 		cursor?: string,
 		pageSize?: number,
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
+		responseType?: T
 	): Promise<{
 		/**
 		 * The entities, which can be partial if a limited keys list was provided.
 		 */
-		entities: (Partial<Omit<IAuditableItemStream, "entries">> | IJsonLdDocument)[];
+		entities: JsonReturnType<
+			T,
+			Partial<Omit<IAuditableItemStream, "entries">>[],
+			IJsonLdDocument[]
+		>;
+
 		/**
 		 * An optional cursor, when defined can be used to call find to get more entities.
 		 */
@@ -104,14 +115,14 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * Create an entry in the stream.
 	 * @param id The id of the stream to update.
 	 * @param entryMetadata The metadata for the stream as JSON-LD.
-	 * @param identity The identity to create the auditable item stream operation with.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the created entry, if not provided.
 	 */
 	createEntry(
 		id: string,
 		entryMetadata?: IJsonLdNodeObject,
-		identity?: string,
+		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<string>;
 
@@ -123,19 +134,18 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	getEntry(
+	getEntry<T extends "json" | "jsonld" = "json">(
 		id: string,
 		entryId: string,
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
-	): Promise<IAuditableItemStreamEntry | IJsonLdDocument>;
+		responseType?: T
+	): Promise<JsonReturnType<T, IAuditableItemStreamEntry, IJsonLdDocument>>;
 
 	/**
 	 * Update an entry in the stream.
 	 * @param id The id of the stream to update.
 	 * @param entryId The id of the entry to update.
 	 * @param entryMetadata The metadata for the entry as JSON-LD.
-	 * @param identity The identity to create the auditable item stream operation with.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
@@ -143,7 +153,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		id: string,
 		entryId: string,
 		entryMetadata?: IJsonLdNodeObject,
-		identity?: string,
+		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void>;
 
@@ -170,7 +180,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	getEntries(
+	getEntries<T extends "json" | "jsonld" = "json">(
 		id: string,
 		options?: {
 			conditions?: IComparator[];
@@ -179,10 +189,9 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			cursor?: string;
 			order?: SortDirection;
 		},
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-		responseType?: typeof MimeTypes.Json | typeof MimeTypes.JsonLd
+		responseType?: T
 	): Promise<{
-		entries: IAuditableItemStreamEntry[] | IJsonLdDocument[];
+		entries: JsonReturnType<T, IAuditableItemStreamEntry[], IJsonLdDocument[]>;
 		cursor?: string;
 	}>;
 }

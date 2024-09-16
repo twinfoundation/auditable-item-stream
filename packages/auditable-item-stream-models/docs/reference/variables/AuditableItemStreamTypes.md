@@ -24,6 +24,12 @@ The context root for the auditable item stream types.
 
 Represents auditable item stream.
 
+### StreamCredential
+
+> `readonly` **StreamCredential**: `"https://schema.gtsc.io/aig/AuditableItemStreamCredential"` = `"https://schema.gtsc.io/aig/AuditableItemStreamCredential"`
+
+Represents auditable item stream credential.
+
 ### StreamEntry
 
 > `readonly` **StreamEntry**: `"https://schema.gtsc.io/aig/AuditableItemStreamEntry"` = `"https://schema.gtsc.io/aig/AuditableItemStreamEntry"`
