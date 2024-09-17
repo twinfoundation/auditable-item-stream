@@ -172,7 +172,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @param entries Entries to store in the stream.
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
-	 * A value of 0 will disable integrity checks, 1 will be every item, or <n> for an interval.
+	 * A value of 0 will disable integrity checks, 1 will be every item, or any other integer for an interval.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the new stream item.
