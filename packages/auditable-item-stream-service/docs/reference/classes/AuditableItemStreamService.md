@@ -117,7 +117,7 @@ The id of the new stream item.
 
 ### get()
 
-> **get**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStream`, `IJsonLdDocument`\> & `object`\>
+> **get**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStream` & `object`, `IJsonLdDocument`\>\>
 
 Get a stream header without the entries.
 
@@ -143,13 +143,21 @@ Whether to include the entries, defaults to false.
 
 Whether to include deleted entries, defaults to false.
 
+• **options.verifyStream?**: `boolean`
+
+Should the stream be verified, defaults to false.
+
+• **options.verifyEntries?**: `boolean`
+
+Should the entries be verified, defaults to false.
+
 • **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStream`, `IJsonLdDocument`\> & `object`\>
+`Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStream` & `object`, `IJsonLdDocument`\>\>
 
 The stream and entries if found.
 
@@ -201,7 +209,7 @@ Nothing.
 
 ### query()
 
-> **query**\<`T`\>(`conditions`?, `orderBy`?, `orderByDirection`?, `properties`?, `cursor`?, `pageSize`?, `responseType`?): `Promise`\<`object`\>
+> **query**\<`T`\>(`conditions`?, `orderBy`?, `orderByDirection`?, `properties`?, `cursor`?, `pageSize`?, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `object`, `IJsonLdDocument`\>\>
 
 Query all the streams, will not return entries.
 
@@ -241,21 +249,9 @@ The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<`object`\>
+`Promise`\<`JsonReturnType`\<`T`, `object`, `IJsonLdDocument`\>\>
 
 The entities, which can be partial if a limited keys list was provided.
-
-##### entities
-
-> **entities**: `JsonReturnType`\<`T`, `Partial`\<`Omit`\<`IAuditableItemStream`, `"entries"`\>\>[], `IJsonLdDocument`[]\>
-
-The entities, which can be partial if a limited keys list was provided.
-
-##### cursor?
-
-> `optional` **cursor**: `string`
-
-An optional cursor, when defined can be used to call find to get more entities.
 
 #### Implementation of
 
@@ -265,7 +261,7 @@ An optional cursor, when defined can be used to call find to get more entities.
 
 ### createEntry()
 
-> **createEntry**(`id`, `entryMetadata`?, `userIdentity`?, `nodeIdentity`?): `Promise`\<`string`\>
+> **createEntry**(`id`, `object`, `userIdentity`?, `nodeIdentity`?): `Promise`\<`string`\>
 
 Create an entry in the stream.
 
@@ -275,9 +271,9 @@ Create an entry in the stream.
 
 The id of the stream to update.
 
-• **entryMetadata?**: `IJsonLdNodeObject`
+• **object**: `IJsonLdNodeObject`
 
-The metadata for the stream as JSON-LD.
+The object for the stream as JSON-LD.
 
 • **userIdentity?**: `string`
 
@@ -301,7 +297,7 @@ The id of the created entry, if not provided.
 
 ### getEntry()
 
-> **getEntry**\<`T`\>(`id`, `entryId`, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStreamEntry`, `IJsonLdDocument`\>\>
+> **getEntry**\<`T`\>(`id`, `entryId`, `options`?, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStreamEntry` & `object`, `IJsonLdDocument`\>\>
 
 Get the entry from the stream.
 
@@ -319,13 +315,21 @@ The id of the stream to get.
 
 The id of the stream entry to get.
 
+• **options?**
+
+Additional options for the get operation.
+
+• **options.verifyEntry?**: `boolean`
+
+Should the entry be verified, defaults to false.
+
 • **responseType?**: `T`
 
 The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStreamEntry`, `IJsonLdDocument`\>\>
+`Promise`\<`JsonReturnType`\<`T`, `IAuditableItemStreamEntry` & `object`, `IJsonLdDocument`\>\>
 
 The stream and entries if found.
 
@@ -341,7 +345,7 @@ NotFoundError if the stream is not found.
 
 ### updateEntry()
 
-> **updateEntry**(`id`, `entryId`, `entryMetadata`?, `userIdentity`?, `nodeIdentity`?): `Promise`\<`void`\>
+> **updateEntry**(`id`, `entryId`, `entryObject`, `userIdentity`?, `nodeIdentity`?): `Promise`\<`void`\>
 
 Update an entry in the stream.
 
@@ -355,9 +359,9 @@ The id of the stream to update.
 
 The id of the entry to update.
 
-• **entryMetadata?**: `IJsonLdNodeObject`
+• **entryObject**: `IJsonLdNodeObject`
 
-The metadata for the entry as JSON-LD.
+The object for the entry as JSON-LD.
 
 • **userIdentity?**: `string`
 
@@ -417,7 +421,7 @@ Nothing.
 
 ### getEntries()
 
-> **getEntries**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`object`\>
+> **getEntries**\<`T`\>(`id`, `options`?, `responseType`?): `Promise`\<`JsonReturnType`\<`T`, `object`, `IJsonLdDocument`\>\>
 
 Get the entries for the stream.
 
@@ -443,6 +447,10 @@ The conditions to filter the stream.
 
 Whether to include deleted entries, defaults to false.
 
+• **options.verifyEntries?**: `boolean`
+
+Should the entries be verified, defaults to false.
+
 • **options.pageSize?**: `number`
 
 How many entries to return.
@@ -461,17 +469,9 @@ The response type to return, defaults to application/json.
 
 #### Returns
 
-`Promise`\<`object`\>
+`Promise`\<`JsonReturnType`\<`T`, `object`, `IJsonLdDocument`\>\>
 
 The stream and entries if found.
-
-##### entries
-
-> **entries**: `JsonReturnType`\<`T`, `IAuditableItemStreamEntry`[], `IJsonLdDocument`[]\>
-
-##### cursor?
-
-> `optional` **cursor**: `string`
 
 #### Implementation of
 
@@ -480,3 +480,35 @@ The stream and entries if found.
 #### Throws
 
 NotFoundError if the stream is not found.
+
+***
+
+### removeImmutable()
+
+> **removeImmutable**(`id`, `nodeIdentity`?): `Promise`\<`void`\>
+
+Remove the immutable storage for the stream and entries.
+
+#### Parameters
+
+• **id**: `string`
+
+The id of the stream to remove the storage from.
+
+• **nodeIdentity?**: `string`
+
+The node identity to use for vault operations.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+Nothing.
+
+#### Implementation of
+
+`IAuditableItemStreamComponent.removeImmutable`
+
+#### Throws
+
+NotFoundError if the vertex is not found.

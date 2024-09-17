@@ -5,6 +5,7 @@ import type { IJsonLdDocument, IJsonLdNodeObject } from "@gtsc/data-json-ld";
 import type { IComparator, SortDirection } from "@gtsc/entity";
 import type { IAuditableItemStream } from "./IAuditableItemStream";
 import type { IAuditableItemStreamEntry } from "./IAuditableItemStreamEntry";
+import type { IAuditableItemStreamVerification } from "./IAuditableItemStreamVerification";
 
 /**
  * The return type based on the response type.
@@ -29,7 +30,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	create(
 		metadata?: IJsonLdNodeObject,
 		entries?: {
-			metadata?: IJsonLdNodeObject;
+			object: IJsonLdNodeObject;
 		}[],
 		options?: {
 			immutableInterval?: number;
@@ -59,6 +60,8 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options Additional options for the get operation.
 	 * @param options.includeEntries Whether to include the entries, defaults to false.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
+	 * @param options.verifyStream Should the stream be verified, defaults to false.
+	 * @param options.verifyEntries Should the entries be verified, defaults to false.
 	 * @param responseType Should the response be JSON-LD.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
@@ -68,12 +71,20 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		options?: {
 			includeEntries?: boolean;
 			includeDeleted?: boolean;
+			verifyStream?: boolean;
+			verifyEntries?: boolean;
 		},
 		responseType?: T
 	): Promise<
-		JsonReturnType<T, IAuditableItemStream, IJsonLdDocument> & {
-			cursor?: string;
-		}
+		JsonReturnType<
+			T,
+			IAuditableItemStream & {
+				cursor?: string;
+				verification?: IAuditableItemStreamVerification;
+				entriesVerification?: IAuditableItemStreamVerification[];
+			},
+			IJsonLdDocument
+		>
 	>;
 
 	/**
@@ -95,33 +106,28 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		cursor?: string,
 		pageSize?: number,
 		responseType?: T
-	): Promise<{
-		/**
-		 * The entities, which can be partial if a limited keys list was provided.
-		 */
-		entities: JsonReturnType<
+	): Promise<
+		JsonReturnType<
 			T,
-			Partial<Omit<IAuditableItemStream, "entries">>[],
-			IJsonLdDocument[]
-		>;
-
-		/**
-		 * An optional cursor, when defined can be used to call find to get more entities.
-		 */
-		cursor?: string;
-	}>;
+			{
+				entities: Partial<IAuditableItemStream>[];
+				cursor?: string;
+			},
+			IJsonLdDocument
+		>
+	>;
 
 	/**
 	 * Create an entry in the stream.
 	 * @param id The id of the stream to update.
-	 * @param entryMetadata The metadata for the stream as JSON-LD.
+	 * @param object The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the created entry, if not provided.
 	 */
 	createEntry(
 		id: string,
-		entryMetadata?: IJsonLdNodeObject,
+		object: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<string>;
@@ -130,6 +136,8 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * Get the entry from the stream.
 	 * @param id The id of the stream to get.
 	 * @param entryId The id of the stream entry to get.
+	 * @param options Additional options for the get operation.
+	 * @param options.verifyEntry Should the entry be verified, defaults to false.
 	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
@@ -137,14 +145,25 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	getEntry<T extends "json" | "jsonld" = "json">(
 		id: string,
 		entryId: string,
+		options?: {
+			verifyEntry?: boolean;
+		},
 		responseType?: T
-	): Promise<JsonReturnType<T, IAuditableItemStreamEntry, IJsonLdDocument>>;
+	): Promise<
+		JsonReturnType<
+			T,
+			IAuditableItemStreamEntry & {
+				verification?: IAuditableItemStreamVerification;
+			},
+			IJsonLdDocument
+		>
+	>;
 
 	/**
 	 * Update an entry in the stream.
 	 * @param id The id of the stream to update.
 	 * @param entryId The id of the entry to update.
-	 * @param entryMetadata The metadata for the entry as JSON-LD.
+	 * @param entryObject The object for the entry as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
@@ -152,7 +171,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	updateEntry(
 		id: string,
 		entryId: string,
-		entryMetadata?: IJsonLdNodeObject,
+		entryObject: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void>;
@@ -173,6 +192,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options Additional options for the get operation.
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
+	 * @param options.verifyEntries Should the entries be verified, defaults to false.
 	 * @param options.pageSize How many entries to return.
 	 * @param options.cursor Cursor to use for next chunk of data.
 	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
@@ -185,13 +205,30 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		options?: {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
+			verifyEntries?: boolean;
 			pageSize?: number;
 			cursor?: string;
 			order?: SortDirection;
 		},
 		responseType?: T
-	): Promise<{
-		entries: JsonReturnType<T, IAuditableItemStreamEntry[], IJsonLdDocument[]>;
-		cursor?: string;
-	}>;
+	): Promise<
+		JsonReturnType<
+			T,
+			{
+				entries: IAuditableItemStreamEntry[];
+				cursor?: string;
+				verification?: IAuditableItemStreamVerification[];
+			},
+			IJsonLdDocument
+		>
+	>;
+
+	/**
+	 * Remove the immutable storage for the stream and entries.
+	 * @param id The id of the stream to remove the storage from.
+	 * @param nodeIdentity The node identity to use for vault operations.
+	 * @returns Nothing.
+	 * @throws NotFoundError if the vertex is not found.
+	 */
+	removeImmutable(id: string, nodeIdentity?: string): Promise<void>;
 }

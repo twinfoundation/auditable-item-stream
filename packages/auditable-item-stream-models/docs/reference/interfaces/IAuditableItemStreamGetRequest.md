@@ -49,3 +49,15 @@ If you want to get more entries you can use the returned cursor with the get ent
 > `optional` **includeDeleted**: `boolean`
 
 Whether to include deleted entries, defaults to false.
+
+#### verifyStream?
+
+> `optional` **verifyStream**: `boolean`
+
+Should the stream be verified, defaults to false.
+
+#### verifyEntries?
+
+> `optional` **verifyEntries**: `boolean`
+
+Should the entries be verified, defaults to false.

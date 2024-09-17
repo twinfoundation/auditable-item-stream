@@ -11,6 +11,7 @@
 - [IAuditableItemStreamCredential](interfaces/IAuditableItemStreamCredential.md)
 - [IAuditableItemStreamEntry](interfaces/IAuditableItemStreamEntry.md)
 - [IAuditableItemStreamEntryCredential](interfaces/IAuditableItemStreamEntryCredential.md)
+- [IAuditableItemStreamVerification](interfaces/IAuditableItemStreamVerification.md)
 - [IAuditableItemStreamCreateEntryRequest](interfaces/IAuditableItemStreamCreateEntryRequest.md)
 - [IAuditableItemStreamCreateRequest](interfaces/IAuditableItemStreamCreateRequest.md)
 - [IAuditableItemStreamDeleteEntryRequest](interfaces/IAuditableItemStreamDeleteEntryRequest.md)
@@ -29,7 +30,9 @@
 
 - [JsonReturnType](type-aliases/JsonReturnType.md)
 - [AuditableItemStreamTypes](type-aliases/AuditableItemStreamTypes.md)
+- [AuditableItemStreamVerificationState](type-aliases/AuditableItemStreamVerificationState.md)
 
 ## Variables
 
 - [AuditableItemStreamTypes](variables/AuditableItemStreamTypes.md)
+- [AuditableItemStreamVerificationState](variables/AuditableItemStreamVerificationState.md)

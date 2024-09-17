@@ -10,8 +10,6 @@ export interface IAuditableItemStreamGetRequest {
 	 * The headers which can be used to determine the response data type.
 	 */
 	headers?: {
-		// False positive
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
 		Accept: typeof MimeTypes.Json | typeof MimeTypes.JsonLd;
 	};
 
@@ -40,5 +38,15 @@ export interface IAuditableItemStreamGetRequest {
 		 * Whether to include deleted entries, defaults to false.
 		 */
 		includeDeleted?: boolean;
+
+		/**
+		 * Should the stream be verified, defaults to false.
+		 */
+		verifyStream?: boolean;
+
+		/**
+		 * Should the entries be verified, defaults to false.
+		 */
+		verifyEntries?: boolean;
 	};
 }

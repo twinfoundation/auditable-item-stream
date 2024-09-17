@@ -4,6 +4,7 @@ import type {
 	ICreatedResponse,
 	IHttpRequestContext,
 	INoContentResponse,
+	INotFoundResponse,
 	IRestRoute,
 	ITag
 } from "@gtsc/api-models";
@@ -24,7 +25,7 @@ import type {
 	IAuditableItemStreamUpdateEntryRequest,
 	IAuditableItemStreamUpdateRequest
 } from "@gtsc/auditable-item-stream-models";
-import { ComponentFactory, Guards, type NotFoundError } from "@gtsc/core";
+import { ComponentFactory, Guards } from "@gtsc/core";
 import type { ComparisonOperator, IComparator } from "@gtsc/entity";
 import { nameof } from "@gtsc/nameof";
 import { HeaderTypes, HttpStatusCode, MimeTypes } from "@gtsc/web";
@@ -76,8 +77,7 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							entries: [
 								{
-									id: "bar456",
-									metadata: {
+									object: {
 										"@context": "http://schema.org/",
 										"@type": "Event",
 										startDate: "2011-04-09T20:00:00Z",
@@ -206,7 +206,7 @@ export function generateRestRoutesAuditableItemStream(
 				]
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -244,7 +244,7 @@ export function generateRestRoutesAuditableItemStream(
 				type: nameof<INoContentResponse>()
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -302,14 +302,14 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								entities: [
+								"@context": "https://schema.gtsc.io/ais/",
+								"@graph": [
 									{
 										"@type": "entry",
 										created: "2024-08-22T11:55:16.271Z",
 										id: "tst:1234567890",
 										metadata: {
-											"@context": "http://schema.org/",
-											"@type": "Event",
+											"@type": "http://schema.org/#Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
 										}
@@ -321,7 +321,7 @@ export function generateRestRoutesAuditableItemStream(
 				]
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -344,7 +344,7 @@ export function generateRestRoutesAuditableItemStream(
 							id: "ais:1234567890"
 						},
 						body: {
-							metadata: {
+							object: {
 								"@context": "http://schema.org/",
 								"@type": "Event",
 								startDate: "2011-04-09T20:00:00Z",
@@ -401,7 +401,7 @@ export function generateRestRoutesAuditableItemStream(
 				type: nameof<INoContentResponse>()
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -425,7 +425,7 @@ export function generateRestRoutesAuditableItemStream(
 							entryId: "ais:1234567890:01010101010"
 						},
 						body: {
-							metadata: {
+							object: {
 								"@context": "http://schema.org/",
 								"@type": "Note",
 								content: "This is a simple note"
@@ -440,7 +440,7 @@ export function generateRestRoutesAuditableItemStream(
 				type: nameof<INoContentResponse>()
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -518,7 +518,7 @@ export function generateRestRoutesAuditableItemStream(
 				]
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -583,14 +583,14 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								entries: [
+								"@context": "https://schema.gtsc.io/ais/",
+								"@graph": [
 									{
 										"@type": "entry",
 										created: "2024-08-22T11:55:16.271Z",
 										id: "tst:1234567890",
 										metadata: {
-											"@context": "http://schema.org/",
-											"@type": "Event",
+											"@type": "http://schema.org/#Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
 										}
@@ -602,7 +602,7 @@ export function generateRestRoutesAuditableItemStream(
 				]
 			},
 			{
-				type: nameof<NotFoundError>()
+				type: nameof<INotFoundResponse>()
 			}
 		]
 	};
@@ -679,7 +679,9 @@ export async function auditableItemStreamGet(
 		request.pathParams.id,
 		{
 			includeEntries: request.query?.includeEntries,
-			includeDeleted: request.query?.includeDeleted
+			includeDeleted: request.query?.includeDeleted,
+			verifyStream: request.query?.verifyStream,
+			verifyEntries: request.query?.verifyEntries
 		},
 		mimeType
 	);
@@ -783,12 +785,18 @@ export async function auditableItemStreamCreateEntry(
 		nameof(request.pathParams),
 		request.pathParams
 	);
+	Guards.object<IAuditableItemStreamCreateEntryRequest["body"]>(
+		ROUTES_SOURCE,
+		nameof(request.body),
+		request.body
+	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
+	Guards.objectValue(ROUTES_SOURCE, nameof(request.body.object), request.body.object);
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const id = await component.createEntry(
 		request.pathParams.id,
-		request.body?.metadata,
+		request.body.object,
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);
@@ -852,14 +860,20 @@ export async function auditableItemStreamUpdateEntry(
 		nameof(request.pathParams),
 		request.pathParams
 	);
+	Guards.objectValue<IAuditableItemStreamUpdateEntryRequest["body"]>(
+		ROUTES_SOURCE,
+		nameof(request.body),
+		request.body
+	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.entryId), request.pathParams.entryId);
+	Guards.objectValue(ROUTES_SOURCE, nameof(request.body.object), request.body.object);
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	await component.updateEntry(
 		request.pathParams.id,
 		request.pathParams.entryId,
-		request.body?.metadata,
+		request.body.object,
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);
@@ -895,6 +909,9 @@ export async function auditableItemStreamGetEntry(
 	const result = await component.getEntry(
 		request.pathParams.id,
 		request.pathParams.entryId,
+		{
+			verifyEntry: request.query?.verifyEntry
+		},
 		mimeType
 	);
 
@@ -935,6 +952,7 @@ export async function auditableItemStreamListEntries(
 		{
 			conditions: convertConditionsQueryString(request.query?.conditions),
 			includeDeleted: request.query?.includeDeleted,
+			verifyEntries: request.query?.verifyEntries,
 			order: request.query?.order,
 			pageSize: request.query?.pageSize,
 			cursor: request.query?.cursor

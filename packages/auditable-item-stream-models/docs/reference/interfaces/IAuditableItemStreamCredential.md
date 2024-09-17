@@ -12,14 +12,6 @@ The timestamp of when the stream was created.
 
 ***
 
-### nodeIdentity
-
-> **nodeIdentity**: `string`
-
-The identity of the node which controls the stream.
-
-***
-
 ### userIdentity
 
 > **userIdentity**: `string`

@@ -19,22 +19,32 @@ export const AuditableItemStreamTypes = {
 	/**
 	 * Represents auditable item stream.
 	 */
-	Stream: "https://schema.gtsc.io/aig/AuditableItemStream",
+	Stream: "https://schema.gtsc.io/ais/AuditableItemStream",
 
 	/**
 	 * Represents auditable item stream credential.
 	 */
-	StreamCredential: "https://schema.gtsc.io/aig/AuditableItemStreamCredential",
+	StreamCredential: "https://schema.gtsc.io/ais/AuditableItemStreamCredential",
 
 	/**
 	 * Represents auditable item stream entry.
 	 */
-	StreamEntry: "https://schema.gtsc.io/aig/AuditableItemStreamEntry",
+	StreamEntry: "https://schema.gtsc.io/ais/AuditableItemStreamEntry",
 
 	/**
 	 * Represents auditable item stream entry credential.
 	 */
-	StreamEntryCredential: "https://schema.gtsc.io/aig/AuditableItemStreamEntryCredential"
+	StreamEntryCredential: "https://schema.gtsc.io/ais/AuditableItemStreamEntryCredential",
+
+	/**
+	 * Represents auditable item stream verification.
+	 */
+	Verification: "https://schema.gtsc.io/ais/AuditableItemStreamVerification",
+
+	/**
+	 * Represents auditable item stream verification state.
+	 */
+	VerificationState: "https://schema.gtsc.io/ais/AuditableItemStreamVerificationState"
 } as const;
 
 /**

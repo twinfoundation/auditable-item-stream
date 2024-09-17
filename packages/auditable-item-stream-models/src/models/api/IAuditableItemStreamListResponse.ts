@@ -12,23 +12,23 @@ export interface IAuditableItemStreamListResponse {
 	 * The headers which can be used to determine the response data type.
 	 */
 	headers?: {
-		// False positive
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
 		[HeaderTypes.ContentType]: typeof MimeTypes.Json | typeof MimeTypes.JsonLd;
 	};
 
 	/**
 	 * The response payload.
 	 */
-	body: {
-		/**
-		 * The entities, which can be partial if a limited keys list was provided.
-		 */
-		entities: (Partial<Omit<IAuditableItemStream, "entries">> | IJsonLdDocument)[];
+	body:
+		| IJsonLdDocument
+		| {
+				/**
+				 * The entities, which can be partial if a limited keys list was provided.
+				 */
+				entities: Partial<IAuditableItemStream>[];
 
-		/**
-		 * An optional cursor, when defined can be used to call find to get more entities.
-		 */
-		cursor?: string;
-	};
+				/**
+				 * An optional cursor, when defined can be used to call find to get more entities.
+				 */
+				cursor?: string;
+		  };
 }

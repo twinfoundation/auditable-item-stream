@@ -10,8 +10,6 @@ export interface IAuditableItemStreamGetEntryRequest {
 	 * The headers which can be used to determine the response data type.
 	 */
 	headers?: {
-		// False positive
-		// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
 		Accept: typeof MimeTypes.Json | typeof MimeTypes.JsonLd;
 	};
 
@@ -28,5 +26,15 @@ export interface IAuditableItemStreamGetEntryRequest {
 		 * The id of the entry to update.
 		 */
 		entryId: string;
+	};
+
+	/**
+	 * The query parameters.
+	 */
+	query?: {
+		/**
+		 * Verify the entry, defaults to false.
+		 */
+		verifyEntry?: boolean;
 	};
 }

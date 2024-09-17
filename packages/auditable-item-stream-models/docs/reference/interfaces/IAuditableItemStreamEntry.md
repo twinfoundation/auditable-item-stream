@@ -44,11 +44,11 @@ The identity of the user which added the entry to the stream.
 
 ***
 
-### metadata?
+### object
 
-> `optional` **metadata**: `IJsonLdNodeObject`
+> **object**: `IJsonLdNodeObject`
 
-The metadata to associate with the entry as JSON-LD.
+The object to associate with the entry as JSON-LD.
 
 ***
 

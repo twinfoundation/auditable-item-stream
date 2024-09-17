@@ -48,6 +48,12 @@ The conditions to filter the stream, consist of property|comparison|value comma 
 
 Whether to include deleted entries, defaults to false.
 
+#### verifyEntries?
+
+> `optional` **verifyEntries**: `boolean`
+
+Should the entries be verified, defaults to false.
+
 #### order?
 
 > `optional` **order**: `SortDirection`

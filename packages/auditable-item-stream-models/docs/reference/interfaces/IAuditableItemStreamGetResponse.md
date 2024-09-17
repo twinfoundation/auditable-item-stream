@@ -18,14 +18,6 @@ The headers which can be used to determine the response data type.
 
 ### body
 
-> **body**: IJsonLdDocument \| IAuditableItemStream & `object`
+> **body**: `IJsonLdDocument` \| [`IAuditableItemStream`](IAuditableItemStream.md) & `object`
 
 The response body, if accept header is set to application/ld+json the return object is JSON-LD document.
-
-#### Type declaration
-
-##### cursor?
-
-> `optional` **cursor**: `string`
-
-Cursor to retrieve the next chunk of data, can be used with the get entries method.

@@ -19,10 +19,10 @@ export interface IAuditableItemStreamCreateEntryRequest {
 	/**
 	 * The data to be used in the stream.
 	 */
-	body?: {
+	body: {
 		/**
-		 * The metadata to be used for the entry in the stream as JSON-LD.
+		 * The object to be used for the entry in the stream as JSON-LD.
 		 */
-		metadata?: IJsonLdNodeObject;
+		object: IJsonLdNodeObject;
 	};
 }

@@ -33,3 +33,17 @@ The id of the stream to update the get in.
 > **entryId**: `string`
 
 The id of the entry to update.
+
+***
+
+### query?
+
+> `optional` **query**: `object`
+
+The query parameters.
+
+#### verifyEntry?
+
+> `optional` **verifyEntry**: `boolean`
+
+Verify the entry, defaults to false.

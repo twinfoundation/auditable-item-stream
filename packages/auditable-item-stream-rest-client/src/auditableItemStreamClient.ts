@@ -7,6 +7,7 @@ import type {
 	IAuditableItemStreamComponent,
 	IAuditableItemStreamCreateEntryRequest,
 	IAuditableItemStreamCreateRequest,
+	IAuditableItemStreamDeleteEntryRequest,
 	IAuditableItemStreamEntry,
 	IAuditableItemStreamGetEntryRequest,
 	IAuditableItemStreamGetEntryResponse,
@@ -18,9 +19,10 @@ import type {
 	IAuditableItemStreamListResponse,
 	IAuditableItemStreamUpdateEntryRequest,
 	IAuditableItemStreamUpdateRequest,
+	IAuditableItemStreamVerification,
 	JsonReturnType
 } from "@gtsc/auditable-item-stream-models";
-import { Guards, Is } from "@gtsc/core";
+import { Guards, Is, NotSupportedError } from "@gtsc/core";
 import type { IJsonLdDocument, IJsonLdNodeObject } from "@gtsc/data-json-ld";
 import type { IComparator, SortDirection } from "@gtsc/entity";
 import { nameof } from "@gtsc/nameof";
@@ -58,7 +60,7 @@ export class AuditableItemStreamClient
 	public async create(
 		metadata?: IJsonLdNodeObject,
 		entries?: {
-			metadata?: IJsonLdNodeObject;
+			object: IJsonLdNodeObject;
 		}[],
 		options?: {
 			immutableInterval?: number;
@@ -85,6 +87,8 @@ export class AuditableItemStreamClient
 	 * @param options Additional options for the get operation.
 	 * @param options.includeEntries Whether to include the entries, defaults to false.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
+	 * @param options.verifyStream Should the stream be verified, defaults to false.
+	 * @param options.verifyEntries Should the entries be verified, defaults to false.
 	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found
@@ -94,12 +98,20 @@ export class AuditableItemStreamClient
 		options?: {
 			includeEntries?: boolean;
 			includeDeleted?: boolean;
+			verifyStream?: boolean;
+			verifyEntries?: boolean;
 		},
 		responseType?: T
 	): Promise<
-		JsonReturnType<T, IAuditableItemStream, IJsonLdDocument> & {
-			cursor?: string;
-		}
+		JsonReturnType<
+			T,
+			IAuditableItemStream & {
+				cursor?: string;
+				verification?: IAuditableItemStreamVerification;
+				entriesVerification?: IAuditableItemStreamVerification[];
+			},
+			IJsonLdDocument
+		>
 	> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
@@ -113,12 +125,23 @@ export class AuditableItemStreamClient
 			pathParams: {
 				id
 			},
-			query: options
+			query: {
+				includeEntries: options?.includeEntries,
+				includeDeleted: options?.includeDeleted,
+				verifyStream: options?.verifyStream,
+				verifyEntries: options?.verifyEntries
+			}
 		});
 
-		return response.body as JsonReturnType<T, IAuditableItemStream, IJsonLdDocument> & {
-			cursor?: string;
-		};
+		return response.body as JsonReturnType<
+			T,
+			IAuditableItemStream & {
+				cursor?: string;
+				verification?: IAuditableItemStreamVerification;
+				entriesVerification?: IAuditableItemStreamVerification[];
+			},
+			IJsonLdDocument
+		>;
 	}
 
 	/**
@@ -159,20 +182,16 @@ export class AuditableItemStreamClient
 		cursor?: string,
 		pageSize?: number,
 		responseType?: T
-	): Promise<{
-		/**
-		 * The entities, which can be partial if a limited keys list was provided.
-		 */
-		entities: JsonReturnType<
+	): Promise<
+		JsonReturnType<
 			T,
-			Partial<Omit<IAuditableItemStream, "entries">>[],
-			IJsonLdDocument[]
-		>;
-		/**
-		 * An optional cursor, when defined can be used to call find to get more entities.
-		 */
-		cursor?: string;
-	}> {
+			{
+				entities: Partial<IAuditableItemStream>[];
+				cursor?: string;
+			},
+			IJsonLdDocument
+		>
+	> {
 		const response = await this.fetch<
 			IAuditableItemStreamListRequest,
 			IAuditableItemStreamListResponse
@@ -190,29 +209,23 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body as {
-			/**
-			 * The entities, which can be partial if a limited keys list was provided.
-			 */
-			entities: JsonReturnType<
-				T,
-				Partial<Omit<IAuditableItemStream, "entries">>[],
-				IJsonLdDocument[]
-			>;
-			/**
-			 * An optional cursor, when defined can be used to call find to get more entities.
-			 */
-			cursor?: string;
-		};
+		return response.body as JsonReturnType<
+			T,
+			{
+				entities: Partial<IAuditableItemStream>[];
+				cursor?: string;
+			},
+			IJsonLdDocument
+		>;
 	}
 
 	/**
 	 * Create an entry in the stream.
 	 * @param id The id of the stream to update.
-	 * @param entryMetadata The metadata for the stream as JSON-LD.
+	 * @param object The metadata for the stream as JSON-LD.
 	 * @returns The id of the created entry, if not provided.
 	 */
-	public async createEntry(id: string, entryMetadata?: IJsonLdNodeObject): Promise<string> {
+	public async createEntry(id: string, object: IJsonLdNodeObject): Promise<string> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<IAuditableItemStreamCreateEntryRequest, ICreatedResponse>(
@@ -223,7 +236,7 @@ export class AuditableItemStreamClient
 					id
 				},
 				body: {
-					metadata: entryMetadata
+					object
 				}
 			}
 		);
@@ -235,6 +248,8 @@ export class AuditableItemStreamClient
 	 * Get the entry from the stream.
 	 * @param id The id of the stream to get.
 	 * @param entryId The id of the stream entry to get.
+	 * @param options Additional options for the get operation.
+	 * @param options.verifyEntry Should the entry be verified, defaults to false.
 	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
@@ -242,8 +257,19 @@ export class AuditableItemStreamClient
 	public async getEntry<T extends "json" | "jsonld" = "json">(
 		id: string,
 		entryId: string,
+		options?: {
+			verifyEntry?: boolean;
+		},
 		responseType?: T
-	): Promise<JsonReturnType<T, IAuditableItemStreamEntry, IJsonLdDocument>> {
+	): Promise<
+		JsonReturnType<
+			T,
+			IAuditableItemStreamEntry & {
+				verification?: IAuditableItemStreamVerification;
+			},
+			IJsonLdDocument
+		>
+	> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
@@ -254,26 +280,35 @@ export class AuditableItemStreamClient
 			headers: {
 				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},
+			query: {
+				verifyEntry: options?.verifyEntry
+			},
 			pathParams: {
 				id,
 				entryId
 			}
 		});
 
-		return response.body as JsonReturnType<T, IAuditableItemStreamEntry, IJsonLdDocument>;
+		return response.body as JsonReturnType<
+			T,
+			IAuditableItemStreamEntry & {
+				verification?: IAuditableItemStreamVerification;
+			},
+			IJsonLdDocument
+		>;
 	}
 
 	/**
 	 * Update an entry in the stream.
 	 * @param id The id of the stream to update.
 	 * @param entryId The id of the entry to update.
-	 * @param entryMetadata The metadata for the entry as JSON-LD.
+	 * @param entryObject The object for the entry as JSON-LD.
 	 * @returns Nothing.
 	 */
 	public async updateEntry(
 		id: string,
 		entryId: string,
-		entryMetadata?: IJsonLdNodeObject
+		entryObject: IJsonLdNodeObject
 	): Promise<void> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
@@ -287,7 +322,7 @@ export class AuditableItemStreamClient
 					entryId
 				},
 				body: {
-					metadata: entryMetadata
+					object: entryObject
 				}
 			}
 		);
@@ -303,7 +338,7 @@ export class AuditableItemStreamClient
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
-		await this.fetch<IAuditableItemStreamUpdateEntryRequest, INoContentResponse>(
+		await this.fetch<IAuditableItemStreamDeleteEntryRequest, INoContentResponse>(
 			"/:id/:entryId",
 			"DELETE",
 			{
@@ -321,6 +356,7 @@ export class AuditableItemStreamClient
 	 * @param options Additional options for the get operation.
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
+	 * @param options.verifyEntries Should the entries be verified, defaults to false.
 	 * @param options.pageSize How many entries to return.
 	 * @param options.cursor Cursor to use for next chunk of data.
 	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
@@ -333,15 +369,23 @@ export class AuditableItemStreamClient
 		options?: {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
+			verifyEntries?: boolean;
 			pageSize?: number;
 			cursor?: string;
 			order?: SortDirection;
 		},
 		responseType?: T
-	): Promise<{
-		entries: JsonReturnType<T, IAuditableItemStreamEntry[], IJsonLdDocument[]>;
-		cursor?: string;
-	}> {
+	): Promise<
+		JsonReturnType<
+			T,
+			{
+				entries: IAuditableItemStreamEntry[];
+				cursor?: string;
+				verification?: IAuditableItemStreamVerification[];
+			},
+			IJsonLdDocument
+		>
+	> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<
@@ -357,16 +401,34 @@ export class AuditableItemStreamClient
 			query: {
 				conditions: this.convertConditionsQueryString(options?.conditions),
 				includeDeleted: options?.includeDeleted,
+				verifyEntries: options?.verifyEntries,
 				pageSize: options?.pageSize,
 				cursor: options?.cursor,
 				order: options?.order
 			}
 		});
 
-		return response.body as {
-			entries: JsonReturnType<T, IAuditableItemStreamEntry[], IJsonLdDocument[]>;
-			cursor?: string;
-		};
+		return response.body as JsonReturnType<
+			T,
+			{
+				entries: IAuditableItemStreamEntry[];
+				cursor?: string;
+				verification?: IAuditableItemStreamVerification[];
+			},
+			IJsonLdDocument
+		>;
+	}
+
+	/**
+	 * Remove the immutable storage for the stream and entries.
+	 * @param id The id of the stream to remove the storage from.
+	 * @param nodeIdentity The node identity to use for vault operations.
+	 * @returns Nothing.
+	 * @throws NotFoundError if the vertex is not found.
+	 * @internal
+	 */
+	public async removeImmutable(id: string, nodeIdentity?: string): Promise<void> {
+		throw new NotSupportedError(this.CLASS_NAME, "removeImmutable");
 	}
 
 	/**

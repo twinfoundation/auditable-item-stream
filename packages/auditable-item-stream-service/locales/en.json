@@ -10,6 +10,8 @@
 			"updatingEntryFailed": "Updating entry in the Auditable Item Stream failed",
 			"gettingEntryFailed": "Getting entry from the Auditable Item Stream failed",
 			"removingEntryFailed": "Removing entry from the Auditable Item Stream failed",
+			"gettingEntriesFailed": "Getting entries from the Auditable Item Stream failed",
+			"removeImmutableFailed": "Removing immutable entry from the Auditable Item Stream failed",
 			"streamNotFound": "The stream with the Id \"{notFoundId}\" was not found",
 			"streamEntryNotFound": "The stream entry with the Id \"{notFoundId}\" was not found"
 		}

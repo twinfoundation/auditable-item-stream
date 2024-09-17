@@ -7,6 +7,8 @@ import AuditableItemStreamSchema from "../schemas/AuditableItemStream.json";
 import AuditableItemStreamCredentialSchema from "../schemas/AuditableItemStreamCredential.json";
 import AuditableItemStreamEntrySchema from "../schemas/AuditableItemStreamEntry.json";
 import AuditableItemStreamEntryCredentialSchema from "../schemas/AuditableItemStreamEntryCredential.json";
+import AuditableItemStreamVerificationSchema from "../schemas/AuditableItemStreamVerification.json";
+import AuditableItemStreamVerificationStateSchema from "../schemas/AuditableItemStreamVerificationState.json";
 
 /**
  * Handle all the data types for auditable item stream.
@@ -35,6 +37,16 @@ export class AuditableItemStreamDataTypes {
 			type: AuditableItemStreamTypes.StreamEntryCredential,
 			defaultValue: {},
 			jsonSchema: async () => AuditableItemStreamEntryCredentialSchema as JSONSchema7
+		}));
+		DataTypeHandlerFactory.register(AuditableItemStreamTypes.Verification, () => ({
+			type: AuditableItemStreamTypes.Verification,
+			defaultValue: {},
+			jsonSchema: async () => AuditableItemStreamVerificationSchema as JSONSchema7
+		}));
+		DataTypeHandlerFactory.register(AuditableItemStreamTypes.VerificationState, () => ({
+			type: AuditableItemStreamTypes.VerificationState,
+			defaultValue: {},
+			jsonSchema: async () => AuditableItemStreamVerificationStateSchema as JSONSchema7
 		}));
 	}
 }

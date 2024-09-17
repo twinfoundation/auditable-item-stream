@@ -11,11 +11,6 @@ export interface IAuditableItemStreamEntryCredential {
 	created: number;
 
 	/**
-	 * The identity of the node which controls the stream.
-	 */
-	nodeIdentity: string;
-
-	/**
 	 * The identity of the user which added the entry to the stream.
 	 */
 	userIdentity: string;

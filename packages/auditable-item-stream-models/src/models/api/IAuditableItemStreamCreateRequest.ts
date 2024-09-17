@@ -19,8 +19,7 @@ export interface IAuditableItemStreamCreateRequest {
 		 * The entries for the stream.
 		 */
 		entries?: {
-			id?: string;
-			metadata?: IJsonLdNodeObject;
+			object: IJsonLdNodeObject;
 		}[];
 
 		/**

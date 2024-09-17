@@ -12,6 +12,7 @@
 		}
 	],
 	"externalReferences": {
-		"IJsonLd(.*)": "https://schema.gtsc.io/json-ld/JsonLd$1"
+		"IJsonLd(.*?)": "https://schema.gtsc.io/json-ld/JsonLd$1",
+		"I?AuditableItemStream(.*?)(?<!Request|Response)": "https://schema.gtsc.io/ais/AuditableItemStream$1"
 	}
 }

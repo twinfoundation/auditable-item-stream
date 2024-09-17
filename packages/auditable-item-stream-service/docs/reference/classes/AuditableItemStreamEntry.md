@@ -62,11 +62,11 @@ The identity of the user that added the entry.
 
 ***
 
-### metadata?
+### object
 
-> `optional` **metadata**: `IJsonLdNodeObject`
+> **object**: `IJsonLdNodeObject`
 
-Metadata to associate with the entry as JSON-LD.
+Object to associate with the entry as JSON-LD.
 
 ***
 

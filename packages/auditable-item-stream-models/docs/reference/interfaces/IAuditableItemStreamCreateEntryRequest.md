@@ -18,14 +18,14 @@ The id of the stream to create the entry in.
 
 ***
 
-### body?
+### body
 
-> `optional` **body**: `object`
+> **body**: `object`
 
 The data to be used in the stream.
 
-#### metadata?
+#### object
 
-> `optional` **metadata**: `IJsonLdNodeObject`
+> **object**: `IJsonLdNodeObject`
 
-The metadata to be used for the entry in the stream as JSON-LD.
+The object to be used for the entry in the stream as JSON-LD.

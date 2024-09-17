@@ -5,7 +5,9 @@
 		"IAuditableItemStream",
 		"IAuditableItemStreamCredential",
 		"IAuditableItemStreamEntry",
-		"IAuditableItemStreamEntryCredential"
+		"IAuditableItemStreamEntryCredential",
+		"IAuditableItemStreamVerification",
+		"AuditableItemStreamVerificationState"
 	],
 	"externalReferences": {
 		"IJsonLd(.*)": "https://schema.gtsc.io/json-ld/JsonLd$1"

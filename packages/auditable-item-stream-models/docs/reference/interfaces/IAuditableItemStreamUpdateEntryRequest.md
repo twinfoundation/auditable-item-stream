@@ -24,14 +24,14 @@ The id of the entry to update.
 
 ***
 
-### body?
+### body
 
-> `optional` **body**: `object`
+> **body**: `object`
 
 The data to be used in the entry.
 
-#### metadata?
+#### object
 
-> `optional` **metadata**: `IJsonLdNodeObject`
+> **object**: `IJsonLdNodeObject`
 
-The metadata to be used in the entry as JSON-LD.
+The object to be used in the entry as JSON-LD.

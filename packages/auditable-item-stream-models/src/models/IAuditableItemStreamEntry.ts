@@ -32,9 +32,9 @@ export interface IAuditableItemStreamEntry {
 	userIdentity?: string;
 
 	/**
-	 * The metadata to associate with the entry as JSON-LD.
+	 * The object to associate with the entry as JSON-LD.
 	 */
-	metadata?: IJsonLdNodeObject;
+	object: IJsonLdNodeObject;
 
 	/**
 	 * The index of the entry in the stream.
