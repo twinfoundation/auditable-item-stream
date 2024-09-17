@@ -391,7 +391,7 @@ export class AuditableItemStreamClient
 		const response = await this.fetch<
 			IAuditableItemStreamListEntriesRequest,
 			IAuditableItemStreamListEntriesResponse
-		>("/:id/:entryId", "GET", {
+		>("/:id/entries", "GET", {
 			headers: {
 				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},

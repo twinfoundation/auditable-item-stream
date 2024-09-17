@@ -531,7 +531,7 @@ export function generateRestRoutesAuditableItemStream(
 		summary: "Get the entries in a stream",
 		tag: tagsAuditableItemStream[0].name,
 		method: "GET",
-		path: `${baseRouteName}/:id`,
+		path: `${baseRouteName}/:id/entries`,
 		handler: async (httpRequestContext, request) =>
 			auditableItemStreamListEntries(httpRequestContext, componentName, request),
 		requestType: {
