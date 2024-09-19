@@ -1,16 +1,17 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Converter, RandomHelper } from "@gtsc/core";
-import { ComparisonOperator } from "@gtsc/entity";
-import { MemoryEntityStorageConnector } from "@gtsc/entity-storage-connector-memory";
-import { EntityStorageConnectorFactory } from "@gtsc/entity-storage-models";
+import { Converter, RandomHelper } from "@twin.org/core";
+import { JsonLdProcessor } from "@twin.org/data-json-ld";
+import { ComparisonOperator } from "@twin.org/entity";
+import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
+import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
 import {
 	EntityStorageImmutableStorageConnector,
 	type ImmutableItem,
 	initSchema as initSchemaImmutableStorage
-} from "@gtsc/immutable-storage-connector-entity-storage";
-import { ImmutableStorageConnectorFactory } from "@gtsc/immutable-storage-models";
-import { nameof } from "@gtsc/nameof";
+} from "@twin.org/immutable-storage-connector-entity-storage";
+import { ImmutableStorageConnectorFactory } from "@twin.org/immutable-storage-models";
+import { nameof } from "@twin.org/nameof";
 import {
 	decodeJwtToIntegrity,
 	setupTestEnv,
@@ -37,6 +38,12 @@ describe("AuditableItemStreamService", () => {
 
 		initSchema();
 		initSchemaImmutableStorage();
+
+		// TODO: Remove this when the schema url is updated
+		JsonLdProcessor.addRedirect(
+			/https:\/\/schema.twindev.org\/ais\//,
+			"https://schema.gtsc.io/ais/types.jsonld"
+		);
 	});
 
 	beforeEach(async () => {
@@ -471,7 +478,7 @@ describe("AuditableItemStreamService", () => {
 		);
 
 		expect(result).toEqual({
-			"@context": "https://schema.gtsc.io/ais/",
+			"@context": "https://schema.twindev.org/ais/",
 			"@type": "stream",
 			entries: [
 				{
@@ -967,7 +974,7 @@ describe("AuditableItemStreamService", () => {
 		);
 
 		expect(entry).toEqual({
-			"@context": "https://schema.gtsc.io/ais/",
+			"@context": "https://schema.twindev.org/ais/",
 			"@type": "entry",
 			id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
 			created: "2024-08-22T11:55:16.271Z",
@@ -1200,7 +1207,7 @@ describe("AuditableItemStreamService", () => {
 		const entries = await service.getEntries(streamId, { verifyEntries: true }, "jsonld");
 
 		expect(entries).toEqual({
-			"@context": "https://schema.gtsc.io/ais/",
+			"@context": "https://schema.twindev.org/ais/",
 			"@graph": [
 				{
 					"@type": "entry",

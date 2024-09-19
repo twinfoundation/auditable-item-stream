@@ -7,7 +7,7 @@ import type {
 	INotFoundResponse,
 	IRestRoute,
 	ITag
-} from "@gtsc/api-models";
+} from "@twin.org/api-models";
 import type {
 	IAuditableItemStream,
 	IAuditableItemStreamComponent,
@@ -24,11 +24,11 @@ import type {
 	IAuditableItemStreamListResponse,
 	IAuditableItemStreamUpdateEntryRequest,
 	IAuditableItemStreamUpdateRequest
-} from "@gtsc/auditable-item-stream-models";
-import { ComponentFactory, Guards } from "@gtsc/core";
-import type { ComparisonOperator, IComparator } from "@gtsc/entity";
-import { nameof } from "@gtsc/nameof";
-import { HeaderTypes, HttpStatusCode, MimeTypes } from "@gtsc/web";
+} from "@twin.org/auditable-item-stream-models";
+import { ComponentFactory, Guards } from "@twin.org/core";
+import type { ComparisonOperator, IComparator } from "@twin.org/entity";
+import { nameof } from "@twin.org/nameof";
+import { HeaderTypes, HttpStatusCode, MimeTypes } from "@twin.org/web";
 
 /**
  * The source used when communicating about these routes.
@@ -177,7 +177,7 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.gtsc.io/ais/",
+								"@context": "https://schema.twindev.org/ais/",
 								"@type": "stream",
 								id: "ais:1234567890",
 								created: "2024-08-22T11:55:16.271Z",
@@ -302,7 +302,7 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.gtsc.io/ais/",
+								"@context": "https://schema.twindev.org/ais/",
 								"@graph": [
 									{
 										"@type": "entry",
@@ -502,7 +502,7 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.gtsc.io/ais/",
+								"@context": "https://schema.twindev.org/ais/",
 								"@type": "entry",
 								created: "2024-08-22T11:55:16.271Z",
 								id: "tst:1234567890",
@@ -583,7 +583,7 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.gtsc.io/ais/",
+								"@context": "https://schema.twindev.org/ais/",
 								"@graph": [
 									{
 										"@type": "entry",

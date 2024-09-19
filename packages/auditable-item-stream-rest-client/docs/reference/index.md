@@ -1,4 +1,4 @@
-# @gtsc/auditable-item-stream-rest-client
+# @twin.org/auditable-item-stream-rest-client
 
 ## Classes
 

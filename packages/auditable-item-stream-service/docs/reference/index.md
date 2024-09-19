@@ -1,4 +1,4 @@
-# @gtsc/auditable-item-stream-service
+# @twin.org/auditable-item-stream-service
 
 ## Classes
 

@@ -1,6 +1,6 @@
-# GTSC Auditable Item Stream
+# TWIN Auditable Item Stream
 
-This mono-repository contains the packages to use with auditable item stream in GTSC applications.
+This mono-repository contains the packages to use with auditable item stream in TWIN applications.
 
 ## Packages
 

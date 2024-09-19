@@ -1,4 +1,4 @@
-# Type alias: AuditableItemStreamVerificationState
+# Type Alias: AuditableItemStreamVerificationState
 
 > **AuditableItemStreamVerificationState**: *typeof* [`AuditableItemStreamVerificationState`](../variables/AuditableItemStreamVerificationState.md)\[keyof *typeof* [`AuditableItemStreamVerificationState`](../variables/AuditableItemStreamVerificationState.md)\]
 
