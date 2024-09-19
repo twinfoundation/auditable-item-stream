@@ -1,4 +1,4 @@
-# Type alias: AuditableItemStreamTypes
+# Type Alias: AuditableItemStreamTypes
 
 > **AuditableItemStreamTypes**: *typeof* [`AuditableItemStreamTypes`](../variables/AuditableItemStreamTypes.md)\[keyof *typeof* [`AuditableItemStreamTypes`](../variables/AuditableItemStreamTypes.md)\]
 

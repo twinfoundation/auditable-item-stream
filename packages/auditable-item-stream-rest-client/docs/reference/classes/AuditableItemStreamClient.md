@@ -89,7 +89,7 @@ The id of the new stream item.
 
 Get a stream header without the entries.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -129,13 +129,13 @@ The response type to return, defaults to application/json.
 
 The stream and entries if found.
 
-#### Implementation of
-
-`IAuditableItemStreamComponent.get`
-
 #### Throws
 
 NotFoundError if the stream is not found
+
+#### Implementation of
+
+`IAuditableItemStreamComponent.get`
 
 ***
 
@@ -173,7 +173,7 @@ Nothing.
 
 Query all the streams, will not return entries.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -253,7 +253,7 @@ The id of the created entry, if not provided.
 
 Get the entry from the stream.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -285,13 +285,13 @@ The response type to return, defaults to application/json.
 
 The stream and entries if found.
 
-#### Implementation of
-
-`IAuditableItemStreamComponent.getEntry`
-
 #### Throws
 
 NotFoundError if the stream is not found.
+
+#### Implementation of
+
+`IAuditableItemStreamComponent.getEntry`
 
 ***
 
@@ -361,7 +361,7 @@ Nothing.
 
 Get the entries for the stream.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -409,10 +409,10 @@ The response type to return, defaults to application/json.
 
 The stream and entries if found.
 
-#### Implementation of
-
-`IAuditableItemStreamComponent.getEntries`
-
 #### Throws
 
 NotFoundError if the stream is not found.
+
+#### Implementation of
+
+`IAuditableItemStreamComponent.getEntries`

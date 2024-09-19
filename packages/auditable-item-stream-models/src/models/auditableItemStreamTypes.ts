@@ -9,42 +9,42 @@ export const AuditableItemStreamTypes = {
 	/**
 	 * The context uri for the auditable item stream types.
 	 */
-	ContextUri: "https://schema.gtsc.io/ais/",
+	ContextUri: "https://schema.twindev.org/ais/",
 
 	/**
 	 * The context root for the auditable item stream types.
 	 */
-	ContextJsonld: "https://schema.gtsc.io/ais/types.jsonld",
+	ContextJsonld: "https://schema.twindev.org/ais/types.jsonld",
 
 	/**
 	 * Represents auditable item stream.
 	 */
-	Stream: "https://schema.gtsc.io/ais/AuditableItemStream",
+	Stream: "https://schema.twindev.org/ais/AuditableItemStream",
 
 	/**
 	 * Represents auditable item stream credential.
 	 */
-	StreamCredential: "https://schema.gtsc.io/ais/AuditableItemStreamCredential",
+	StreamCredential: "https://schema.twindev.org/ais/AuditableItemStreamCredential",
 
 	/**
 	 * Represents auditable item stream entry.
 	 */
-	StreamEntry: "https://schema.gtsc.io/ais/AuditableItemStreamEntry",
+	StreamEntry: "https://schema.twindev.org/ais/AuditableItemStreamEntry",
 
 	/**
 	 * Represents auditable item stream entry credential.
 	 */
-	StreamEntryCredential: "https://schema.gtsc.io/ais/AuditableItemStreamEntryCredential",
+	StreamEntryCredential: "https://schema.twindev.org/ais/AuditableItemStreamEntryCredential",
 
 	/**
 	 * Represents auditable item stream verification.
 	 */
-	Verification: "https://schema.gtsc.io/ais/AuditableItemStreamVerification",
+	Verification: "https://schema.twindev.org/ais/AuditableItemStreamVerification",
 
 	/**
 	 * Represents auditable item stream verification state.
 	 */
-	VerificationState: "https://schema.gtsc.io/ais/AuditableItemStreamVerificationState"
+	VerificationState: "https://schema.twindev.org/ais/AuditableItemStreamVerificationState"
 } as const;
 
 /**

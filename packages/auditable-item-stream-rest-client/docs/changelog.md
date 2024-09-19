@@ -1,5 +1,5 @@
-# @gtsc/auditable-item-stream-rest-client - Changelog
+# @twin.org/auditable-item-stream-rest-client - Changelog
 
-## v0.0.3
+## v0.0.1-next.3
 
 - Initial Release

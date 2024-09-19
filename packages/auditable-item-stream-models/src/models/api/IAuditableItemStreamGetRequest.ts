@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { MimeTypes } from "@gtsc/web";
+import type { MimeTypes } from "@twin.org/web";
 
 /**
  * Get an auditable item stream.

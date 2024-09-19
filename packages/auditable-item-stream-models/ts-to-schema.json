@@ -1,5 +1,5 @@
 {
-	"baseUrl": "https://schema.gtsc.io/ais/",
+	"baseUrl": "https://schema.twindev.org/ais/",
 	"sources": ["./src/models/**/*.ts"],
 	"types": [
 		"IAuditableItemStream",
@@ -10,6 +10,6 @@
 		"AuditableItemStreamVerificationState"
 	],
 	"externalReferences": {
-		"IJsonLd(.*)": "https://schema.gtsc.io/json-ld/JsonLd$1"
+		"IJsonLd(.*)": "https://schema.twindev.org/json-ld/JsonLd$1"
 	}
 }

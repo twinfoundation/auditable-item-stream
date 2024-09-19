@@ -10,7 +10,7 @@ import {
 	type IAuditableItemStreamEntry,
 	type IAuditableItemStreamEntryCredential,
 	type JsonReturnType
-} from "@gtsc/auditable-item-stream-models";
+} from "@twin.org/auditable-item-stream-models";
 import {
 	Coerce,
 	Converter,
@@ -24,32 +24,32 @@ import {
 	Urn,
 	Validation,
 	type IValidationFailure
-} from "@gtsc/core";
-import { Blake2b } from "@gtsc/crypto";
+} from "@twin.org/core";
+import { Blake2b } from "@twin.org/crypto";
 import {
 	JsonLdHelper,
 	JsonLdProcessor,
 	type IJsonLdDocument,
 	type IJsonLdNodeObject
-} from "@gtsc/data-json-ld";
+} from "@twin.org/data-json-ld";
 import {
 	ComparisonOperator,
 	LogicalOperator,
 	SortDirection,
 	type IComparator,
 	type IComparatorGroup
-} from "@gtsc/entity";
+} from "@twin.org/entity";
 import {
 	EntityStorageConnectorFactory,
 	type IEntityStorageConnector
-} from "@gtsc/entity-storage-models";
-import { IdentityConnectorFactory, type IIdentityConnector } from "@gtsc/identity-models";
+} from "@twin.org/entity-storage-models";
+import { IdentityConnectorFactory, type IIdentityConnector } from "@twin.org/identity-models";
 import {
 	ImmutableStorageConnectorFactory,
 	type IImmutableStorageConnector
-} from "@gtsc/immutable-storage-models";
-import { nameof } from "@gtsc/nameof";
-import { VaultConnectorFactory, type IVaultConnector } from "@gtsc/vault-models";
+} from "@twin.org/immutable-storage-models";
+import { nameof } from "@twin.org/nameof";
+import { VaultConnectorFactory, type IVaultConnector } from "@twin.org/vault-models";
 import type { AuditableItemStream } from "./entities/auditableItemStream";
 import type { AuditableItemStreamEntry } from "./entities/auditableItemStreamEntry";
 import type { IAuditableItemStreamServiceConfig } from "./models/IAuditableItemStreamServiceConfig";
@@ -1569,13 +1569,13 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 						verificationResult.verifiableCredential?.credentialSubject
 					)
 						? verificationResult.verifiableCredential?.credentialSubject[0]
-						: verificationResult.verifiableCredential?.credentialSubject ?? {
+						: (verificationResult.verifiableCredential?.credentialSubject ?? {
 								created: 0,
 								userIdentity: "",
 								signature: "",
 								hash: "",
 								index: -1
-							};
+							});
 
 					if (credentialData.hash !== streamOrEntry.hash) {
 						// Does the immutable hash match the local one we calculated

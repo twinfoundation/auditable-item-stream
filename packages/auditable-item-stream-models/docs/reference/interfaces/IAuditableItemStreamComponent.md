@@ -87,7 +87,7 @@ Nothing.
 
 Get a stream header without the entries.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -139,7 +139,7 @@ NotFoundError if the stream is not found.
 
 Query all the streams, will not return entries.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -219,7 +219,7 @@ The id of the created entry, if not provided.
 
 Get the entry from the stream.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
@@ -331,7 +331,7 @@ Nothing.
 
 Get the entries for the stream.
 
-#### Type parameters
+#### Type Parameters
 
 • **T** *extends* `"json"` \| `"jsonld"` = `"json"`
 
