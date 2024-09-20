@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Converter, RandomHelper } from "@twin.org/core";
-import { JsonLdProcessor } from "@twin.org/data-json-ld";
 import { ComparisonOperator } from "@twin.org/entity";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
@@ -38,12 +37,6 @@ describe("AuditableItemStreamService", () => {
 
 		initSchema();
 		initSchemaImmutableStorage();
-
-		// TODO: Remove this when the schema url is updated
-		JsonLdProcessor.addRedirect(
-			/https:\/\/schema.twindev.org\/ais\//,
-			"https://schema.gtsc.io/ais/types.jsonld"
-		);
 	});
 
 	beforeEach(async () => {
