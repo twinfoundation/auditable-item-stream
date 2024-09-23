@@ -4,9 +4,9 @@ import type { SortDirection } from "@twin.org/entity";
 import type { MimeTypes } from "@twin.org/web";
 
 /**
- * Get an auditable item stream entries.
+ * Get an auditable item stream entry objects.
  */
-export interface IAuditableItemStreamListEntriesRequest {
+export interface IAuditableItemStreamListEntryObjectsRequest {
 	/**
 	 * The headers which can be used to determine the response data type.
 	 */
@@ -37,11 +37,6 @@ export interface IAuditableItemStreamListEntriesRequest {
 		 * Whether to include deleted entries, defaults to false.
 		 */
 		includeDeleted?: boolean;
-
-		/**
-		 * Should the entries be verified, defaults to false.
-		 */
-		verifyEntries?: boolean;
 
 		/**
 		 * Retrieve the entries in ascending/descending time order, defaults to Ascending.

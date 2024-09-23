@@ -1,6 +1,6 @@
-# Interface: IAuditableItemStreamListEntriesRequest
+# Interface: IAuditableItemStreamListEntryObjectsRequest
 
-Get an auditable item stream entries.
+Get an auditable item stream entry objects.
 
 ## Properties
 
@@ -47,12 +47,6 @@ The conditions to filter the stream, consist of property|comparison|value comma 
 > `optional` **includeDeleted**: `boolean`
 
 Whether to include deleted entries, defaults to false.
-
-#### verifyEntries?
-
-> `optional` **verifyEntries**: `boolean`
-
-Should the entries be verified, defaults to false.
 
 #### order?
 

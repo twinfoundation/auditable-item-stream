@@ -138,14 +138,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -190,7 +190,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0303030303030303030303030303030303030303030303030303030303030303",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: FIRST_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
@@ -207,7 +207,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: FIRST_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 2"
@@ -261,14 +261,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -307,7 +307,7 @@ describe("AuditableItemStreamService", () => {
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
 					created: FIRST_TICK,
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
@@ -323,7 +323,7 @@ describe("AuditableItemStreamService", () => {
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 					created: FIRST_TICK,
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -335,7 +335,7 @@ describe("AuditableItemStreamService", () => {
 						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
 				}
 			],
-			verification: { state: "ok" },
+			streamVerification: { state: "ok" },
 			entriesVerification: [
 				{ state: "ok", id: "0303030303030303030303030303030303030303030303030303030303030303" },
 				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
@@ -353,14 +353,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -399,7 +399,7 @@ describe("AuditableItemStreamService", () => {
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
 					created: FIRST_TICK,
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
@@ -415,7 +415,7 @@ describe("AuditableItemStreamService", () => {
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 					created: FIRST_TICK,
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -427,7 +427,7 @@ describe("AuditableItemStreamService", () => {
 						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
 				}
 			],
-			verification: { state: "ok" },
+			streamVerification: { state: "ok" },
 			entriesVerification: [
 				{ state: "ok", id: "0303030303030303030303030303030303030303030303030303030303030303" },
 				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
@@ -445,14 +445,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -471,61 +471,57 @@ describe("AuditableItemStreamService", () => {
 		);
 
 		expect(result).toEqual({
-			"@context": "https://schema.twindev.org/ais/",
-			"@type": "stream",
+			"@context": [
+				"https://schema.twindev.org/ais/",
+				"https://schema.org/",
+				"https://www.w3.org/ns/activitystreams"
+			],
+			id: "0101010101010101010101010101010101010101010101010101010101010101",
+			type: "Stream",
+			dateCreated: "2024-08-22T11:55:16.271Z",
+			dateModified: "2024-08-22T11:55:16.271Z",
 			entries: [
 				{
-					"@type": "entry",
-					created: "2024-08-22T11:55:16.271Z",
-					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
+					type: "Entry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					entryObject: { type: "Note", content: "This is an entry note 1" },
+					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
 					immutableStorageId:
 						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
-					object: {
-						"@type": "https://www.w3.org/ns/activitystreams#Note",
-						"https://www.w3.org/ns/activitystreams#content": "This is an entry note 1"
-					},
 					index: 0,
 					signature:
 						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
 					userIdentity: TEST_USER_IDENTITY
 				},
 				{
-					"@type": "entry",
-					created: "2024-08-22T11:55:16.271Z",
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					object: {
-						"@type": "https://www.w3.org/ns/activitystreams#Note",
-						"https://www.w3.org/ns/activitystreams#content": "This is an entry note 2"
-					},
+					type: "Entry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					entryObject: { type: "Note", content: "This is an entry note 2" },
+					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
 					index: 1,
 					signature:
 						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ==",
 					userIdentity: TEST_USER_IDENTITY
 				}
 			],
-			created: "2024-08-22T11:55:16.271Z",
-			id: "0101010101010101010101010101010101010101010101010101010101010101",
-			metadata: {
-				"@type": "https://www.w3.org/ns/activitystreams#Note",
-				"https://www.w3.org/ns/activitystreams#content": "This is a simple note"
-			},
-			nodeIdentity: TEST_NODE_IDENTITY,
-			updated: "2024-08-22T11:55:16.271Z",
-			verification: { "@type": "verification", state: "ok" },
 			entriesVerification: [
 				{
-					"@type": "verification",
-					state: "ok",
-					id: "0303030303030303030303030303030303030303030303030303030303030303"
+					id: "0303030303030303030303030303030303030303030303030303030303030303",
+					type: "Verification",
+					state: "ok"
 				},
 				{
-					"@type": "verification",
-					state: "ok",
-					id: "0505050505050505050505050505050505050505050505050505050505050505"
+					id: "0505050505050505050505050505050505050505050505050505050505050505",
+					type: "Verification",
+					state: "ok"
 				}
-			]
+			],
+			metadata: { type: "Note", content: "This is a simple note" },
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
+			streamVerification: { type: "Verification", state: "ok" }
 		});
 	});
 
@@ -539,14 +535,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -601,7 +597,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0303030303030303030303030303030303030303030303030303030303030303",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: FIRST_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
@@ -618,7 +614,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: FIRST_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 2"
@@ -649,14 +645,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -711,7 +707,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0303030303030303030303030303030303030303030303030303030303030303",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: FIRST_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
@@ -728,7 +724,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: FIRST_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 2"
@@ -743,7 +739,7 @@ describe("AuditableItemStreamService", () => {
 				id: "0606060606060606060606060606060606060606060606060606060606060606",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				created: SECOND_TICK,
-				object: {
+				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 3"
@@ -774,14 +770,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -849,14 +845,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -881,7 +877,7 @@ describe("AuditableItemStreamService", () => {
 		expect(entry).toEqual({
 			id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
 			created: FIRST_TICK,
-			object: {
+			entryObject: {
 				"@context": "https://www.w3.org/ns/activitystreams",
 				"@type": "Note",
 				content: "This is an entry note 1"
@@ -893,7 +889,7 @@ describe("AuditableItemStreamService", () => {
 				"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
 			immutableStorageId:
 				"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
-			verification: {
+			entryVerification: {
 				state: "ok",
 				id: "0303030303030303030303030303030303030303030303030303030303030303"
 			}
@@ -934,14 +930,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -967,26 +963,98 @@ describe("AuditableItemStreamService", () => {
 		);
 
 		expect(entry).toEqual({
-			"@context": "https://schema.twindev.org/ais/",
-			"@type": "entry",
+			"@context": [
+				"https://schema.twindev.org/ais/",
+				"https://schema.org/",
+				"https://www.w3.org/ns/activitystreams"
+			],
 			id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-			created: "2024-08-22T11:55:16.271Z",
-			userIdentity: TEST_USER_IDENTITY,
-			object: {
-				"@type": "https://www.w3.org/ns/activitystreams#Note",
-				"https://www.w3.org/ns/activitystreams#content": "This is an entry note 1"
+			type: "Entry",
+			dateCreated: "2024-08-22T11:55:16.271Z",
+			entryVerification: {
+				id: "0303030303030303030303030303030303030303030303030303030303030303",
+				type: "Verification",
+				state: "ok"
 			},
-			index: 0,
+			entryObject: {
+				type: "Note",
+				content: "This is an entry note 1"
+			},
 			hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
-			signature:
-				"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
 			immutableStorageId:
 				"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
-			verification: {
-				"@type": "verification",
-				state: "ok",
-				id: "0303030303030303030303030303030303030303030303030303030303030303"
+			index: 0,
+			signature:
+				"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
+			userIdentity: TEST_USER_IDENTITY
+		});
+
+		const streamStore = streamStorage.getStore();
+
+		expect(streamStore).toEqual([
+			{
+				id: "0101010101010101010101010101010101010101010101010101010101010101",
+				created: FIRST_TICK,
+				updated: FIRST_TICK,
+				nodeIdentity: TEST_NODE_IDENTITY,
+				userIdentity: TEST_USER_IDENTITY,
+				metadata: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
+				},
+				immutableInterval: 10,
+				indexCounter: 2,
+				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				signature:
+					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+				immutableStorageId:
+					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
+		]);
+	});
+
+	test("Can get an entry object from the stream", async () => {
+		const service = new AuditableItemStreamService();
+		const streamId = await service.create(
+			{
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
+				content: "This is a simple note"
+			},
+			[
+				{
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 1"
+					}
+				},
+				{
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 2"
+					}
+				}
+			],
+			undefined,
+			TEST_USER_IDENTITY,
+			TEST_NODE_IDENTITY
+		);
+
+		const stream = await service.get(streamId, {
+			includeEntries: true,
+			verifyStream: true,
+			verifyEntries: true
+		});
+
+		const entry = await service.getEntryObject(streamId, stream.entries?.[0].id ?? "");
+
+		expect(entry).toEqual({
+			"@context": "https://www.w3.org/ns/activitystreams",
+			type: "Note",
+			content: "This is an entry note 1"
 		});
 
 		const streamStore = streamStorage.getStore();
@@ -1024,14 +1092,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -1103,14 +1171,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -1131,7 +1199,7 @@ describe("AuditableItemStreamService", () => {
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
 					created: FIRST_TICK,
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
@@ -1147,7 +1215,7 @@ describe("AuditableItemStreamService", () => {
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 					created: FIRST_TICK,
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -1176,14 +1244,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -1200,49 +1268,95 @@ describe("AuditableItemStreamService", () => {
 		const entries = await service.getEntries(streamId, { verifyEntries: true }, "jsonld");
 
 		expect(entries).toEqual({
-			"@context": "https://schema.twindev.org/ais/",
+			"@context": [
+				"https://schema.twindev.org/ais/",
+				"https://schema.org/",
+				"https://www.w3.org/ns/activitystreams"
+			],
 			"@graph": [
 				{
-					"@type": "entry",
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-					created: "2024-08-22T11:55:16.271Z",
-					userIdentity: TEST_USER_IDENTITY,
-					object: {
-						"@type": "https://www.w3.org/ns/activitystreams#Note",
-						"https://www.w3.org/ns/activitystreams#content": "This is an entry note 1"
-					},
-					index: 0,
+					type: "Entry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					entryObject: { type: "Note", content: "This is an entry note 1" },
 					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+					immutableStorageId:
+						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
+					index: 0,
 					signature:
 						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-					immutableStorageId:
-						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
+					userIdentity: TEST_USER_IDENTITY
 				},
 				{
-					"@type": "entry",
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					created: "2024-08-22T11:55:16.271Z",
-					userIdentity: TEST_USER_IDENTITY,
-					object: {
-						"@type": "https://www.w3.org/ns/activitystreams#Note",
-						"https://www.w3.org/ns/activitystreams#content": "This is an entry note 2"
-					},
-					index: 1,
+					type: "Entry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					entryObject: { type: "Note", content: "This is an entry note 2" },
 					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
+					index: 1,
 					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
+						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ==",
+					userIdentity: TEST_USER_IDENTITY
 				}
 			],
 			entriesVerification: [
 				{
-					"@type": "verification",
-					state: "ok",
-					id: "0303030303030303030303030303030303030303030303030303030303030303"
+					id: "0303030303030303030303030303030303030303030303030303030303030303",
+					type: "Verification",
+					state: "ok"
 				},
 				{
-					"@type": "verification",
-					state: "ok",
-					id: "0505050505050505050505050505050505050505050505050505050505050505"
+					id: "0505050505050505050505050505050505050505050505050505050505050505",
+					type: "Verification",
+					state: "ok"
+				}
+			]
+		});
+	});
+
+	test("Can get entries sub object from a stream as JSON-LD", async () => {
+		const service = new AuditableItemStreamService();
+		const streamId = await service.create(
+			{
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
+				content: "This is a simple note"
+			},
+			[
+				{
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 1"
+					}
+				},
+				{
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 2"
+					}
+				}
+			],
+			undefined,
+			TEST_USER_IDENTITY,
+			TEST_NODE_IDENTITY
+		);
+
+		await service.get(streamId, { includeEntries: true });
+
+		const entries = await service.getEntryObjects(streamId);
+
+		expect(entries).toEqual({
+			"@context": "https://www.w3.org/ns/activitystreams",
+			"@graph": [
+				{
+					type: "Note",
+					content: "This is an entry note 1"
+				},
+				{
+					type: "Note",
+					content: "This is an entry note 2"
 				}
 			]
 		});
@@ -1258,14 +1372,14 @@ describe("AuditableItemStreamService", () => {
 			},
 			[
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					}
 				},
 				{
-					object: {
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -1285,12 +1399,12 @@ describe("AuditableItemStreamService", () => {
 				verifyEntries: true,
 				conditions: [
 					{
-						property: "object.@type",
+						property: "entryObject.@type",
 						comparison: ComparisonOperator.Equals,
 						value: "Note"
 					},
 					{
-						property: "object.content",
+						property: "entryObject.content",
 						comparison: ComparisonOperator.Equals,
 						value: "This is an entry note 2"
 					}
@@ -1303,8 +1417,8 @@ describe("AuditableItemStreamService", () => {
 			entries: [
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					created: FIRST_TICK,
-					object: {
+					created: 1724327716271,
+					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
@@ -1317,10 +1431,7 @@ describe("AuditableItemStreamService", () => {
 				}
 			],
 			entriesVerification: [
-				{
-					id: "0505050505050505050505050505050505050505050505050505050505050505",
-					state: "ok"
-				}
+				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
 			]
 		});
 	});

@@ -1,32 +1,35 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type {
-	ICreatedResponse,
-	IHttpRequestContext,
-	INoContentResponse,
-	INotFoundResponse,
-	IRestRoute,
-	ITag
+import {
+	HttpParameterHelper,
+	type ICreatedResponse,
+	type IHttpRequestContext,
+	type INoContentResponse,
+	type INotFoundResponse,
+	type IRestRoute,
+	type ITag
 } from "@twin.org/api-models";
 import type {
-	IAuditableItemStream,
 	IAuditableItemStreamComponent,
 	IAuditableItemStreamCreateEntryRequest,
 	IAuditableItemStreamCreateRequest,
 	IAuditableItemStreamDeleteEntryRequest,
+	IAuditableItemStreamGetEntryObjectRequest,
+	IAuditableItemStreamGetEntryObjectResponse,
 	IAuditableItemStreamGetEntryRequest,
 	IAuditableItemStreamGetEntryResponse,
 	IAuditableItemStreamGetRequest,
 	IAuditableItemStreamGetResponse,
 	IAuditableItemStreamListEntriesRequest,
 	IAuditableItemStreamListEntriesResponse,
+	IAuditableItemStreamListEntryObjectsRequest,
+	IAuditableItemStreamListEntryObjectsResponse,
 	IAuditableItemStreamListRequest,
 	IAuditableItemStreamListResponse,
 	IAuditableItemStreamUpdateEntryRequest,
 	IAuditableItemStreamUpdateRequest
 } from "@twin.org/auditable-item-stream-models";
 import { ComponentFactory, Guards } from "@twin.org/core";
-import type { ComparisonOperator, IComparator } from "@twin.org/entity";
 import { nameof } from "@twin.org/nameof";
 import { HeaderTypes, HttpStatusCode, MimeTypes } from "@twin.org/web";
 
@@ -77,7 +80,7 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							entries: [
 								{
-									object: {
+									entryObject: {
 										"@context": "http://schema.org/",
 										"@type": "Event",
 										startDate: "2011-04-09T20:00:00Z",
@@ -344,7 +347,7 @@ export function generateRestRoutesAuditableItemStream(
 							id: "ais:1234567890"
 						},
 						body: {
-							object: {
+							entryObject: {
 								"@context": "http://schema.org/",
 								"@type": "Event",
 								startDate: "2011-04-09T20:00:00Z",
@@ -460,7 +463,7 @@ export function generateRestRoutesAuditableItemStream(
 			type: nameof<IAuditableItemStreamGetEntryRequest>(),
 			examples: [
 				{
-					id: "auditableItemStreamGetRequestExample",
+					id: "auditableItemStreamGetEntryRequestExample",
 					request: {
 						pathParams: {
 							id: "ais:1234567890",
@@ -523,12 +526,60 @@ export function generateRestRoutesAuditableItemStream(
 		]
 	};
 
+	const getEntryObjectRoute: IRestRoute<
+		IAuditableItemStreamGetEntryObjectRequest,
+		IAuditableItemStreamGetEntryObjectResponse
+	> = {
+		operationId: "auditableItemStreamGetEntryObject",
+		summary: "Get a stream entry",
+		tag: tagsAuditableItemStream[0].name,
+		method: "GET",
+		path: `${baseRouteName}/:id/:entryId/object`,
+		handler: async (httpRequestContext, request) =>
+			auditableItemStreamGetEntryObject(httpRequestContext, componentName, request),
+		requestType: {
+			type: nameof<IAuditableItemStreamGetEntryRequest>(),
+			examples: [
+				{
+					id: "auditableItemStreamGetEntryObjectRequestExample",
+					request: {
+						pathParams: {
+							id: "ais:1234567890",
+							entryId: "ais:1234567890:01010101010"
+						}
+					}
+				}
+			]
+		},
+		responseType: [
+			{
+				type: nameof<IAuditableItemStreamGetEntryObjectResponse>(),
+				examples: [
+					{
+						id: "auditableItemStreamGetEntryObjectResponseExample",
+						response: {
+							body: {
+								"@context": "http://schema.org/",
+								"@type": "Event",
+								startDate: "2011-04-09T20:00:00Z",
+								description: "A description of the event"
+							}
+						}
+					}
+				]
+			},
+			{
+				type: nameof<INotFoundResponse>()
+			}
+		]
+	};
+
 	const listEntriesRoute: IRestRoute<
 		IAuditableItemStreamListEntriesRequest,
 		IAuditableItemStreamListEntriesResponse
 	> = {
 		operationId: "auditableItemStreamListEntries",
-		summary: "Get the entries in a stream",
+		summary: "Get the entry objects in a stream",
 		tag: tagsAuditableItemStream[0].name,
 		method: "GET",
 		path: `${baseRouteName}/:id/entries`,
@@ -538,7 +589,7 @@ export function generateRestRoutesAuditableItemStream(
 			type: nameof<IAuditableItemStreamListEntriesRequest>(),
 			examples: [
 				{
-					id: "IAuditableItemStreamListAllRequest",
+					id: "auditableItemStreamListEntriesRequestExample",
 					request: {
 						pathParams: {
 							id: "ais:1234567890"
@@ -607,6 +658,57 @@ export function generateRestRoutesAuditableItemStream(
 		]
 	};
 
+	const listEntryObjectsRoute: IRestRoute<
+		IAuditableItemStreamListEntryObjectsRequest,
+		IAuditableItemStreamListEntryObjectsResponse
+	> = {
+		operationId: "auditableItemStreamListEntryObjects",
+		summary: "Get the entry objects in a stream",
+		tag: tagsAuditableItemStream[0].name,
+		method: "GET",
+		path: `${baseRouteName}/:id/entries/objects`,
+		handler: async (httpRequestContext, request) =>
+			auditableItemStreamListEntryObjects(httpRequestContext, componentName, request),
+		requestType: {
+			type: nameof<IAuditableItemStreamListEntryObjectsRequest>(),
+			examples: [
+				{
+					id: "auditableItemStreamListEntryObjectsRequestExample",
+					request: {
+						pathParams: {
+							id: "ais:1234567890"
+						}
+					}
+				}
+			]
+		},
+		responseType: [
+			{
+				type: nameof<IAuditableItemStreamListEntryObjectsResponse>(),
+				examples: [
+					{
+						id: "auditableItemStreamListEntryObjectsResponseExample",
+						response: {
+							body: {
+								entries: [
+									{
+										"@context": "http://schema.org/",
+										"@type": "Event",
+										startDate: "2011-04-09T20:00:00Z",
+										description: "A description of the event"
+									}
+								]
+							}
+						}
+					}
+				]
+			},
+			{
+				type: nameof<INotFoundResponse>()
+			}
+		]
+	};
+
 	return [
 		createRoute,
 		getRoute,
@@ -614,9 +716,11 @@ export function generateRestRoutesAuditableItemStream(
 		listRoute,
 		createEntryRoute,
 		getEntryRoute,
+		getEntryObjectRoute,
 		deleteEntryRoute,
 		updateEntryRoute,
-		listEntriesRoute
+		listEntriesRoute,
+		listEntryObjectsRoute
 	];
 }
 
@@ -750,10 +854,10 @@ export async function auditableItemStreamList(
 	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.query(
-		convertConditionsQueryString(request.query?.conditions),
+		HttpParameterHelper.conditionsFromString(request.query?.conditions),
 		request.query?.orderBy,
 		request.query?.orderByDirection,
-		convertPropertiesQueryString(request.query?.properties),
+		HttpParameterHelper.arrayFromString(request.query?.properties),
 		request.query?.cursor,
 		request.query?.pageSize,
 		mimeType
@@ -791,12 +895,12 @@ export async function auditableItemStreamCreateEntry(
 		request.body
 	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
-	Guards.objectValue(ROUTES_SOURCE, nameof(request.body.object), request.body.object);
+	Guards.objectValue(ROUTES_SOURCE, nameof(request.body.entryObject), request.body.entryObject);
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const id = await component.createEntry(
 		request.pathParams.id,
-		request.body.object,
+		request.body.entryObject,
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);
@@ -924,6 +1028,40 @@ export async function auditableItemStreamGetEntry(
 }
 
 /**
+ * Get a stream entry object.
+ * @param httpRequestContext The request context for the API.
+ * @param componentName The name of the component to use in the routes.
+ * @param request The request.
+ * @returns The response object with additional http response properties.
+ */
+export async function auditableItemStreamGetEntryObject(
+	httpRequestContext: IHttpRequestContext,
+	componentName: string,
+	request: IAuditableItemStreamGetEntryObjectRequest
+): Promise<IAuditableItemStreamGetEntryObjectResponse> {
+	Guards.object<IAuditableItemStreamGetEntryObjectRequest>(ROUTES_SOURCE, nameof(request), request);
+	Guards.object<IAuditableItemStreamGetEntryObjectRequest["pathParams"]>(
+		ROUTES_SOURCE,
+		nameof(request.pathParams),
+		request.pathParams
+	);
+	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
+	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.entryId), request.pathParams.entryId);
+
+	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+
+	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
+	const result = await component.getEntryObject(request.pathParams.id, request.pathParams.entryId);
+
+	return {
+		headers: {
+			[HeaderTypes.ContentType]: mimeType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
+		},
+		body: result
+	};
+}
+
+/**
  * Query the stream.
  * @param httpRequestContext The request context for the API.
  * @param componentName The name of the component to use in the routes.
@@ -950,7 +1088,7 @@ export async function auditableItemStreamListEntries(
 	const result = await component.getEntries(
 		request.pathParams.id,
 		{
-			conditions: convertConditionsQueryString(request.query?.conditions),
+			conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
 			includeDeleted: request.query?.includeDeleted,
 			verifyEntries: request.query?.verifyEntries,
 			order: request.query?.order,
@@ -969,34 +1107,45 @@ export async function auditableItemStreamListEntries(
 }
 
 /**
- * Convert property names query to array.
- * @param properties The properties query string.
- * @returns The array of properties.
+ * Query the stream objects.
+ * @param httpRequestContext The request context for the API.
+ * @param componentName The name of the component to use in the routes.
+ * @param request The request.
+ * @returns The response object with additional http response properties.
  */
-function convertPropertiesQueryString(properties?: string): (keyof IAuditableItemStream)[] {
-	return properties?.split(",") as (keyof IAuditableItemStream)[];
-}
+export async function auditableItemStreamListEntryObjects(
+	httpRequestContext: IHttpRequestContext,
+	componentName: string,
+	request: IAuditableItemStreamListEntryObjectsRequest
+): Promise<IAuditableItemStreamListEntryObjectsResponse> {
+	Guards.object<IAuditableItemStreamListEntryObjectsRequest>(
+		ROUTES_SOURCE,
+		nameof(request),
+		request
+	);
+	Guards.object<IAuditableItemStreamListEntryObjectsRequest["pathParams"]>(
+		ROUTES_SOURCE,
+		nameof(request.pathParams),
+		request.pathParams
+	);
+	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 
-/**
- * Convert the conditions query string to a list of comparators.
- * @param conditions The conditions query string.
- * @returns The list of comparators.
- * @internal
- */
-function convertConditionsQueryString(conditions?: string): IComparator[] | undefined {
-	const conditionParts = conditions?.split(",") ?? [];
-	const conditionsList: IComparator[] = [];
+	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 
-	for (const conditionPart of conditionParts) {
-		const parts = conditionPart.split("|");
-		if (parts.length === 3) {
-			conditionsList.push({
-				property: parts[0],
-				comparison: parts[1] as ComparisonOperator,
-				value: parts[2]
-			});
-		}
-	}
+	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
 
-	return conditionsList.length === 0 ? undefined : conditionsList;
+	const result = await component.getEntryObjects(request.pathParams.id, {
+		conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
+		includeDeleted: request.query?.includeDeleted,
+		order: request.query?.order,
+		pageSize: request.query?.pageSize,
+		cursor: request.query?.cursor
+	});
+
+	return {
+		headers: {
+			[HeaderTypes.ContentType]: mimeType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
+		},
+		body: result
+	};
 }

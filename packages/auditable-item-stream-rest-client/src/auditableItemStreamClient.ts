@@ -1,10 +1,11 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { BaseRestClient } from "@twin.org/api-core";
-import type {
-	IBaseRestClientConfig,
-	ICreatedResponse,
-	INoContentResponse
+import {
+	HttpParameterHelper,
+	type IBaseRestClientConfig,
+	type ICreatedResponse,
+	type INoContentResponse
 } from "@twin.org/api-models";
 import type {
 	IAuditableItemStream,
@@ -13,12 +14,16 @@ import type {
 	IAuditableItemStreamCreateRequest,
 	IAuditableItemStreamDeleteEntryRequest,
 	IAuditableItemStreamEntry,
+	IAuditableItemStreamGetEntryObjectRequest,
+	IAuditableItemStreamGetEntryObjectResponse,
 	IAuditableItemStreamGetEntryRequest,
 	IAuditableItemStreamGetEntryResponse,
 	IAuditableItemStreamGetRequest,
 	IAuditableItemStreamGetResponse,
 	IAuditableItemStreamListEntriesRequest,
 	IAuditableItemStreamListEntriesResponse,
+	IAuditableItemStreamListEntryObjectsRequest,
+	IAuditableItemStreamListEntryObjectsResponse,
 	IAuditableItemStreamListRequest,
 	IAuditableItemStreamListResponse,
 	IAuditableItemStreamUpdateEntryRequest,
@@ -26,7 +31,7 @@ import type {
 	IAuditableItemStreamVerification,
 	JsonReturnType
 } from "@twin.org/auditable-item-stream-models";
-import { Guards, Is, NotSupportedError } from "@twin.org/core";
+import { Guards, NotSupportedError } from "@twin.org/core";
 import type { IJsonLdDocument, IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IComparator, SortDirection } from "@twin.org/entity";
 import { nameof } from "@twin.org/nameof";
@@ -64,7 +69,7 @@ export class AuditableItemStreamClient
 	public async create(
 		metadata?: IJsonLdNodeObject,
 		entries?: {
-			object: IJsonLdNodeObject;
+			entryObject: IJsonLdNodeObject;
 		}[],
 		options?: {
 			immutableInterval?: number;
@@ -204,10 +209,10 @@ export class AuditableItemStreamClient
 				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
 			},
 			query: {
-				conditions: this.convertConditionsQueryString(conditions),
+				conditions: HttpParameterHelper.conditionsToString(conditions),
 				orderBy,
 				orderByDirection,
-				properties: properties?.join(","),
+				properties: HttpParameterHelper.arrayToString(properties),
 				cursor,
 				pageSize
 			}
@@ -226,10 +231,10 @@ export class AuditableItemStreamClient
 	/**
 	 * Create an entry in the stream.
 	 * @param id The id of the stream to update.
-	 * @param object The metadata for the stream as JSON-LD.
+	 * @param entryObject The metadata for the stream as JSON-LD.
 	 * @returns The id of the created entry, if not provided.
 	 */
-	public async createEntry(id: string, object: IJsonLdNodeObject): Promise<string> {
+	public async createEntry(id: string, entryObject: IJsonLdNodeObject): Promise<string> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<IAuditableItemStreamCreateEntryRequest, ICreatedResponse>(
@@ -240,7 +245,7 @@ export class AuditableItemStreamClient
 					id
 				},
 				body: {
-					object
+					entryObject
 				}
 			}
 		);
@@ -300,6 +305,33 @@ export class AuditableItemStreamClient
 			},
 			IJsonLdDocument
 		>;
+	}
+
+	/**
+	 * Get the entry object from the stream.
+	 * @param id The id of the stream to get.
+	 * @param entryId The id of the stream entry to get.
+	 * @returns The stream and entries if found.
+	 * @throws NotFoundError if the stream is not found.
+	 */
+	public async getEntryObject(id: string, entryId: string): Promise<IJsonLdNodeObject> {
+		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
+
+		const response = await this.fetch<
+			IAuditableItemStreamGetEntryObjectRequest,
+			IAuditableItemStreamGetEntryObjectResponse
+		>("/:id/:entryId/object", "GET", {
+			headers: {
+				Accept: MimeTypes.JsonLd
+			},
+			pathParams: {
+				id,
+				entryId
+			}
+		});
+
+		return response.body;
 	}
 
 	/**
@@ -403,7 +435,7 @@ export class AuditableItemStreamClient
 				id
 			},
 			query: {
-				conditions: this.convertConditionsQueryString(options?.conditions),
+				conditions: HttpParameterHelper.conditionsToString(options?.conditions),
 				includeDeleted: options?.includeDeleted,
 				verifyEntries: options?.verifyEntries,
 				pageSize: options?.pageSize,
@@ -424,6 +456,52 @@ export class AuditableItemStreamClient
 	}
 
 	/**
+	 * Get the entry objects for the stream.
+	 * @param id The id of the stream to get.
+	 * @param options Additional options for the get operation.
+	 * @param options.conditions The conditions to filter the stream.
+	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
+	 * @param options.pageSize How many entries to return.
+	 * @param options.cursor Cursor to use for next chunk of data.
+	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
+	 * @returns The stream and entries if found.
+	 * @throws NotFoundError if the stream is not found.
+	 */
+	public async getEntryObjects(
+		id: string,
+		options?: {
+			conditions?: IComparator[];
+			includeDeleted?: boolean;
+			pageSize?: number;
+			cursor?: string;
+			order?: SortDirection;
+		}
+	): Promise<IJsonLdDocument> {
+		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+
+		const response = await this.fetch<
+			IAuditableItemStreamListEntryObjectsRequest,
+			IAuditableItemStreamListEntryObjectsResponse
+		>("/:id/entries/objects", "GET", {
+			headers: {
+				Accept: MimeTypes.JsonLd
+			},
+			pathParams: {
+				id
+			},
+			query: {
+				conditions: HttpParameterHelper.conditionsToString(options?.conditions),
+				includeDeleted: options?.includeDeleted,
+				pageSize: options?.pageSize,
+				cursor: options?.cursor,
+				order: options?.order
+			}
+		});
+
+		return response.body;
+	}
+
+	/**
 	 * Remove the immutable storage for the stream and entries.
 	 * @param id The id of the stream to remove the storage from.
 	 * @param nodeIdentity The node identity to use for vault operations.
@@ -433,23 +511,5 @@ export class AuditableItemStreamClient
 	 */
 	public async removeImmutable(id: string, nodeIdentity?: string): Promise<void> {
 		throw new NotSupportedError(this.CLASS_NAME, "removeImmutable");
-	}
-
-	/**
-	 * Convert the conditions query string to a list of comparators.
-	 * @param conditions The conditions query string.
-	 * @returns The list of comparators.
-	 * @internal
-	 */
-	private convertConditionsQueryString(conditions?: IComparator[]): string | undefined {
-		if (Is.arrayValue(conditions)) {
-			const conditionsList: string[] = [];
-			for (const conditionPart of conditions) {
-				conditionsList.push(
-					`${conditionPart.property}|${conditionPart.comparison}|${conditionPart.value}`
-				);
-			}
-			return conditionsList.join(",");
-		}
 	}
 }

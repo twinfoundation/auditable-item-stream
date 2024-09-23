@@ -21,7 +21,7 @@
 			"type": "string",
 			"description": "The identity of the user which added the entry to the stream."
 		},
-		"object": {
+		"entryObject": {
 			"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
 			"description": "The object to associate with the entry as JSON-LD."
 		},
@@ -45,7 +45,7 @@
 	"required": [
 		"id",
 		"created",
-		"object",
+		"entryObject",
 		"index",
 		"hash",
 		"signature"

@@ -30,7 +30,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	create(
 		metadata?: IJsonLdNodeObject,
 		entries?: {
-			object: IJsonLdNodeObject;
+			entryObject: IJsonLdNodeObject;
 		}[],
 		options?: {
 			immutableInterval?: number;
@@ -80,7 +80,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			T,
 			IAuditableItemStream & {
 				cursor?: string;
-				verification?: IAuditableItemStreamVerification;
+				streamVerification?: IAuditableItemStreamVerification;
 				entriesVerification?: IAuditableItemStreamVerification[];
 			},
 			IJsonLdDocument
@@ -120,14 +120,14 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	/**
 	 * Create an entry in the stream.
 	 * @param id The id of the stream to update.
-	 * @param object The object for the stream as JSON-LD.
+	 * @param entryObject The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the created entry, if not provided.
 	 */
 	createEntry(
 		id: string,
-		object: IJsonLdNodeObject,
+		entryObject: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<string>;
@@ -153,11 +153,20 @@ export interface IAuditableItemStreamComponent extends IComponent {
 		JsonReturnType<
 			T,
 			IAuditableItemStreamEntry & {
-				verification?: IAuditableItemStreamVerification;
+				entryVerification?: IAuditableItemStreamVerification;
 			},
 			IJsonLdDocument
 		>
 	>;
+
+	/**
+	 * Get the entry object from the stream.
+	 * @param id The id of the stream to get.
+	 * @param entryId The id of the stream entry to get.
+	 * @returns The stream and entries if found.
+	 * @throws NotFoundError if the stream is not found.
+	 */
+	getEntryObject(id: string, entryId: string): Promise<IJsonLdNodeObject>;
 
 	/**
 	 * Update an entry in the stream.
@@ -193,6 +202,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
 	 * @param options.verifyEntries Should the entries be verified, defaults to false.
+	 * @param options.entryObjects Return just the embedded entry objects, defaults to false.
 	 * @param options.pageSize How many entries to return.
 	 * @param options.cursor Cursor to use for next chunk of data.
 	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
@@ -206,6 +216,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
 			verifyEntries?: boolean;
+			entryObjects?: boolean;
 			pageSize?: number;
 			cursor?: string;
 			order?: SortDirection;
@@ -217,11 +228,34 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			{
 				entries: IAuditableItemStreamEntry[];
 				cursor?: string;
-				verification?: IAuditableItemStreamVerification[];
+				entriesVerification?: IAuditableItemStreamVerification[];
 			},
 			IJsonLdDocument
 		>
 	>;
+
+	/**
+	 * Get the entry objects for the stream.
+	 * @param id The id of the stream to get.
+	 * @param options Additional options for the get operation.
+	 * @param options.conditions The conditions to filter the stream.
+	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
+	 * @param options.pageSize How many entries to return.
+	 * @param options.cursor Cursor to use for next chunk of data.
+	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
+	 * @returns The stream and entries if found.
+	 * @throws NotFoundError if the stream is not found.
+	 */
+	getEntryObjects(
+		id: string,
+		options?: {
+			conditions?: IComparator[];
+			includeDeleted?: boolean;
+			pageSize?: number;
+			cursor?: string;
+			order?: SortDirection;
+		}
+	): Promise<IJsonLdDocument>;
 
 	/**
 	 * Remove the immutable storage for the stream and entries.

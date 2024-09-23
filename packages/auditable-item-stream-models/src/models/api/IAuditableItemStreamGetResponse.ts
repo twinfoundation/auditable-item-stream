@@ -30,7 +30,7 @@ export interface IAuditableItemStreamGetResponse {
 				/**
 				 * The verification of the stream.
 				 */
-				verification?: IAuditableItemStreamVerification;
+				streamVerification?: IAuditableItemStreamVerification;
 
 				/**
 				 * The verification of the stream entries.

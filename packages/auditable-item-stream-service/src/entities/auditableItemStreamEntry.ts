@@ -48,7 +48,7 @@ export class AuditableItemStreamEntry {
 	 * Object to associate with the entry as JSON-LD.
 	 */
 	@property({ type: "object", itemTypeRef: JsonLdTypes.NodeObject })
-	public object!: IJsonLdNodeObject;
+	public entryObject!: IJsonLdNodeObject;
 
 	/**
 	 * The index of the entry in the stream.

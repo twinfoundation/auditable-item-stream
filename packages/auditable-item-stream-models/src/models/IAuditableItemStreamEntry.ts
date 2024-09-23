@@ -34,7 +34,7 @@ export interface IAuditableItemStreamEntry {
 	/**
 	 * The object to associate with the entry as JSON-LD.
 	 */
-	object: IJsonLdNodeObject;
+	entryObject: IJsonLdNodeObject;
 
 	/**
 	 * The index of the entry in the stream.
