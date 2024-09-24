@@ -12,7 +12,7 @@
 		}
 	],
 	"externalReferences": {
-		"JsonLd(.*)": "https://schema.twindev.org/json-ld/JsonLd$1",
-		"AuditableItemStream(.*)": "https://schema.twindev.org/ais/AuditableItemStream$1"
+		"JsonLd(.*?)": "https://schema.twindev.org/json-ld/JsonLd$1",
+		"AuditableItemStream(.*?)": "https://schema.twindev.org/ais/AuditableItemStream$1"
 	}
 }

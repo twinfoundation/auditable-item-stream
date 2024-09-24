@@ -7,6 +7,7 @@ import type {
 } from "@twin.org/auditable-item-stream-models";
 import { Converter, Is, ObjectHelper, RandomHelper } from "@twin.org/core";
 import { Bip39 } from "@twin.org/crypto";
+import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
 import {
@@ -111,7 +112,7 @@ export async function decodeJwtToIntegrity(immutableStore: string): Promise<{
 		IJwtHeader,
 		IJwtPayload & {
 			vc: IDidVerifiableCredential<
-				IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential
+				(IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential) & IJsonLdNodeObject
 			>;
 		}
 	>(vcJwt);

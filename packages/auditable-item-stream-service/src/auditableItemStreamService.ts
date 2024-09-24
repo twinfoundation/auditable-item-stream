@@ -233,7 +233,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			streamModel.hash = Converter.bytesToBase64(entryHash);
 			streamModel.signature = Converter.bytesToBase64(signature);
 
-			const credentialData: IAuditableItemStreamCredential = {
+			const credentialData: IAuditableItemStreamCredential & IJsonLdNodeObject = {
+				"@context": AuditableItemStreamTypes.ContextRoot,
+				"@type": AuditableItemStreamTypes.StreamCredential,
 				created: streamModel.created,
 				userIdentity: context.userIdentity,
 				hash: streamModel.hash,
@@ -247,7 +249,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				context.nodeIdentity,
 				`${context.nodeIdentity}#${this._assertionMethodId}`,
 				fullId,
-				AuditableItemStreamTypes.StreamCredential,
 				credentialData
 			);
 
@@ -1314,7 +1315,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		model.signature = Converter.bytesToBase64(signature);
 
 		if (context.immutableInterval > 0 && model.index % context.immutableInterval === 0) {
-			const credentialData: IAuditableItemStreamEntryCredential = {
+			const credentialData: IAuditableItemStreamEntryCredential & IJsonLdNodeObject = {
+				"@context": AuditableItemStreamTypes.ContextRoot,
+				"@type": AuditableItemStreamTypes.StreamEntryCredential,
 				created: model.created,
 				userIdentity: context.userIdentity,
 				hash: model.hash,
@@ -1327,7 +1330,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				context.nodeIdentity,
 				`${context.nodeIdentity}#${this._assertionMethodId}`,
 				`${AuditableItemStreamService.NAMESPACE}:${streamId}:${model.id}`,
-				AuditableItemStreamTypes.StreamEntryCredential,
 				credentialData
 			);
 
@@ -1686,7 +1688,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 				// Verify the credential
 				const verificationResult = await this._identityConnector.checkVerifiableCredential<
-					IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential
+					(IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential) & IJsonLdNodeObject
 				>(verifiableCredentialJwt);
 
 				if (verificationResult.revoked) {
