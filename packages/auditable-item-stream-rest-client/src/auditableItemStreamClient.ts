@@ -14,12 +14,15 @@ import type {
 	IAuditableItemStreamCreateRequest,
 	IAuditableItemStreamDeleteEntryRequest,
 	IAuditableItemStreamEntry,
+	IAuditableItemStreamEntryList,
+	IAuditableItemStreamEntryObjectList,
 	IAuditableItemStreamGetEntryObjectRequest,
 	IAuditableItemStreamGetEntryObjectResponse,
 	IAuditableItemStreamGetEntryRequest,
 	IAuditableItemStreamGetEntryResponse,
 	IAuditableItemStreamGetRequest,
 	IAuditableItemStreamGetResponse,
+	IAuditableItemStreamList,
 	IAuditableItemStreamListEntriesRequest,
 	IAuditableItemStreamListEntriesResponse,
 	IAuditableItemStreamListEntryObjectsRequest,
@@ -27,15 +30,13 @@ import type {
 	IAuditableItemStreamListRequest,
 	IAuditableItemStreamListResponse,
 	IAuditableItemStreamUpdateEntryRequest,
-	IAuditableItemStreamUpdateRequest,
-	IAuditableItemStreamVerification,
-	JsonReturnType
+	IAuditableItemStreamUpdateRequest
 } from "@twin.org/auditable-item-stream-models";
 import { Guards, NotSupportedError } from "@twin.org/core";
-import type { IJsonLdDocument, IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IComparator, SortDirection } from "@twin.org/entity";
 import { nameof } from "@twin.org/nameof";
-import { MimeTypes } from "@twin.org/web";
+import { HeaderTypes, MimeTypes } from "@twin.org/web";
 
 /**
  * Client for performing auditable item stream through to REST endpoints.
@@ -59,7 +60,7 @@ export class AuditableItemStreamClient
 
 	/**
 	 * Create a new stream.
-	 * @param metadata The metadata for the stream as JSON-LD.
+	 * @param streamObject The object for the stream as JSON-LD.
 	 * @param entries Entries to store in the stream.
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
@@ -67,7 +68,7 @@ export class AuditableItemStreamClient
 	 * @returns The id of the new stream item.
 	 */
 	public async create(
-		metadata?: IJsonLdNodeObject,
+		streamObject?: IJsonLdNodeObject,
 		entries?: {
 			entryObject: IJsonLdNodeObject;
 		}[],
@@ -80,14 +81,14 @@ export class AuditableItemStreamClient
 			"POST",
 			{
 				body: {
-					metadata,
+					streamObject,
 					entries,
 					immutableInterval: options?.immutableInterval
 				}
 			}
 		);
 
-		return response.headers.Location;
+		return response.headers[HeaderTypes.Location];
 	}
 
 	/**
@@ -98,30 +99,18 @@ export class AuditableItemStreamClient
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
 	 * @param options.verifyStream Should the stream be verified, defaults to false.
 	 * @param options.verifyEntries Should the entries be verified, defaults to false.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found
 	 */
-	public async get<T extends "json" | "jsonld" = "json">(
+	public async get(
 		id: string,
 		options?: {
 			includeEntries?: boolean;
 			includeDeleted?: boolean;
 			verifyStream?: boolean;
 			verifyEntries?: boolean;
-		},
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			IAuditableItemStream & {
-				cursor?: string;
-				verification?: IAuditableItemStreamVerification;
-				entriesVerification?: IAuditableItemStreamVerification[];
-			},
-			IJsonLdDocument
-		>
-	> {
+		}
+	): Promise<IAuditableItemStream> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<
@@ -129,7 +118,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamGetResponse
 		>("/:id", "GET", {
 			headers: {
-				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
+				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			pathParams: {
 				id
@@ -142,24 +131,16 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body as JsonReturnType<
-			T,
-			IAuditableItemStream & {
-				cursor?: string;
-				verification?: IAuditableItemStreamVerification;
-				entriesVerification?: IAuditableItemStreamVerification[];
-			},
-			IJsonLdDocument
-		>;
+		return response.body;
 	}
 
 	/**
 	 * Update a stream.
 	 * @param id The id of the stream to update.
-	 * @param metadata The metadata for the stream as JSON-LD.
+	 * @param streamObject The object for the stream as JSON-LD.
 	 * @returns Nothing.
 	 */
-	public async update(id: string, metadata?: IJsonLdNodeObject): Promise<void> {
+	public async update(id: string, streamObject?: IJsonLdNodeObject): Promise<void> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		await this.fetch<IAuditableItemStreamUpdateRequest, INoContentResponse>("/:id", "PUT", {
@@ -167,7 +148,7 @@ export class AuditableItemStreamClient
 				id
 			},
 			body: {
-				metadata
+				streamObject
 			}
 		});
 	}
@@ -177,36 +158,25 @@ export class AuditableItemStreamClient
 	 * @param conditions Conditions to use in the query.
 	 * @param orderBy The order for the results, defaults to created.
 	 * @param orderByDirection The direction for the order, defaults to descending.
-	 * @param properties The properties to return, if not provided defaults to id, created and metadata.
+	 * @param properties The properties to return, if not provided defaults to id, created and object.
 	 * @param cursor The cursor to request the next page of entities.
 	 * @param pageSize The maximum number of entities in a page.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The entities, which can be partial if a limited keys list was provided.
 	 */
-	public async query<T extends "json" | "jsonld" = "json">(
+	public async query(
 		conditions?: IComparator[],
-		orderBy?: "created" | "updated",
+		orderBy?: keyof Pick<IAuditableItemStream, "dateCreated" | "dateModified">,
 		orderByDirection?: SortDirection,
 		properties?: (keyof IAuditableItemStream)[],
 		cursor?: string,
-		pageSize?: number,
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			{
-				entities: Partial<IAuditableItemStream>[];
-				cursor?: string;
-			},
-			IJsonLdDocument
-		>
-	> {
+		pageSize?: number
+	): Promise<IAuditableItemStreamList> {
 		const response = await this.fetch<
 			IAuditableItemStreamListRequest,
 			IAuditableItemStreamListResponse
 		>("/", "GET", {
 			headers: {
-				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
+				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			query: {
 				conditions: HttpParameterHelper.conditionsToString(conditions),
@@ -218,20 +188,13 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body as JsonReturnType<
-			T,
-			{
-				entities: Partial<IAuditableItemStream>[];
-				cursor?: string;
-			},
-			IJsonLdDocument
-		>;
+		return response.body;
 	}
 
 	/**
 	 * Create an entry in the stream.
 	 * @param id The id of the stream to update.
-	 * @param entryObject The metadata for the stream as JSON-LD.
+	 * @param entryObject The object for the stream as JSON-LD.
 	 * @returns The id of the created entry, if not provided.
 	 */
 	public async createEntry(id: string, entryObject: IJsonLdNodeObject): Promise<string> {
@@ -250,7 +213,7 @@ export class AuditableItemStreamClient
 			}
 		);
 
-		return response.headers.Location;
+		return response.headers[HeaderTypes.Location];
 	}
 
 	/**
@@ -259,26 +222,16 @@ export class AuditableItemStreamClient
 	 * @param entryId The id of the stream entry to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.verifyEntry Should the entry be verified, defaults to false.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	public async getEntry<T extends "json" | "jsonld" = "json">(
+	public async getEntry(
 		id: string,
 		entryId: string,
 		options?: {
 			verifyEntry?: boolean;
-		},
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			IAuditableItemStreamEntry & {
-				verification?: IAuditableItemStreamVerification;
-			},
-			IJsonLdDocument
-		>
-	> {
+		}
+	): Promise<IAuditableItemStreamEntry> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
@@ -287,7 +240,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamGetEntryResponse
 		>("/:id/:entryId", "GET", {
 			headers: {
-				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
+				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			query: {
 				verifyEntry: options?.verifyEntry
@@ -298,13 +251,7 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body as JsonReturnType<
-			T,
-			IAuditableItemStreamEntry & {
-				verification?: IAuditableItemStreamVerification;
-			},
-			IJsonLdDocument
-		>;
+		return response.body;
 	}
 
 	/**
@@ -323,7 +270,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamGetEntryObjectResponse
 		>("/:id/:entryId/object", "GET", {
 			headers: {
-				Accept: MimeTypes.JsonLd
+				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			pathParams: {
 				id,
@@ -358,7 +305,7 @@ export class AuditableItemStreamClient
 					entryId
 				},
 				body: {
-					object: entryObject
+					entryObject
 				}
 			}
 		);
@@ -396,11 +343,10 @@ export class AuditableItemStreamClient
 	 * @param options.pageSize How many entries to return.
 	 * @param options.cursor Cursor to use for next chunk of data.
 	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	public async getEntries<T extends "json" | "jsonld" = "json">(
+	public async getEntries(
 		id: string,
 		options?: {
 			conditions?: IComparator[];
@@ -409,19 +355,8 @@ export class AuditableItemStreamClient
 			pageSize?: number;
 			cursor?: string;
 			order?: SortDirection;
-		},
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			{
-				entries: IAuditableItemStreamEntry[];
-				cursor?: string;
-				verification?: IAuditableItemStreamVerification[];
-			},
-			IJsonLdDocument
-		>
-	> {
+		}
+	): Promise<IAuditableItemStreamEntryList> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<
@@ -429,7 +364,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamListEntriesResponse
 		>("/:id/entries", "GET", {
 			headers: {
-				Accept: responseType === "json" ? MimeTypes.Json : MimeTypes.JsonLd
+				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			pathParams: {
 				id
@@ -444,15 +379,7 @@ export class AuditableItemStreamClient
 			}
 		});
 
-		return response.body as JsonReturnType<
-			T,
-			{
-				entries: IAuditableItemStreamEntry[];
-				cursor?: string;
-				verification?: IAuditableItemStreamVerification[];
-			},
-			IJsonLdDocument
-		>;
+		return response.body;
 	}
 
 	/**
@@ -476,7 +403,7 @@ export class AuditableItemStreamClient
 			cursor?: string;
 			order?: SortDirection;
 		}
-	): Promise<IJsonLdDocument> {
+	): Promise<IAuditableItemStreamEntryObjectList> {
 		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
 
 		const response = await this.fetch<
@@ -484,7 +411,7 @@ export class AuditableItemStreamClient
 			IAuditableItemStreamListEntryObjectsResponse
 		>("/:id/entries/objects", "GET", {
 			headers: {
-				Accept: MimeTypes.JsonLd
+				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			pathParams: {
 				id

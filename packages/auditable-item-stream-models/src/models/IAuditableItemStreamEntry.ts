@@ -1,30 +1,44 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
+import type { IAuditableItemStreamVerification } from "./IAuditableItemStreamVerification";
 
 /**
  * Interface describing an entry for the stream.
  */
 export interface IAuditableItemStreamEntry {
 	/**
+	 * JSON-LD Context.
+	 */
+	"@context":
+		| typeof AuditableItemStreamTypes.ContextRoot
+		| [typeof AuditableItemStreamTypes.ContextRoot, ...string[]];
+
+	/**
+	 * JSON-LD Type.
+	 */
+	type: typeof AuditableItemStreamTypes.StreamEntry;
+
+	/**
 	 * The id of the entry.
 	 */
 	id: string;
 
 	/**
-	 * The timestamp of when the entry was created.
+	 * The date/time of when the entry was created.
 	 */
-	created: number;
+	dateCreated: string;
 
 	/**
-	 * The timestamp of when the entry was updated.
+	 * The date/time of when the entry was modified.
 	 */
-	updated?: number;
+	dateModified?: string;
 
 	/**
-	 * The timestamp of when the entry was deleted, as we never actually remove items.
+	 * The date/time of when the entry was deleted, as we never actually remove items.
 	 */
-	deleted?: number;
+	dateDeleted?: string;
 
 	/**
 	 * The identity of the user which added the entry to the stream.
@@ -55,4 +69,9 @@ export interface IAuditableItemStreamEntry {
 	 * The immutable storage id containing the signature for the entry.
 	 */
 	immutableStorageId?: string;
+
+	/**
+	 * The verification of the entry.
+	 */
+	entryVerification?: IAuditableItemStreamVerification;
 }

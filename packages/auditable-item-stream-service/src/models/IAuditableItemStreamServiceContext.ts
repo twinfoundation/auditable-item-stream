@@ -8,7 +8,7 @@ export interface IAuditableItemStreamServiceContext {
 	/**
 	 * The current timestamp.
 	 */
-	now: number;
+	now: string;
 
 	/**
 	 * The identity of the user.

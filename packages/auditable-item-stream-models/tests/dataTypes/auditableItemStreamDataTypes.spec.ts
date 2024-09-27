@@ -12,14 +12,36 @@ describe("AuditableItemStreamDataTypes", () => {
 		AuditableItemStreamDataTypes.registerTypes();
 	});
 
-	test("Can validate an empty stream", async () => {
+	test("Can fail to validate an empty stream", async () => {
 		const validationFailures: IValidationFailure[] = [];
 		const isValid = await DataTypeHelper.validate(
 			"",
 			AuditableItemStreamTypes.Stream,
 			{
 				id: "foo",
-				created: 1234567890,
+				dateCreated: new Date().toISOString(),
+				immutableInterval: 10,
+				signature: "foo",
+				hash: "bar",
+				nodeIdentity: "node",
+				userIdentity: "user"
+			},
+			validationFailures
+		);
+		expect(validationFailures.length).toEqual(1);
+		expect(isValid).toEqual(false);
+	});
+
+	test("Can validate an empty stream", async () => {
+		const validationFailures: IValidationFailure[] = [];
+		const isValid = await DataTypeHelper.validate(
+			"",
+			AuditableItemStreamTypes.Stream,
+			{
+				"@context": [AuditableItemStreamTypes.ContextRoot],
+				type: AuditableItemStreamTypes.Stream,
+				id: "foo",
+				dateCreated: new Date().toISOString(),
 				immutableInterval: 10,
 				signature: "foo",
 				hash: "bar",

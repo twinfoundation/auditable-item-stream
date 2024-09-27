@@ -7,7 +7,6 @@ import type {
 } from "@twin.org/auditable-item-stream-models";
 import { Converter, Is, ObjectHelper, RandomHelper } from "@twin.org/core";
 import { Bip39 } from "@twin.org/crypto";
-import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
 import {
@@ -101,7 +100,7 @@ export async function setupTestEnv(): Promise<void> {
  * @returns The integrity data.
  */
 export async function decodeJwtToIntegrity(immutableStore: string): Promise<{
-	created: number;
+	dateCreated: string;
 	userIdentity: string;
 	hash: string;
 	signature: string;
@@ -112,14 +111,14 @@ export async function decodeJwtToIntegrity(immutableStore: string): Promise<{
 		IJwtHeader,
 		IJwtPayload & {
 			vc: IDidVerifiableCredential<
-				(IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential) & IJsonLdNodeObject
+				IAuditableItemStreamCredential | IAuditableItemStreamEntryCredential
 			>;
 		}
 	>(vcJwt);
 	const credentialData = Is.arrayValue(decodedJwt.payload?.vc?.credentialSubject)
 		? decodedJwt.payload?.vc?.credentialSubject[0]
 		: (decodedJwt.payload?.vc?.credentialSubject ?? {
-				created: 0,
+				dateCreated: "",
 				userIdentity: "",
 				hash: "",
 				signature: "",
@@ -127,7 +126,7 @@ export async function decodeJwtToIntegrity(immutableStore: string): Promise<{
 			});
 
 	return {
-		created: credentialData.created,
+		dateCreated: credentialData.dateCreated,
 		userIdentity: credentialData.userIdentity,
 		hash: credentialData.hash,
 		signature: credentialData.signature,

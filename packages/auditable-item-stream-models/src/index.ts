@@ -25,4 +25,7 @@ export * from "./models/IAuditableItemStreamComponent";
 export * from "./models/IAuditableItemStreamCredential";
 export * from "./models/IAuditableItemStreamEntry";
 export * from "./models/IAuditableItemStreamEntryCredential";
+export * from "./models/IAuditableItemStreamEntryList";
+export * from "./models/IAuditableItemStreamEntryObjectList";
+export * from "./models/IAuditableItemStreamList";
 export * from "./models/IAuditableItemStreamVerification";

@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { JsonLdTypes, type IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import { type IJsonLdNodeObject, JsonLdTypes } from "@twin.org/data-json-ld";
 import { entity, property, SortDirection } from "@twin.org/entity";
 
 /**
@@ -15,16 +15,16 @@ export class AuditableItemStream {
 	public id!: string;
 
 	/**
-	 * The timestamp of when the stream was created.
+	 * The date/time of when the stream was created.
 	 */
-	@property({ type: "number", sortDirection: SortDirection.Descending })
-	public created!: number;
+	@property({ type: "string", format: "date-time", sortDirection: SortDirection.Descending })
+	public dateCreated!: string;
 
 	/**
-	 * The timestamp of when the stream was last updated.
+	 * The date/time of when the stream was modified.
 	 */
-	@property({ type: "number", sortDirection: SortDirection.Descending })
-	public updated?: number;
+	@property({ type: "string", format: "date-time" })
+	public dateModified?: string;
 
 	/**
 	 * The identity of the node which controls the stream.
@@ -39,10 +39,10 @@ export class AuditableItemStream {
 	public userIdentity!: string;
 
 	/**
-	 * Metadata to associate with the stream as JSON-LD.
+	 * Object to associate with the stream as JSON-LD.
 	 */
-	@property({ type: "object", itemTypeRef: JsonLdTypes.NodeObject })
-	public metadata?: IJsonLdNodeObject;
+	@property({ type: "object", itemTypeRef: JsonLdTypes.Object })
+	public streamObject?: IJsonLdNodeObject;
 
 	/**
 	 * The counter for the entry index.

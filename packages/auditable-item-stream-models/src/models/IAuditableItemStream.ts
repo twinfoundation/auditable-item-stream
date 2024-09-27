@@ -1,26 +1,40 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
 import type { IAuditableItemStreamEntry } from "./IAuditableItemStreamEntry";
+import type { IAuditableItemStreamVerification } from "./IAuditableItemStreamVerification";
 
 /**
  * Interface describing an auditable item stream.
  */
 export interface IAuditableItemStream {
 	/**
+	 * JSON-LD Context.
+	 */
+	"@context":
+		| typeof AuditableItemStreamTypes.ContextRoot
+		| [typeof AuditableItemStreamTypes.ContextRoot, ...string[]];
+
+	/**
+	 * JSON-LD Type.
+	 */
+	type: typeof AuditableItemStreamTypes.Stream;
+
+	/**
 	 * The id of the stream.
 	 */
 	id: string;
 
 	/**
-	 * The timestamp of when the stream was created.
+	 * The date/time of when the stream was created.
 	 */
-	created: number;
+	dateCreated: string;
 
 	/**
-	 * The timestamp of when the stream was updated.
+	 * The date/time of when the stream was modified.
 	 */
-	updated?: number;
+	dateModified?: string;
 
 	/**
 	 * The identity of the node which controls the stream.
@@ -33,9 +47,9 @@ export interface IAuditableItemStream {
 	userIdentity: string;
 
 	/**
-	 * The metadata to associate with the entry as JSON-LD.
+	 * The object to associate with the entry as JSON-LD.
 	 */
-	metadata?: IJsonLdNodeObject;
+	streamObject?: IJsonLdNodeObject;
 
 	/**
 	 * The hash of the stream.
@@ -53,12 +67,22 @@ export interface IAuditableItemStream {
 	immutableStorageId?: string;
 
 	/**
+	 * After how many entries do we add immutable checks.
+	 */
+	immutableInterval: number;
+
+	/**
 	 * Entries in the stream.
 	 */
 	entries?: IAuditableItemStreamEntry[];
 
 	/**
-	 * After how many entries do we add immutable checks.
+	 * The cursor for the stream entries.
 	 */
-	immutableInterval: number;
+	cursor?: string;
+
+	/**
+	 * The verification of the stream.
+	 */
+	streamVerification?: IAuditableItemStreamVerification;
 }

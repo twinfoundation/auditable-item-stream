@@ -28,6 +28,6 @@ export interface IAuditableItemStreamUpdateEntryRequest {
 		/**
 		 * The object to be used in the entry as JSON-LD.
 		 */
-		object: IJsonLdNodeObject;
+		entryObject: IJsonLdNodeObject;
 	};
 }

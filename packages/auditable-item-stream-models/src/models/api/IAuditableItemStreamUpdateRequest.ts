@@ -21,8 +21,8 @@ export interface IAuditableItemStreamUpdateRequest {
 	 */
 	body?: {
 		/**
-		 * The metadata to be used in the stream as JSON-LD.
+		 * The object to be used in the stream as JSON-LD.
 		 */
-		metadata?: IJsonLdNodeObject;
+		streamObject?: IJsonLdNodeObject;
 	};
 }

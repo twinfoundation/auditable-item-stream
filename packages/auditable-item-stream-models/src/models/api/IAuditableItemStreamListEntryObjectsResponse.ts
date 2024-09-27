@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IJsonLdDocument } from "@twin.org/data-json-ld";
 import type { HeaderTypes, MimeTypes } from "@twin.org/web";
+import type { IAuditableItemStreamEntryObjectList } from "../IAuditableItemStreamEntryObjectList";
 
 /**
  * Response to getting an auditable item stream entries objects.
@@ -15,7 +15,7 @@ export interface IAuditableItemStreamListEntryObjectsResponse {
 	};
 
 	/**
-	 * The response body, if accept header is set to application/ld+json the return object is JSON-LD document.
+	 * The response body.
 	 */
-	body: IJsonLdDocument;
+	body: IAuditableItemStreamEntryObjectList;
 }

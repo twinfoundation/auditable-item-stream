@@ -3,9 +3,12 @@
 	"sources": ["./src/models/**/*.ts"],
 	"types": [
 		"IAuditableItemStream",
+		"IAuditableItemStreamList",
 		"IAuditableItemStreamCredential",
 		"IAuditableItemStreamEntry",
+		"IAuditableItemStreamEntryList",
 		"IAuditableItemStreamEntryCredential",
+		"IAuditableItemStreamEntryObjectList",
 		"IAuditableItemStreamVerification",
 		"AuditableItemStreamVerificationState"
 	],

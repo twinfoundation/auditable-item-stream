@@ -25,19 +25,22 @@
 		},
 		"type": {
 			"type": "string",
-			"const": "AuditableItemStreamVerification",
+			"const": "AuditableItemStreamEntryObjectList",
 			"description": "JSON-LD Type."
 		},
-		"id": {
-			"type": "string",
-			"description": "The id, only used if the verification if for an entry."
+		"entryObjects": {
+			"type": "array",
+			"items": {
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
+			},
+			"description": "The entry objects in the stream."
 		},
-		"state": {
-			"$ref": "https://schema.twindev.org/ais/AuditableItemStreamVerificationState",
-			"description": "The state of the verification."
+		"cursor": {
+			"type": "string",
+			"description": "Cursor for the next chunk of entry objects."
 		}
 	},
-	"required": ["@context", "type", "state"],
-	"additionalProperties": {},
-	"description": "Interface describing an auditable item stream verification."
+	"required": ["@context", "type", "entryObjects"],
+	"additionalProperties": false,
+	"description": "Interface describing an auditable item stream entries object list."
 }

@@ -1,17 +1,44 @@
 {
 	"type": "object",
 	"properties": {
+		"@context": {
+			"anyOf": [
+				{
+					"type": "string",
+					"const": "https://schema.twindev.org/ais/"
+				},
+				{
+					"type": "array",
+					"minItems": 1,
+					"items": [
+						{
+							"type": "string",
+							"const": "https://schema.twindev.org/ais/"
+						}
+					],
+					"additionalItems": {
+						"type": "string"
+					}
+				}
+			],
+			"description": "JSON-LD Context."
+		},
+		"type": {
+			"type": "string",
+			"const": "AuditableItemStream",
+			"description": "JSON-LD Type."
+		},
 		"id": {
 			"type": "string",
 			"description": "The id of the stream."
 		},
-		"created": {
-			"type": "number",
-			"description": "The timestamp of when the stream was created."
+		"dateCreated": {
+			"type": "string",
+			"description": "The date/time of when the stream was created."
 		},
-		"updated": {
-			"type": "number",
-			"description": "The timestamp of when the stream was updated."
+		"dateModified": {
+			"type": "string",
+			"description": "The date/time of when the stream was modified."
 		},
 		"nodeIdentity": {
 			"type": "string",
@@ -21,9 +48,9 @@
 			"type": "string",
 			"description": "The identity of the user who created the stream."
 		},
-		"metadata": {
+		"streamObject": {
 			"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
-			"description": "The metadata to associate with the entry as JSON-LD."
+			"description": "The object to associate with the entry as JSON-LD."
 		},
 		"hash": {
 			"type": "string",
@@ -37,6 +64,10 @@
 			"type": "string",
 			"description": "The immutable storage id."
 		},
+		"immutableInterval": {
+			"type": "number",
+			"description": "After how many entries do we add immutable checks."
+		},
 		"entries": {
 			"type": "array",
 			"items": {
@@ -44,10 +75,26 @@
 			},
 			"description": "Entries in the stream."
 		},
-		"immutableInterval": {
-			"type": "number",
-			"description": "After how many entries do we add immutable checks."
+		"cursor": {
+			"type": "string",
+			"description": "The cursor for the stream entries."
+		},
+		"streamVerification": {
+			"$ref": "https://schema.twindev.org/ais/AuditableItemStreamVerification",
+			"description": "The verification of the stream."
 		}
 	},
-	"additionalProperties": false
+	"required": [
+		"@context",
+		"type",
+		"id",
+		"dateCreated",
+		"nodeIdentity",
+		"userIdentity",
+		"hash",
+		"signature",
+		"immutableInterval"
+	],
+	"additionalProperties": false,
+	"description": "Interface describing an auditable item stream."
 }

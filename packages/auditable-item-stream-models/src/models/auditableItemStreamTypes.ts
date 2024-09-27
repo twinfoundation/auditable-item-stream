@@ -14,32 +14,47 @@ export const AuditableItemStreamTypes = {
 	/**
 	 * Represents auditable item stream.
 	 */
-	Stream: "https://schema.twindev.org/ais/AuditableItemStream",
+	Stream: "AuditableItemStream",
+
+	/**
+	 * Represents auditable item stream list.
+	 */
+	StreamList: "AuditableItemStreamList",
 
 	/**
 	 * Represents auditable item stream credential.
 	 */
-	StreamCredential: "https://schema.twindev.org/ais/AuditableItemStreamCredential",
+	StreamCredential: "AuditableItemStreamCredential",
 
 	/**
 	 * Represents auditable item stream entry.
 	 */
-	StreamEntry: "https://schema.twindev.org/ais/AuditableItemStreamEntry",
+	StreamEntry: "AuditableItemStreamEntry",
+
+	/**
+	 * Represents auditable item stream entry list.
+	 */
+	StreamEntryList: "AuditableItemStreamEntryList",
 
 	/**
 	 * Represents auditable item stream entry credential.
 	 */
-	StreamEntryCredential: "https://schema.twindev.org/ais/AuditableItemStreamEntryCredential",
+	StreamEntryCredential: "AuditableItemStreamEntryCredential",
+
+	/**
+	 * Represents auditable item stream entry object list.
+	 */
+	StreamEntryObjectList: "AuditableItemStreamEntryObjectList",
 
 	/**
 	 * Represents auditable item stream verification.
 	 */
-	Verification: "https://schema.twindev.org/ais/AuditableItemStreamVerification",
+	Verification: "AuditableItemStreamVerification",
 
 	/**
 	 * Represents auditable item stream verification state.
 	 */
-	VerificationState: "https://schema.twindev.org/ais/AuditableItemStreamVerificationState"
+	VerificationState: "AuditableItemStreamVerificationState"
 } as const;
 
 /**

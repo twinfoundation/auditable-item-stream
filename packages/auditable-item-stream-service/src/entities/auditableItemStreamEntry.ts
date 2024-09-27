@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { JsonLdTypes, type IJsonLdNodeObject } from "@twin.org/data-json-ld";
-import { entity, property } from "@twin.org/entity";
+import { type IJsonLdNodeObject, JsonLdTypes } from "@twin.org/data-json-ld";
+import { entity, property, SortDirection } from "@twin.org/entity";
 
 /**
  * Class describing the auditable item stream entry.
@@ -21,33 +21,33 @@ export class AuditableItemStreamEntry {
 	public streamId!: string;
 
 	/**
-	 * The timestamp of when the entry was created.
+	 * The date/time of when the entry was created.
 	 */
-	@property({ type: "number" })
-	public created!: number;
+	@property({ type: "string", format: "date-time", sortDirection: SortDirection.Ascending })
+	public dateCreated!: string;
 
 	/**
-	 * The timestamp of when the entry was updated.
+	 * The date/time of when the entry was modified.
 	 */
-	@property({ type: "number" })
-	public updated?: number;
+	@property({ type: "string", format: "date-time" })
+	public dateModified?: string;
 
 	/**
-	 * The timestamp of when the entry was deleted, as we never actually remove items.
+	 * The date/time of when the entry was deleted, as we never actually remove items.
 	 */
-	@property({ type: "number" })
-	public deleted?: number;
+	@property({ type: "string", format: "date-time" })
+	public dateDeleted?: string;
 
 	/**
 	 * The identity of the user that added the entry.
 	 */
 	@property({ type: "string" })
-	public userIdentity?: string;
+	public userIdentity!: string;
 
 	/**
 	 * Object to associate with the entry as JSON-LD.
 	 */
-	@property({ type: "object", itemTypeRef: JsonLdTypes.NodeObject })
+	@property({ type: "object", itemTypeRef: JsonLdTypes.Object })
 	public entryObject!: IJsonLdNodeObject;
 
 	/**

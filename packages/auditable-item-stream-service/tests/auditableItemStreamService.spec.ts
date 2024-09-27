@@ -107,15 +107,15 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
 				immutableInterval: 10,
 				indexCounter: 0,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "kE4miSfO6wrvo8Wo9BOxD4d1UzBhJZJNusoKn/IOwdk=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"beh2i6Q50FPKHhPjo7SeG0val2acNNrBPLcM2Ucob4RS8xx9KSAdlOOB1Wx6kRxvzN6bBuCrYyq/VsqmWsl7AA==",
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
@@ -128,7 +128,7 @@ describe("AuditableItemStreamService", () => {
 		expect(immutableStore).toHaveLength(1);
 	});
 
-	test("Can create a stream with a single metadata and multiple entries", async () => {
+	test("Can create a stream with a single object and multiple entries", async () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
@@ -164,20 +164,20 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
 				},
 				immutableInterval: 10,
 				indexCounter: 2,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
@@ -189,7 +189,7 @@ describe("AuditableItemStreamService", () => {
 			{
 				id: "0303030303030303030303030303030303030303030303030303030303030303",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
@@ -197,16 +197,16 @@ describe("AuditableItemStreamService", () => {
 				},
 				userIdentity: TEST_USER_IDENTITY,
 				index: 0,
-				hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+				hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 				signature:
-					"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
+					"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
 				immutableStorageId:
 					"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
 			},
 			{
 				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
@@ -214,9 +214,9 @@ describe("AuditableItemStreamService", () => {
 				},
 				userIdentity: TEST_USER_IDENTITY,
 				index: 1,
-				hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
+				hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
 				signature:
-					"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
+					"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ=="
 			}
 		]);
 
@@ -232,26 +232,26 @@ describe("AuditableItemStreamService", () => {
 
 		const streamImmutableCredential = await decodeJwtToIntegrity(immutableStore[0].data);
 		expect(streamImmutableCredential).toEqual({
-			created: FIRST_TICK,
+			dateCreated: "2024-08-22T11:55:16.271Z",
 			userIdentity: TEST_USER_IDENTITY,
-			hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+			hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 			signature:
-				"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+				"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
 			index: undefined
 		});
 
 		const entryImmutableCredential = await decodeJwtToIntegrity(immutableStore[1].data);
 		expect(entryImmutableCredential).toEqual({
-			created: FIRST_TICK,
+			dateCreated: "2024-08-22T11:55:16.271Z",
 			userIdentity: TEST_USER_IDENTITY,
-			hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+			hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 			signature:
-				"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
+				"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
 			index: 0
 		});
 	});
 
-	test("Can get a stream with a single metadata and multiple entries", async () => {
+	test("Can get a stream with a single object and multiple entries", async () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
@@ -287,245 +287,183 @@ describe("AuditableItemStreamService", () => {
 		});
 
 		expect(result).toEqual({
+			"@context": ["https://schema.twindev.org/ais/", "https://schema.org/"],
 			id: "0101010101010101010101010101010101010101010101010101010101010101",
-			created: FIRST_TICK,
-			updated: FIRST_TICK,
-			nodeIdentity: TEST_NODE_IDENTITY,
-			userIdentity: TEST_USER_IDENTITY,
-			metadata: {
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			immutableInterval: 10,
-			hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
-			signature:
-				"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
-			immutableStorageId:
-				"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202",
-			entries: [
-				{
-					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-					created: FIRST_TICK,
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					},
-					userIdentity: TEST_USER_IDENTITY,
-					index: 0,
-					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
-					signature:
-						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-					immutableStorageId:
-						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
-				},
-				{
-					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					created: FIRST_TICK,
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					},
-					userIdentity: TEST_USER_IDENTITY,
-					index: 1,
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
-					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
-				}
-			],
-			streamVerification: { state: "ok" },
-			entriesVerification: [
-				{ state: "ok", id: "0303030303030303030303030303030303030303030303030303030303030303" },
-				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
-			]
-		});
-	});
-
-	test("Can get a stream with a single metadata and multiple entries, including entries", async () => {
-		const service = new AuditableItemStreamService();
-		const streamId = await service.create(
-			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
-				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					}
-				}
-			],
-			undefined,
-			TEST_USER_IDENTITY,
-			TEST_NODE_IDENTITY
-		);
-
-		const result = await service.get(streamId, {
-			includeEntries: true,
-			verifyStream: true,
-			verifyEntries: true
-		});
-
-		expect(result).toEqual({
-			id: "0101010101010101010101010101010101010101010101010101010101010101",
-			created: FIRST_TICK,
-			updated: FIRST_TICK,
-			nodeIdentity: TEST_NODE_IDENTITY,
-			userIdentity: TEST_USER_IDENTITY,
-			metadata: {
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			immutableInterval: 10,
-			hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
-			signature:
-				"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
-			immutableStorageId:
-				"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202",
-			entries: [
-				{
-					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-					created: FIRST_TICK,
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					},
-					userIdentity: TEST_USER_IDENTITY,
-					index: 0,
-					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
-					signature:
-						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-					immutableStorageId:
-						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
-				},
-				{
-					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					created: FIRST_TICK,
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					},
-					userIdentity: TEST_USER_IDENTITY,
-					index: 1,
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
-					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
-				}
-			],
-			streamVerification: { state: "ok" },
-			entriesVerification: [
-				{ state: "ok", id: "0303030303030303030303030303030303030303030303030303030303030303" },
-				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
-			]
-		});
-	});
-
-	test("Can get a stream with a single metadata and multiple entries, including entries as JSON-LD", async () => {
-		const service = new AuditableItemStreamService();
-		const streamId = await service.create(
-			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
-				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					}
-				}
-			],
-			undefined,
-			TEST_USER_IDENTITY,
-			TEST_NODE_IDENTITY
-		);
-
-		const result = await service.get(
-			streamId,
-			{ includeEntries: true, verifyStream: true, verifyEntries: true },
-			"jsonld"
-		);
-
-		expect(result).toEqual({
-			"@context": [
-				"https://schema.twindev.org/ais/",
-				"https://schema.org/",
-				"https://www.w3.org/ns/activitystreams"
-			],
-			id: "0101010101010101010101010101010101010101010101010101010101010101",
-			type: "Stream",
+			type: "AuditableItemStream",
 			dateCreated: "2024-08-22T11:55:16.271Z",
 			dateModified: "2024-08-22T11:55:16.271Z",
 			entries: [
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-					type: "Entry",
+					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
-					entryObject: { type: "Note", content: "This is an entry note 1" },
-					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 1"
+					},
+					entryVerification: {
+						id: "0303030303030303030303030303030303030303030303030303030303030303",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 					immutableStorageId:
 						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
 					index: 0,
 					signature:
-						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-					userIdentity: TEST_USER_IDENTITY
+						"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 				},
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					type: "Entry",
+					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
-					entryObject: { type: "Note", content: "This is an entry note 2" },
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 2"
+					},
+					entryVerification: {
+						id: "0505050505050505050505050505050505050505050505050505050505050505",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
 					index: 1,
 					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ==",
-					userIdentity: TEST_USER_IDENTITY
+						"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 				}
 			],
-			entriesVerification: [
-				{
-					id: "0303030303030303030303030303030303030303030303030303030303030303",
-					type: "Verification",
-					state: "ok"
-				},
-				{
-					id: "0505050505050505050505050505050505050505050505050505050505050505",
-					type: "Verification",
-					state: "ok"
-				}
-			],
-			metadata: { type: "Note", content: "This is a simple note" },
+			hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
+			immutableInterval: 10,
+			immutableStorageId:
+				"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202",
 			nodeIdentity:
 				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
-			streamVerification: { type: "Verification", state: "ok" }
+			signature:
+				"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
+			streamObject: {
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
+				content: "This is a simple note"
+			},
+			streamVerification: { type: "AuditableItemStreamVerification", state: "ok" },
+			userIdentity:
+				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 		});
 	});
 
-	test("Can update a stream with a single metadata and multiple entries", async () => {
+	test("Can get a stream with a single object and multiple entries, including entries", async () => {
+		const service = new AuditableItemStreamService();
+		const streamId = await service.create(
+			{
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
+				content: "This is a simple note"
+			},
+			[
+				{
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 1"
+					}
+				},
+				{
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 2"
+					}
+				}
+			],
+			undefined,
+			TEST_USER_IDENTITY,
+			TEST_NODE_IDENTITY
+		);
+
+		const result = await service.get(streamId, {
+			includeEntries: true,
+			verifyStream: true,
+			verifyEntries: true
+		});
+
+		expect(result).toEqual({
+			"@context": ["https://schema.twindev.org/ais/", "https://schema.org/"],
+			id: "0101010101010101010101010101010101010101010101010101010101010101",
+			type: "AuditableItemStream",
+			dateCreated: "2024-08-22T11:55:16.271Z",
+			dateModified: "2024-08-22T11:55:16.271Z",
+			entries: [
+				{
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
+					type: "AuditableItemStreamEntry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 1"
+					},
+					entryVerification: {
+						id: "0303030303030303030303030303030303030303030303030303030303030303",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
+					immutableStorageId:
+						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
+					index: 0,
+					signature:
+						"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
+				},
+				{
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
+					type: "AuditableItemStreamEntry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 2"
+					},
+					entryVerification: {
+						id: "0505050505050505050505050505050505050505050505050505050505050505",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
+					index: 1,
+					signature:
+						"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
+				}
+			],
+			hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
+			immutableInterval: 10,
+			immutableStorageId:
+				"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202",
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
+			signature:
+				"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
+			streamObject: {
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
+				content: "This is a simple note"
+			},
+			streamVerification: { type: "AuditableItemStreamVerification", state: "ok" },
+			userIdentity:
+				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
+		});
+	});
+
+	test("Can update a stream with a single object and multiple entries", async () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
@@ -572,58 +510,63 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: SECOND_TICK,
-				nodeIdentity: TEST_NODE_IDENTITY,
-				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				nodeIdentity:
+					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:56:56.272Z",
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note xxx"
 				},
 				immutableInterval: 10,
-				indexCounter: 2,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
+				indexCounter: 2,
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
 		]);
 
 		const entryStore = streamEntryStorage.getStore();
+
 		expect(entryStore).toEqual([
 			{
 				id: "0303030303030303030303030303030303030303030303030303030303030303",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
 				},
-				userIdentity: TEST_USER_IDENTITY,
-				index: 0,
-				hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 				signature:
-					"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
+					"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
+				index: 0,
 				immutableStorageId:
 					"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
 			},
 			{
 				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 2"
 				},
-				userIdentity: TEST_USER_IDENTITY,
-				index: 1,
-				hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
 				signature:
-					"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
+					"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ==",
+				index: 1
 			}
 		]);
 
@@ -682,73 +625,79 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: SECOND_TICK,
-				nodeIdentity: TEST_NODE_IDENTITY,
-				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				nodeIdentity:
+					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:56:56.272Z",
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
 				},
 				immutableInterval: 10,
-				indexCounter: 3,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
+				indexCounter: 3,
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
 		]);
 
 		const entryStore = streamEntryStorage.getStore();
+
 		expect(entryStore).toEqual([
 			{
 				id: "0303030303030303030303030303030303030303030303030303030303030303",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
 				},
-				userIdentity: TEST_USER_IDENTITY,
-				index: 0,
-				hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 				signature:
-					"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
+					"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
+				index: 0,
 				immutableStorageId:
 					"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
 			},
 			{
 				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 2"
 				},
-				userIdentity: TEST_USER_IDENTITY,
-				index: 1,
-				hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
 				signature:
-					"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
+					"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ==",
+				index: 1
 			},
 			{
 				id: "0606060606060606060606060606060606060606060606060606060606060606",
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: SECOND_TICK,
+				dateCreated: "2024-08-22T11:56:56.272Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 3"
 				},
-				userIdentity: TEST_USER_IDENTITY,
-				index: 2,
-				hash: "DAkLPIZczgr9csyCtf5B6KJ8oWVFZJx+KQFAY9x7mq8=",
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				hash: "MR0D5vXFtoIxidC2xXcHP49eslTnDIA+h55vJIFu3eo=",
 				signature:
-					"ml5xbTLHUCCjpk4A4i/v17FBGupRzpN4JyS5c7uXipE8dAOLHvL+mGlJN9smJOEKQ/K1CxGl7zn2eWII9X1IDg=="
+					"vjtYqdwjqrjwe73+LaMIGbXoSVuXP80ehpG6xsf/rJkJKD4ut7U6z695ZhVmZUbZnJM0q+phjr4AA3bSz/n0Cg==",
+				index: 2
 			}
 		]);
 
@@ -809,20 +758,20 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: SECOND_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:56:56.272Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
 				},
 				immutableInterval: 10,
 				indexCounter: 12,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
@@ -875,118 +824,23 @@ describe("AuditableItemStreamService", () => {
 		});
 
 		expect(entry).toEqual({
+			"@context": ["https://schema.twindev.org/ais/", "https://schema.org/"],
 			id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-			created: FIRST_TICK,
-			entryObject: {
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is an entry note 1"
-			},
-			userIdentity: TEST_USER_IDENTITY,
-			index: 0,
-			hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
-			signature:
-				"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-			immutableStorageId:
-				"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
-			entryVerification: {
-				state: "ok",
-				id: "0303030303030303030303030303030303030303030303030303030303030303"
-			}
-		});
-
-		const streamStore = streamStorage.getStore();
-
-		expect(streamStore).toEqual([
-			{
-				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: FIRST_TICK,
-				nodeIdentity: TEST_NODE_IDENTITY,
-				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
-					"@context": "https://www.w3.org/ns/activitystreams",
-					"@type": "Note",
-					content: "This is a simple note"
-				},
-				immutableInterval: 10,
-				indexCounter: 2,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
-				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
-				immutableStorageId:
-					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
-			}
-		]);
-	});
-
-	test("Can get an entry from the stream as JSON-LD", async () => {
-		const service = new AuditableItemStreamService();
-		const streamId = await service.create(
-			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
-				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					}
-				}
-			],
-			undefined,
-			TEST_USER_IDENTITY,
-			TEST_NODE_IDENTITY
-		);
-
-		const stream = await service.get(streamId, {
-			includeEntries: true,
-			verifyStream: true,
-			verifyEntries: true
-		});
-
-		const entry = await service.getEntry(
-			streamId,
-			stream.entries?.[0].id ?? "",
-			{ verifyEntry: true },
-			"jsonld"
-		);
-
-		expect(entry).toEqual({
-			"@context": [
-				"https://schema.twindev.org/ais/",
-				"https://schema.org/",
-				"https://www.w3.org/ns/activitystreams"
-			],
-			id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-			type: "Entry",
+			type: "AuditableItemStreamEntry",
 			dateCreated: "2024-08-22T11:55:16.271Z",
-			entryVerification: {
-				id: "0303030303030303030303030303030303030303030303030303030303030303",
-				type: "Verification",
-				state: "ok"
-			},
 			entryObject: {
-				type: "Note",
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
 				content: "This is an entry note 1"
 			},
-			hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+			hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 			immutableStorageId:
 				"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
 			index: 0,
 			signature:
-				"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-			userIdentity: TEST_USER_IDENTITY
+				"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
+			userIdentity:
+				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 		});
 
 		const streamStore = streamStorage.getStore();
@@ -994,20 +848,20 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
 				},
 				immutableInterval: 10,
 				indexCounter: 2,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
@@ -1053,7 +907,7 @@ describe("AuditableItemStreamService", () => {
 
 		expect(entry).toEqual({
 			"@context": "https://www.w3.org/ns/activitystreams",
-			type: "Note",
+			"@type": "Note",
 			content: "This is an entry note 1"
 		});
 
@@ -1062,20 +916,20 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: FIRST_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
 				},
 				immutableInterval: 10,
 				indexCounter: 2,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
@@ -1127,20 +981,20 @@ describe("AuditableItemStreamService", () => {
 		expect(streamStore).toEqual([
 			{
 				id: "0101010101010101010101010101010101010101010101010101010101010101",
-				created: FIRST_TICK,
-				updated: SECOND_TICK,
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:56:56.272Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				metadata: {
+				streamObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
 				},
 				immutableInterval: 10,
 				indexCounter: 2,
-				hash: "I6vfL/avsvBsgKGQ5mM9pkNkHRKKolozbNJxS1bkrgc=",
+				hash: "xWEOkKLD95vIc9iPIn4lpF0djFuf+czQ3tBAMTlZNBo=",
 				signature:
-					"AsOHZTv0vNGOzxIskCrvwkFeRAPdVV+t+FjIZDwOPSmhTpJp9sDg5BDsZlai2X6ILN+3X2J3IA/2rpoMW7Z6Bw==",
+					"MFMPI9H8hB777qRbgatcjmOCebM3dcXaMgLneiDIYOgTWmFxukApKho8ddvqLjqMelImJocmBiMR4TaCGDONCA==",
 				immutableStorageId:
 					"immutable:entity-storage:0202020202020202020202020202020202020202020202020202020202020202"
 			}
@@ -1149,7 +1003,7 @@ describe("AuditableItemStreamService", () => {
 		const entryStore = streamEntryStorage.getStore();
 
 		expect(entryStore).toHaveLength(2);
-		expect(entryStore[0].deleted).toEqual(SECOND_TICK);
+		expect(entryStore[0].dateDeleted).toEqual("2024-08-22T11:56:56.272Z");
 
 		const streamWithoutDeleted = await service.get(streamId, { includeEntries: true });
 		expect(streamWithoutDeleted.entries).toHaveLength(1);
@@ -1192,171 +1046,55 @@ describe("AuditableItemStreamService", () => {
 
 		await service.get(streamId, { includeEntries: true });
 
-		const entries = await service.getEntries(streamId, { verifyEntries: true }, "json");
+		const entries = await service.getEntries(streamId, { verifyEntries: true });
 
 		expect(entries).toEqual({
+			"@context": ["https://schema.twindev.org/ais/", "https://schema.org/"],
+			type: "AuditableItemStreamEntryList",
 			entries: [
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-					created: FIRST_TICK,
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					},
-					userIdentity: TEST_USER_IDENTITY,
-					index: 0,
-					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
-					signature:
-						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-					immutableStorageId:
-						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404"
-				},
-				{
-					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					created: FIRST_TICK,
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					},
-					userIdentity: TEST_USER_IDENTITY,
-					index: 1,
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
-					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
-				}
-			],
-			entriesVerification: [
-				{ state: "ok", id: "0303030303030303030303030303030303030303030303030303030303030303" },
-				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
-			]
-		});
-	});
-
-	test("Can get entries from a stream as JSON-LD", async () => {
-		const service = new AuditableItemStreamService();
-		const streamId = await service.create(
-			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
-				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
-					}
-				}
-			],
-			undefined,
-			TEST_USER_IDENTITY,
-			TEST_NODE_IDENTITY
-		);
-
-		await service.get(streamId, { includeEntries: true });
-
-		const entries = await service.getEntries(streamId, { verifyEntries: true }, "jsonld");
-
-		expect(entries).toEqual({
-			"@context": [
-				"https://schema.twindev.org/ais/",
-				"https://schema.org/",
-				"https://www.w3.org/ns/activitystreams"
-			],
-			"@graph": [
-				{
-					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0303030303030303030303030303030303030303030303030303030303030303",
-					type: "Entry",
+					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
-					entryObject: { type: "Note", content: "This is an entry note 1" },
-					hash: "Ph4LuatqnF3qWth90hI7rRe2dRcDMOohbpUa3AIUBk4=",
+					entryObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is an entry note 1"
+					},
+					entryVerification: {
+						id: "0303030303030303030303030303030303030303030303030303030303030303",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "5trXzlskOgceq5xm2q418VjeFy4OzJvkYfy5RMYoSsg=",
 					immutableStorageId:
 						"immutable:entity-storage:0404040404040404040404040404040404040404040404040404040404040404",
 					index: 0,
 					signature:
-						"ocy/GF7mg/9fE8rk6QXRmfRyqHvIXF/dTJWte7ypPy5g/PVzZGo0lsQLb/sydWlFwKqiT3pROEqCkjMLWdAPCw==",
-					userIdentity: TEST_USER_IDENTITY
+						"YutSHSBuRQ1J+kUr619k3gIaIsbFklaBCuWpHL/dq3Vk1ZSrHiA2JWYrPEVg25/Xlaq7imShptA6tUKjn57lBw==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 				},
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					type: "Entry",
+					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
-					entryObject: { type: "Note", content: "This is an entry note 2" },
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
-					index: 1,
-					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ==",
-					userIdentity: TEST_USER_IDENTITY
-				}
-			],
-			entriesVerification: [
-				{
-					id: "0303030303030303030303030303030303030303030303030303030303030303",
-					type: "Verification",
-					state: "ok"
-				},
-				{
-					id: "0505050505050505050505050505050505050505050505050505050505050505",
-					type: "Verification",
-					state: "ok"
-				}
-			]
-		});
-	});
-
-	test("Can get entries sub object from a stream as JSON-LD", async () => {
-		const service = new AuditableItemStreamService();
-		const streamId = await service.create(
-			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
-				},
-				{
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
-					}
-				}
-			],
-			undefined,
-			TEST_USER_IDENTITY,
-			TEST_NODE_IDENTITY
-		);
-
-		await service.get(streamId, { includeEntries: true });
-
-		const entries = await service.getEntryObjects(streamId);
-
-		expect(entries).toEqual({
-			"@context": "https://www.w3.org/ns/activitystreams",
-			"@graph": [
-				{
-					type: "Note",
-					content: "This is an entry note 1"
-				},
-				{
-					type: "Note",
-					content: "This is an entry note 2"
+					},
+					entryVerification: {
+						id: "0505050505050505050505050505050505050505050505050505050505050505",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
+					index: 1,
+					signature:
+						"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 				}
 			]
 		});
@@ -1393,45 +1131,47 @@ describe("AuditableItemStreamService", () => {
 
 		await service.get(streamId, { includeEntries: true });
 
-		const entries = await service.getEntries(
-			streamId,
-			{
-				verifyEntries: true,
-				conditions: [
-					{
-						property: "entryObject.@type",
-						comparison: ComparisonOperator.Equals,
-						value: "Note"
-					},
-					{
-						property: "entryObject.content",
-						comparison: ComparisonOperator.Equals,
-						value: "This is an entry note 2"
-					}
-				]
-			},
-			"json"
-		);
+		const entries = await service.getEntries(streamId, {
+			verifyEntries: true,
+			conditions: [
+				{
+					property: "entryObject.@type",
+					comparison: ComparisonOperator.Equals,
+					value: "Note"
+				},
+				{
+					property: "entryObject.content",
+					comparison: ComparisonOperator.Equals,
+					value: "This is an entry note 2"
+				}
+			]
+		});
 
 		expect(entries).toEqual({
+			"@context": ["https://schema.twindev.org/ais/", "https://schema.org/"],
+			type: "AuditableItemStreamEntryList",
 			entries: [
 				{
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
-					created: 1724327716271,
+					type: "AuditableItemStreamEntry",
+					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 2"
 					},
-					userIdentity: TEST_USER_IDENTITY,
+					entryVerification: {
+						id: "0505050505050505050505050505050505050505050505050505050505050505",
+						type: "AuditableItemStreamVerification",
+						state: "ok"
+					},
+					hash: "loVMOqZdWxL+0AtHb9bSpQlbcZSCIgfxiAgOL6HfY2k=",
 					index: 1,
-					hash: "GcVhCOiMb5SeBD35/vuzkDGuj1TxzG5FY5JhFpJ2xEs=",
 					signature:
-						"JtICZYUrpdkoZ/4HlMpbOQAl39vlVlU62YK5vgPwoI1G6UFCTqPfYYrJmO6Tq5T1bCENHLDQ6JLT5ZW3ciHmBQ=="
+						"EEAcNP7AR8FsBWmR+MsCMT7yHo9oOHsj9M6mv7KSGAZ0ty5OgVWzTg2xWvjyf/5RlYSy8R+BGLak81hYw5L2CQ==",
+					userIdentity:
+						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 				}
-			],
-			entriesVerification: [
-				{ state: "ok", id: "0505050505050505050505050505050505050505050505050505050505050505" }
 			]
 		});
 	});

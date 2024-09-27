@@ -1,16 +1,13 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { IComponent } from "@twin.org/core";
-import type { IJsonLdDocument, IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IComparator, SortDirection } from "@twin.org/entity";
 import type { IAuditableItemStream } from "./IAuditableItemStream";
 import type { IAuditableItemStreamEntry } from "./IAuditableItemStreamEntry";
-import type { IAuditableItemStreamVerification } from "./IAuditableItemStreamVerification";
-
-/**
- * The return type based on the response type.
- */
-export type JsonReturnType<T, U, V> = T extends "json" ? U : V;
+import type { IAuditableItemStreamEntryList } from "./IAuditableItemStreamEntryList";
+import type { IAuditableItemStreamEntryObjectList } from "./IAuditableItemStreamEntryObjectList";
+import type { IAuditableItemStreamList } from "./IAuditableItemStreamList";
 
 /**
  * Interface describing an auditable item stream contract.
@@ -18,7 +15,7 @@ export type JsonReturnType<T, U, V> = T extends "json" ? U : V;
 export interface IAuditableItemStreamComponent extends IComponent {
 	/**
 	 * Create a new stream.
-	 * @param metadata The metadata for the stream as JSON-LD.
+	 * @param streamObject The object for the stream as JSON-LD.
 	 * @param entries Entries to store in the stream.
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
@@ -28,7 +25,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @returns The id of the new stream item.
 	 */
 	create(
-		metadata?: IJsonLdNodeObject,
+		streamObject?: IJsonLdNodeObject,
 		entries?: {
 			entryObject: IJsonLdNodeObject;
 		}[],
@@ -42,14 +39,14 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	/**
 	 * Update a stream.
 	 * @param id The id of the stream to update.
-	 * @param metadata The metadata for the stream as JSON-LD.
+	 * @param streamObject The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
 	update(
 		id: string,
-		metadata?: IJsonLdNodeObject,
+		streamObject?: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void>;
@@ -62,60 +59,37 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
 	 * @param options.verifyStream Should the stream be verified, defaults to false.
 	 * @param options.verifyEntries Should the entries be verified, defaults to false.
-	 * @param responseType Should the response be JSON-LD.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	get<T extends "json" | "jsonld" = "json">(
+	get(
 		id: string,
 		options?: {
 			includeEntries?: boolean;
 			includeDeleted?: boolean;
 			verifyStream?: boolean;
 			verifyEntries?: boolean;
-		},
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			IAuditableItemStream & {
-				cursor?: string;
-				streamVerification?: IAuditableItemStreamVerification;
-				entriesVerification?: IAuditableItemStreamVerification[];
-			},
-			IJsonLdDocument
-		>
-	>;
+		}
+	): Promise<IAuditableItemStream>;
 
 	/**
 	 * Query all the streams, will not return entries.
 	 * @param conditions Conditions to use in the query.
 	 * @param orderBy The order for the results, defaults to created.
 	 * @param orderByDirection The direction for the order, defaults to descending.
-	 * @param properties The properties to return, if not provided defaults to id, created and metadata.
+	 * @param properties The properties to return, if not provided defaults to id, dateCreated, dateModified and streamObject.
 	 * @param cursor The cursor to request the next page of entities.
 	 * @param pageSize The maximum number of entities in a page.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The entities, which can be partial if a limited keys list was provided.
 	 */
-	query<T extends "json" | "jsonld" = "json">(
+	query(
 		conditions?: IComparator[],
-		orderBy?: "created" | "updated",
+		orderBy?: keyof Pick<IAuditableItemStream, "dateCreated" | "dateModified">,
 		orderByDirection?: SortDirection,
 		properties?: (keyof IAuditableItemStream)[],
 		cursor?: string,
-		pageSize?: number,
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			{
-				entities: Partial<IAuditableItemStream>[];
-				cursor?: string;
-			},
-			IJsonLdDocument
-		>
-	>;
+		pageSize?: number
+	): Promise<IAuditableItemStreamList>;
 
 	/**
 	 * Create an entry in the stream.
@@ -138,26 +112,16 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param entryId The id of the stream entry to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.verifyEntry Should the entry be verified, defaults to false.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	getEntry<T extends "json" | "jsonld" = "json">(
+	getEntry(
 		id: string,
 		entryId: string,
 		options?: {
 			verifyEntry?: boolean;
-		},
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			IAuditableItemStreamEntry & {
-				entryVerification?: IAuditableItemStreamVerification;
-			},
-			IJsonLdDocument
-		>
-	>;
+		}
+	): Promise<IAuditableItemStreamEntry>;
 
 	/**
 	 * Get the entry object from the stream.
@@ -206,11 +170,10 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options.pageSize How many entries to return.
 	 * @param options.cursor Cursor to use for next chunk of data.
 	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
-	 * @param responseType The response type to return, defaults to application/json.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	getEntries<T extends "json" | "jsonld" = "json">(
+	getEntries(
 		id: string,
 		options?: {
 			conditions?: IComparator[];
@@ -220,19 +183,8 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			pageSize?: number;
 			cursor?: string;
 			order?: SortDirection;
-		},
-		responseType?: T
-	): Promise<
-		JsonReturnType<
-			T,
-			{
-				entries: IAuditableItemStreamEntry[];
-				cursor?: string;
-				entriesVerification?: IAuditableItemStreamVerification[];
-			},
-			IJsonLdDocument
-		>
-	>;
+		}
+	): Promise<IAuditableItemStreamEntryList>;
 
 	/**
 	 * Get the entry objects for the stream.
@@ -255,7 +207,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			cursor?: string;
 			order?: SortDirection;
 		}
-	): Promise<IJsonLdDocument>;
+	): Promise<IAuditableItemStreamEntryObjectList>;
 
 	/**
 	 * Remove the immutable storage for the stream and entries.

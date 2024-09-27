@@ -9,25 +9,26 @@ import {
 	type IRestRoute,
 	type ITag
 } from "@twin.org/api-models";
-import type {
-	IAuditableItemStreamComponent,
-	IAuditableItemStreamCreateEntryRequest,
-	IAuditableItemStreamCreateRequest,
-	IAuditableItemStreamDeleteEntryRequest,
-	IAuditableItemStreamGetEntryObjectRequest,
-	IAuditableItemStreamGetEntryObjectResponse,
-	IAuditableItemStreamGetEntryRequest,
-	IAuditableItemStreamGetEntryResponse,
-	IAuditableItemStreamGetRequest,
-	IAuditableItemStreamGetResponse,
-	IAuditableItemStreamListEntriesRequest,
-	IAuditableItemStreamListEntriesResponse,
-	IAuditableItemStreamListEntryObjectsRequest,
-	IAuditableItemStreamListEntryObjectsResponse,
-	IAuditableItemStreamListRequest,
-	IAuditableItemStreamListResponse,
-	IAuditableItemStreamUpdateEntryRequest,
-	IAuditableItemStreamUpdateRequest
+import {
+	AuditableItemStreamTypes,
+	type IAuditableItemStreamComponent,
+	type IAuditableItemStreamCreateEntryRequest,
+	type IAuditableItemStreamCreateRequest,
+	type IAuditableItemStreamDeleteEntryRequest,
+	type IAuditableItemStreamGetEntryObjectRequest,
+	type IAuditableItemStreamGetEntryObjectResponse,
+	type IAuditableItemStreamGetEntryRequest,
+	type IAuditableItemStreamGetEntryResponse,
+	type IAuditableItemStreamGetRequest,
+	type IAuditableItemStreamGetResponse,
+	type IAuditableItemStreamListEntriesRequest,
+	type IAuditableItemStreamListEntriesResponse,
+	type IAuditableItemStreamListEntryObjectsRequest,
+	type IAuditableItemStreamListEntryObjectsResponse,
+	type IAuditableItemStreamListRequest,
+	type IAuditableItemStreamListResponse,
+	type IAuditableItemStreamUpdateEntryRequest,
+	type IAuditableItemStreamUpdateRequest
 } from "@twin.org/auditable-item-stream-models";
 import { ComponentFactory, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
@@ -73,7 +74,7 @@ export function generateRestRoutesAuditableItemStream(
 					id: "auditableItemStreamCreateRequestExample",
 					request: {
 						body: {
-							metadata: {
+							streamObject: {
 								"@context": "http://schema.org/",
 								"@type": "Note",
 								content: "This is a simple note"
@@ -103,7 +104,7 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							statusCode: HttpStatusCode.created,
 							headers: {
-								Location: "ais:1234567890"
+								location: "ais:1234567890"
 							}
 						}
 					}
@@ -127,7 +128,7 @@ export function generateRestRoutesAuditableItemStream(
 					id: "auditableItemStreamGetRequestExample",
 					request: {
 						headers: {
-							Accept: MimeTypes.Json
+							[HeaderTypes.Accept]: MimeTypes.Json
 						},
 						pathParams: {
 							id: "ais:1234567890"
@@ -144,19 +145,31 @@ export function generateRestRoutesAuditableItemStream(
 						id: "auditableItemStreamGetResponseExample",
 						response: {
 							body: {
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.Stream,
 								id: "ais:1234567890",
-								created: 1234567890,
-								updated: 1234567890,
-								metadata: {
+								dateCreated: "2024-08-22T11:55:16.271Z",
+								dateModified: "2024-08-22T11:55:16.271Z",
+								streamObject: {
 									"@context": "http://schema.org/",
 									"@type": "Note",
 									content: "This is a simple note"
 								},
+								nodeIdentity: "tst:1234567890",
+								userIdentity: "tst:1234567890",
+								hash: "0101010101010101010101010101010101010101010101010101010101010101",
+								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								immutableInterval: 10,
 								entries: [
 									{
+										"@context": AuditableItemStreamTypes.ContextRoot,
+										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
-										created: 1234567890,
-										metadata: {
+										dateCreated: "2024-08-22T11:55:16.271Z",
+										hash: "0101010101010101010101010101010101010101010101010101010101010101",
+										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										index: 0,
+										entryObject: {
 											"@context": "http://schema.org/",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
@@ -180,22 +193,31 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.twindev.org/ais/",
-								"@type": "stream",
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.Stream,
 								id: "ais:1234567890",
-								created: "2024-08-22T11:55:16.271Z",
-								updated: "2024-08-22T11:55:16.271Z",
-								metadata: {
+								dateCreated: "2024-08-22T11:55:16.271Z",
+								dateModified: "2024-08-22T11:55:16.271Z",
+								streamObject: {
 									"@context": "http://schema.org/",
 									"@type": "Note",
 									content: "This is a simple note"
 								},
+								nodeIdentity: "tst:1234567890",
+								userIdentity: "tst:1234567890",
+								hash: "0101010101010101010101010101010101010101010101010101010101010101",
+								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								immutableInterval: 10,
 								entries: [
 									{
-										"@type": "entry",
-										created: "2024-08-22T11:55:16.271Z",
+										"@context": AuditableItemStreamTypes.ContextRoot,
+										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
-										metadata: {
+										dateCreated: "2024-08-22T11:55:16.271Z",
+										hash: "0101010101010101010101010101010101010101010101010101010101010101",
+										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										index: 0,
+										entryObject: {
 											"@context": "http://schema.org/",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
@@ -232,7 +254,7 @@ export function generateRestRoutesAuditableItemStream(
 							id: "ais:1234567890"
 						},
 						body: {
-							metadata: {
+							streamObject: {
 								"@context": "http://schema.org/",
 								"@type": "Note",
 								content: "This is a simple note"
@@ -277,15 +299,25 @@ export function generateRestRoutesAuditableItemStream(
 						id: "auditableItemStreamListResponseExample",
 						response: {
 							body: {
-								entities: [
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamList,
+								streams: [
 									{
-										id: "0101010101010101010101010101010101010101010101010101010101010101",
-										entries: [
-											{
-												id: "foo4",
-												created: 1234567890
-											}
-										]
+										"@context": AuditableItemStreamTypes.ContextRoot,
+										type: AuditableItemStreamTypes.Stream,
+										id: "ais:1234567890",
+										dateCreated: "2024-08-22T11:55:16.271Z",
+										dateModified: "2024-08-22T11:55:16.271Z",
+										streamObject: {
+											"@context": "http://schema.org/",
+											"@type": "Note",
+											content: "This is a simple note"
+										},
+										nodeIdentity: "tst:1234567890",
+										userIdentity: "tst:1234567890",
+										hash: "0101010101010101010101010101010101010101010101010101010101010101",
+										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										immutableInterval: 10
 									}
 								],
 								cursor: "1"
@@ -305,19 +337,28 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.twindev.org/ais/",
-								"@graph": [
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamList,
+								streams: [
 									{
-										"@type": "entry",
-										created: "2024-08-22T11:55:16.271Z",
-										id: "tst:1234567890",
-										metadata: {
-											"@type": "http://schema.org/#Event",
-											startDate: "2011-04-09T20:00:00Z",
-											description: "A description of the event"
-										}
+										"@context": AuditableItemStreamTypes.ContextRoot,
+										type: AuditableItemStreamTypes.Stream,
+										id: "ais:1234567890",
+										dateCreated: "2024-08-22T11:55:16.271Z",
+										dateModified: "2024-08-22T11:55:16.271Z",
+										streamObject: {
+											"@context": "http://schema.org/",
+											"@type": "Note",
+											content: "This is a simple note"
+										},
+										nodeIdentity: "tst:1234567890",
+										userIdentity: "tst:1234567890",
+										hash: "0101010101010101010101010101010101010101010101010101010101010101",
+										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										immutableInterval: 10
 									}
-								]
+								],
+								cursor: "1"
 							}
 						}
 					}
@@ -368,7 +409,7 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							statusCode: HttpStatusCode.created,
 							headers: {
-								Location: "ais:1234567890:01010101010"
+								location: "ais:1234567890:01010101010"
 							}
 						}
 					}
@@ -418,7 +459,7 @@ export function generateRestRoutesAuditableItemStream(
 		handler: async (httpRequestContext, request) =>
 			auditableItemStreamUpdateEntry(httpRequestContext, componentName, request),
 		requestType: {
-			type: nameof<IAuditableItemStreamUpdateRequest>(),
+			type: nameof<IAuditableItemStreamUpdateEntryRequest>(),
 			examples: [
 				{
 					id: "auditableItemStreamUpdateRequestExample",
@@ -428,7 +469,7 @@ export function generateRestRoutesAuditableItemStream(
 							entryId: "ais:1234567890:01010101010"
 						},
 						body: {
-							object: {
+							entryObject: {
 								"@context": "http://schema.org/",
 								"@type": "Note",
 								content: "This is a simple note"
@@ -481,9 +522,14 @@ export function generateRestRoutesAuditableItemStream(
 						id: "auditableItemStreamGetEntryResponseExample",
 						response: {
 							body: {
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamEntry,
 								id: "tst:1234567890",
-								created: 1234567890,
-								metadata: {
+								dateCreated: "2024-08-22T11:55:16.271Z",
+								hash: "0101010101010101010101010101010101010101010101010101010101010101",
+								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								index: 0,
+								entryObject: {
 									"@context": "http://schema.org/",
 									"@type": "Event",
 									startDate: "2011-04-09T20:00:00Z",
@@ -505,11 +551,14 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.twindev.org/ais/",
-								"@type": "entry",
-								created: "2024-08-22T11:55:16.271Z",
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamEntry,
 								id: "tst:1234567890",
-								metadata: {
+								dateCreated: "2024-08-22T11:55:16.271Z",
+								hash: "0101010101010101010101010101010101010101010101010101010101010101",
+								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								index: 0,
+								entryObject: {
 									"@context": "http://schema.org/",
 									"@type": "Event",
 									startDate: "2011-04-09T20:00:00Z",
@@ -606,18 +655,26 @@ export function generateRestRoutesAuditableItemStream(
 						id: "auditableItemStreamListEntriesResponseExample",
 						response: {
 							body: {
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamEntryList,
 								entries: [
 									{
+										"@context": AuditableItemStreamTypes.ContextRoot,
+										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
-										created: 1234567890,
-										metadata: {
+										dateCreated: "2024-08-22T11:55:16.271Z",
+										hash: "0101010101010101010101010101010101010101010101010101010101010101",
+										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										index: 0,
+										entryObject: {
 											"@context": "http://schema.org/",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
 										}
 									}
-								]
+								],
+								cursor: "1"
 							}
 						}
 					}
@@ -634,19 +691,26 @@ export function generateRestRoutesAuditableItemStream(
 								[HeaderTypes.ContentType]: MimeTypes.JsonLd
 							},
 							body: {
-								"@context": "https://schema.twindev.org/ais/",
-								"@graph": [
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamEntryList,
+								entries: [
 									{
-										"@type": "entry",
-										created: "2024-08-22T11:55:16.271Z",
+										"@context": AuditableItemStreamTypes.ContextRoot,
+										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
-										metadata: {
-											"@type": "http://schema.org/#Event",
+										dateCreated: "2024-08-22T11:55:16.271Z",
+										hash: "0101010101010101010101010101010101010101010101010101010101010101",
+										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										index: 0,
+										entryObject: {
+											"@context": "http://schema.org/",
+											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
 										}
 									}
-								]
+								],
+								cursor: "1"
 							}
 						}
 					}
@@ -690,14 +754,17 @@ export function generateRestRoutesAuditableItemStream(
 						id: "auditableItemStreamListEntryObjectsResponseExample",
 						response: {
 							body: {
-								entries: [
+								"@context": AuditableItemStreamTypes.ContextRoot,
+								type: AuditableItemStreamTypes.StreamEntryObjectList,
+								entryObjects: [
 									{
 										"@context": "http://schema.org/",
 										"@type": "Event",
 										startDate: "2011-04-09T20:00:00Z",
 										description: "A description of the event"
 									}
-								]
+								],
+								cursor: "1"
 							}
 						}
 					}
@@ -740,7 +807,7 @@ export async function auditableItemStreamCreate(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const id = await component.create(
-		request.body?.metadata,
+		request.body?.streamObject,
 		request.body?.entries,
 		{
 			immutableInterval: request.body?.immutableInterval
@@ -751,7 +818,7 @@ export async function auditableItemStreamCreate(
 	return {
 		statusCode: HttpStatusCode.created,
 		headers: {
-			Location: id
+			location: id
 		}
 	};
 }
@@ -776,19 +843,15 @@ export async function auditableItemStreamGet(
 	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
-	const result = await component.get(
-		request.pathParams.id,
-		{
-			includeEntries: request.query?.includeEntries,
-			includeDeleted: request.query?.includeDeleted,
-			verifyStream: request.query?.verifyStream,
-			verifyEntries: request.query?.verifyEntries
-		},
-		mimeType
-	);
+	const result = await component.get(request.pathParams.id, {
+		includeEntries: request.query?.includeEntries,
+		includeDeleted: request.query?.includeDeleted,
+		verifyStream: request.query?.verifyStream,
+		verifyEntries: request.query?.verifyEntries
+	});
 
 	return {
 		headers: {
@@ -821,7 +884,7 @@ export async function auditableItemStreamUpdate(
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	await component.update(
 		request.pathParams.id,
-		request.body?.metadata,
+		request.body?.streamObject,
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);
@@ -851,7 +914,7 @@ export async function auditableItemStreamList(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.query(
 		HttpParameterHelper.conditionsFromString(request.query?.conditions),
@@ -859,8 +922,7 @@ export async function auditableItemStreamList(
 		request.query?.orderByDirection,
 		HttpParameterHelper.arrayFromString(request.query?.properties),
 		request.query?.cursor,
-		request.query?.pageSize,
-		mimeType
+		request.query?.pageSize
 	);
 
 	return {
@@ -907,7 +969,7 @@ export async function auditableItemStreamCreateEntry(
 	return {
 		statusCode: HttpStatusCode.created,
 		headers: {
-			Location: id
+			location: id
 		}
 	};
 }
@@ -971,13 +1033,13 @@ export async function auditableItemStreamUpdateEntry(
 	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.entryId), request.pathParams.entryId);
-	Guards.objectValue(ROUTES_SOURCE, nameof(request.body.object), request.body.object);
+	Guards.objectValue(ROUTES_SOURCE, nameof(request.body.entryObject), request.body.entryObject);
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	await component.updateEntry(
 		request.pathParams.id,
 		request.pathParams.entryId,
-		request.body.object,
+		request.body.entryObject,
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);
@@ -1007,17 +1069,12 @@ export async function auditableItemStreamGetEntry(
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.entryId), request.pathParams.entryId);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
-	const result = await component.getEntry(
-		request.pathParams.id,
-		request.pathParams.entryId,
-		{
-			verifyEntry: request.query?.verifyEntry
-		},
-		mimeType
-	);
+	const result = await component.getEntry(request.pathParams.id, request.pathParams.entryId, {
+		verifyEntry: request.query?.verifyEntry
+	});
 
 	return {
 		headers: {
@@ -1048,7 +1105,7 @@ export async function auditableItemStreamGetEntryObject(
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.entryId), request.pathParams.entryId);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const result = await component.getEntryObject(request.pathParams.id, request.pathParams.entryId);
@@ -1083,20 +1140,16 @@ export async function auditableItemStreamListEntries(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
-	const result = await component.getEntries(
-		request.pathParams.id,
-		{
-			conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
-			includeDeleted: request.query?.includeDeleted,
-			verifyEntries: request.query?.verifyEntries,
-			order: request.query?.order,
-			pageSize: request.query?.pageSize,
-			cursor: request.query?.cursor
-		},
-		mimeType
-	);
+	const result = await component.getEntries(request.pathParams.id, {
+		conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
+		includeDeleted: request.query?.includeDeleted,
+		verifyEntries: request.query?.verifyEntries,
+		order: request.query?.order,
+		pageSize: request.query?.pageSize,
+		cursor: request.query?.cursor
+	});
 
 	return {
 		headers: {
@@ -1132,7 +1185,7 @@ export async function auditableItemStreamListEntryObjects(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 
-	const mimeType = request.headers?.Accept === MimeTypes.JsonLd ? "jsonld" : "json";
+	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.getEntryObjects(request.pathParams.id, {
 		conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
