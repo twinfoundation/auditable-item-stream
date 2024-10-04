@@ -21,8 +21,6 @@ describe("AuditableItemStreamDataTypes", () => {
 				id: "foo",
 				dateCreated: new Date().toISOString(),
 				immutableInterval: 10,
-				signature: "foo",
-				hash: "bar",
 				nodeIdentity: "node",
 				userIdentity: "user"
 			},
@@ -43,10 +41,9 @@ describe("AuditableItemStreamDataTypes", () => {
 				id: "foo",
 				dateCreated: new Date().toISOString(),
 				immutableInterval: 10,
-				signature: "foo",
-				hash: "bar",
 				nodeIdentity: "node",
-				userIdentity: "user"
+				userIdentity: "user",
+				proofId: "1111"
 			},
 			validationFailures
 		);

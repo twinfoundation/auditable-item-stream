@@ -4,14 +4,10 @@ import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import type { JSONSchema7 } from "json-schema";
 import { AuditableItemStreamTypes } from "../models/auditableItemStreamTypes";
 import AuditableItemStreamSchema from "../schemas/AuditableItemStream.json";
-import AuditableItemStreamCredentialSchema from "../schemas/AuditableItemStreamCredential.json";
 import AuditableItemStreamEntrySchema from "../schemas/AuditableItemStreamEntry.json";
-import AuditableItemStreamEntryCredentialSchema from "../schemas/AuditableItemStreamEntryCredential.json";
 import AuditableItemStreamEntryListSchema from "../schemas/AuditableItemStreamEntryList.json";
 import AuditableItemStreamEntryObjectListSchema from "../schemas/AuditableItemStreamEntryObjectList.json";
 import AuditableItemStreamListSchema from "../schemas/AuditableItemStreamList.json";
-import AuditableItemStreamVerificationSchema from "../schemas/AuditableItemStreamVerification.json";
-import AuditableItemStreamVerificationStateSchema from "../schemas/AuditableItemStreamVerificationState.json";
 
 /**
  * Handle all the data types for auditable item stream.
@@ -31,11 +27,6 @@ export class AuditableItemStreamDataTypes {
 			defaultValue: {},
 			jsonSchema: async () => AuditableItemStreamListSchema as JSONSchema7
 		}));
-		DataTypeHandlerFactory.register(AuditableItemStreamTypes.StreamCredential, () => ({
-			type: AuditableItemStreamTypes.StreamCredential,
-			defaultValue: {},
-			jsonSchema: async () => AuditableItemStreamCredentialSchema as JSONSchema7
-		}));
 		DataTypeHandlerFactory.register(AuditableItemStreamTypes.StreamEntry, () => ({
 			type: AuditableItemStreamTypes.StreamEntry,
 			defaultValue: {},
@@ -50,21 +41,6 @@ export class AuditableItemStreamDataTypes {
 			type: AuditableItemStreamTypes.StreamEntryObjectList,
 			defaultValue: {},
 			jsonSchema: async () => AuditableItemStreamEntryObjectListSchema as JSONSchema7
-		}));
-		DataTypeHandlerFactory.register(AuditableItemStreamTypes.StreamEntryCredential, () => ({
-			type: AuditableItemStreamTypes.StreamEntryCredential,
-			defaultValue: {},
-			jsonSchema: async () => AuditableItemStreamEntryCredentialSchema as JSONSchema7
-		}));
-		DataTypeHandlerFactory.register(AuditableItemStreamTypes.Verification, () => ({
-			type: AuditableItemStreamTypes.Verification,
-			defaultValue: {},
-			jsonSchema: async () => AuditableItemStreamVerificationSchema as JSONSchema7
-		}));
-		DataTypeHandlerFactory.register(AuditableItemStreamTypes.VerificationState, () => ({
-			type: AuditableItemStreamTypes.VerificationState,
-			defaultValue: {},
-			jsonSchema: async () => AuditableItemStreamVerificationStateSchema as JSONSchema7
 		}));
 	}
 }

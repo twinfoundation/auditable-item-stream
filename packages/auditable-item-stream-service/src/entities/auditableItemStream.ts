@@ -57,20 +57,8 @@ export class AuditableItemStream {
 	public immutableInterval!: number;
 
 	/**
-	 * The hash of the entry.
+	 * The immutable proof id.
 	 */
 	@property({ type: "string" })
-	public hash!: string;
-
-	/**
-	 * The signature of the entry.
-	 */
-	@property({ type: "string" })
-	public signature!: string;
-
-	/**
-	 * The immutable storage id.
-	 */
-	@property({ type: "string" })
-	public immutableStorageId?: string;
+	public proofId?: string;
 }

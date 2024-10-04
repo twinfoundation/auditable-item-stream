@@ -157,8 +157,7 @@ export function generateRestRoutesAuditableItemStream(
 								},
 								nodeIdentity: "tst:1234567890",
 								userIdentity: "tst:1234567890",
-								hash: "0101010101010101010101010101010101010101010101010101010101010101",
-								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 								immutableInterval: 10,
 								entries: [
 									{
@@ -166,8 +165,7 @@ export function generateRestRoutesAuditableItemStream(
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
 										dateCreated: "2024-08-22T11:55:16.271Z",
-										hash: "0101010101010101010101010101010101010101010101010101010101010101",
-										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
 											"@context": "http://schema.org/",
@@ -205,8 +203,7 @@ export function generateRestRoutesAuditableItemStream(
 								},
 								nodeIdentity: "tst:1234567890",
 								userIdentity: "tst:1234567890",
-								hash: "0101010101010101010101010101010101010101010101010101010101010101",
-								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 								immutableInterval: 10,
 								entries: [
 									{
@@ -214,8 +211,7 @@ export function generateRestRoutesAuditableItemStream(
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
 										dateCreated: "2024-08-22T11:55:16.271Z",
-										hash: "0101010101010101010101010101010101010101010101010101010101010101",
-										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
 											"@context": "http://schema.org/",
@@ -315,8 +311,7 @@ export function generateRestRoutesAuditableItemStream(
 										},
 										nodeIdentity: "tst:1234567890",
 										userIdentity: "tst:1234567890",
-										hash: "0101010101010101010101010101010101010101010101010101010101010101",
-										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										immutableInterval: 10
 									}
 								],
@@ -353,8 +348,7 @@ export function generateRestRoutesAuditableItemStream(
 										},
 										nodeIdentity: "tst:1234567890",
 										userIdentity: "tst:1234567890",
-										hash: "0101010101010101010101010101010101010101010101010101010101010101",
-										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										immutableInterval: 10
 									}
 								],
@@ -526,8 +520,7 @@ export function generateRestRoutesAuditableItemStream(
 								type: AuditableItemStreamTypes.StreamEntry,
 								id: "tst:1234567890",
 								dateCreated: "2024-08-22T11:55:16.271Z",
-								hash: "0101010101010101010101010101010101010101010101010101010101010101",
-								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 								index: 0,
 								entryObject: {
 									"@context": "http://schema.org/",
@@ -555,8 +548,7 @@ export function generateRestRoutesAuditableItemStream(
 								type: AuditableItemStreamTypes.StreamEntry,
 								id: "tst:1234567890",
 								dateCreated: "2024-08-22T11:55:16.271Z",
-								hash: "0101010101010101010101010101010101010101010101010101010101010101",
-								signature: "0101010101010101010101010101010101010101010101010101010101010101",
+								proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 								index: 0,
 								entryObject: {
 									"@context": "http://schema.org/",
@@ -663,8 +655,7 @@ export function generateRestRoutesAuditableItemStream(
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
 										dateCreated: "2024-08-22T11:55:16.271Z",
-										hash: "0101010101010101010101010101010101010101010101010101010101010101",
-										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
 											"@context": "http://schema.org/",
@@ -699,8 +690,7 @@ export function generateRestRoutesAuditableItemStream(
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
 										dateCreated: "2024-08-22T11:55:16.271Z",
-										hash: "0101010101010101010101010101010101010101010101010101010101010101",
-										signature: "0101010101010101010101010101010101010101010101010101010101010101",
+										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
 											"@context": "http://schema.org/",

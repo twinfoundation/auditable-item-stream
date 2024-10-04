@@ -40,7 +40,11 @@
 			"description": "Cursor for the next chunk of entry objects."
 		}
 	},
-	"required": ["@context", "type", "entryObjects"],
+	"required": [
+		"@context",
+		"type",
+		"entryObjects"
+	],
 	"additionalProperties": false,
 	"description": "Interface describing an auditable item stream entries object list."
 }

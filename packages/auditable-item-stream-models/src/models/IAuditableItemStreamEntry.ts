@@ -1,8 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { IImmutableProofVerification } from "@twin.org/immutable-proof-models";
 import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
-import type { IAuditableItemStreamVerification } from "./IAuditableItemStreamVerification";
 
 /**
  * Interface describing an entry for the stream.
@@ -56,22 +56,12 @@ export interface IAuditableItemStreamEntry {
 	index: number;
 
 	/**
-	 * The hash of the entry.
+	 * The if of the immutable proof.
 	 */
-	hash: string;
-
-	/**
-	 * The signature of the entry.
-	 */
-	signature: string;
-
-	/**
-	 * The immutable storage id containing the signature for the entry.
-	 */
-	immutableStorageId?: string;
+	proofId?: string;
 
 	/**
 	 * The verification of the entry.
 	 */
-	entryVerification?: IAuditableItemStreamVerification;
+	verification?: IImmutableProofVerification;
 }
