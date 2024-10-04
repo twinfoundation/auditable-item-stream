@@ -22,7 +22,7 @@ The dependencies for the auditable item stream connector.
 
 • **options.immutableProofComponentType?**: `string`
 
-The vault connector type, defaults to "immutable-proof".
+The immutable proof component type, defaults to "immutable-proof".
 
 • **options.streamEntityStorageType?**: `string`
 

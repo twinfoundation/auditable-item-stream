@@ -118,7 +118,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * Create a new instance of AuditableItemStreamService.
 	 * @param options The dependencies for the auditable item stream connector.
 	 * @param options.config The configuration for the connector.
-	 * @param options.immutableProofComponentType The vault connector type, defaults to "immutable-proof".
+	 * @param options.immutableProofComponentType The immutable proof component type, defaults to "immutable-proof".
 	 * @param options.streamEntityStorageType The entity storage for stream, defaults to "auditable-item-stream".
 	 * @param options.streamEntryEntityStorageType The entity storage for stream entries, defaults to "auditable-item-stream-entry".
 	 */
@@ -934,7 +934,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			}
 
 			if (Is.stringValue(streamEntity.proofId)) {
-				await this._immutableProofComponent.removeImmutable(nodeIdentity, streamEntity.proofId);
+				await this._immutableProofComponent.removeImmutable(streamEntity.proofId, nodeIdentity);
 				delete streamEntity.proofId;
 				await this._streamStorage.set(streamEntity);
 			}
