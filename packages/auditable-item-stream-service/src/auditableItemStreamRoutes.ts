@@ -907,7 +907,7 @@ export async function auditableItemStreamList(
 	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.query(
-		HttpParameterHelper.conditionsFromString(request.query?.conditions),
+		HttpParameterHelper.objectFromString(request.query?.conditions),
 		request.query?.orderBy,
 		request.query?.orderByDirection,
 		HttpParameterHelper.arrayFromString(request.query?.properties),
@@ -1133,7 +1133,7 @@ export async function auditableItemStreamListEntries(
 	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.getEntries(request.pathParams.id, {
-		conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
+		conditions: HttpParameterHelper.objectFromString(request.query?.conditions),
 		includeDeleted: request.query?.includeDeleted,
 		verifyEntries: request.query?.verifyEntries,
 		order: request.query?.order,
@@ -1178,7 +1178,7 @@ export async function auditableItemStreamListEntryObjects(
 	const mimeType = request.headers?.[HeaderTypes.Accept] === MimeTypes.JsonLd ? "jsonld" : "json";
 
 	const result = await component.getEntryObjects(request.pathParams.id, {
-		conditions: HttpParameterHelper.conditionsFromString(request.query?.conditions),
+		conditions: HttpParameterHelper.objectFromString(request.query?.conditions),
 		includeDeleted: request.query?.includeDeleted,
 		order: request.query?.order,
 		pageSize: request.query?.pageSize,

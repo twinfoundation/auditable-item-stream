@@ -179,7 +179,7 @@ export class AuditableItemStreamClient
 				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			query: {
-				conditions: HttpParameterHelper.conditionsToString(conditions),
+				conditions: HttpParameterHelper.objectToString(conditions),
 				orderBy,
 				orderByDirection,
 				properties: HttpParameterHelper.arrayToString(properties),
@@ -370,7 +370,7 @@ export class AuditableItemStreamClient
 				id
 			},
 			query: {
-				conditions: HttpParameterHelper.conditionsToString(options?.conditions),
+				conditions: HttpParameterHelper.objectToString(options?.conditions),
 				includeDeleted: options?.includeDeleted,
 				verifyEntries: options?.verifyEntries,
 				pageSize: options?.pageSize,
@@ -417,7 +417,7 @@ export class AuditableItemStreamClient
 				id
 			},
 			query: {
-				conditions: HttpParameterHelper.conditionsToString(options?.conditions),
+				conditions: HttpParameterHelper.objectToString(options?.conditions),
 				includeDeleted: options?.includeDeleted,
 				pageSize: options?.pageSize,
 				cursor: options?.cursor,
