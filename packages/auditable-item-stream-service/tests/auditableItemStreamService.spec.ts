@@ -383,7 +383,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.org/"
 			],
-			id: "0101010101010101010101010101010101010101010101010101010101010101",
+			id: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			type: "AuditableItemStream",
 			dateCreated: "2024-08-22T11:55:16.271Z",
 			dateModified: "2024-08-22T11:55:16.271Z",
@@ -549,7 +549,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.org/"
 			],
-			id: "0101010101010101010101010101010101010101010101010101010101010101",
+			id: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			type: "AuditableItemStream",
 			dateCreated: "2024-08-22T11:55:16.271Z",
 			dateModified: "2024-08-22T11:55:16.271Z",
@@ -1329,7 +1329,7 @@ describe("AuditableItemStreamService", () => {
 			type: "AuditableItemStreamList",
 			streams: [
 				{
-					id: "0606060606060606060606060606060606060606060606060606060606060606",
+					id: "ais:0606060606060606060606060606060606060606060606060606060606060606",
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
@@ -1340,7 +1340,7 @@ describe("AuditableItemStreamService", () => {
 					}
 				},
 				{
-					id: "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+					id: "ais:0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
@@ -1351,7 +1351,7 @@ describe("AuditableItemStreamService", () => {
 					}
 				},
 				{
-					id: "1010101010101010101010101010101010101010101010101010101010101010",
+					id: "ais:1010101010101010101010101010101010101010101010101010101010101010",
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
@@ -1362,7 +1362,7 @@ describe("AuditableItemStreamService", () => {
 					}
 				},
 				{
-					id: "1515151515151515151515151515151515151515151515151515151515151515",
+					id: "ais:1515151515151515151515151515151515151515151515151515151515151515",
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
@@ -1373,7 +1373,7 @@ describe("AuditableItemStreamService", () => {
 					}
 				},
 				{
-					id: "0101010101010101010101010101010101010101010101010101010101010101",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					dateModified: "2024-08-22T11:55:16.271Z",

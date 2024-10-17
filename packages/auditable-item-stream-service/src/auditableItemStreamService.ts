@@ -199,8 +199,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				proofId: ""
 			};
 
-			const fullId = new Urn(AuditableItemStreamService.NAMESPACE, id).toString();
-
 			// Create the JSON-LD object we want to use for the proof
 			// this is a subset of fixed properties from the stream object.
 			const streamModel = await this.streamEntityToJsonLd(
@@ -209,9 +207,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 					AuditableItemStreamService._PROOF_KEYS_STREAM
 				) as AuditableItemStream
 			);
-
-			// Use the full id which will appear in the proof
-			streamModel.id = fullId;
 
 			// Create the proof for the stream object
 			streamEntity.proofId = await this._immutableProofComponent.create(
@@ -233,7 +228,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			await this._streamStorage.set(streamEntity);
 
-			return fullId;
+			return streamModel.id;
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "createFailed", undefined, error);
 		}
@@ -282,8 +277,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			if (options?.includeEntries) {
 				const result = await this.findEntries(
-					streamEntity.nodeIdentity,
-					streamModel.id,
+					streamId,
 					options?.includeDeleted,
 					options?.verifyEntries
 				);
@@ -844,7 +838,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			}
 
 			const result = await this.findEntries(
-				streamEntity.nodeIdentity,
 				streamNamespaceId,
 				options?.includeDeleted,
 				options?.verifyEntries,
@@ -916,7 +909,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			}
 
 			const result = await this.findEntries(
-				streamEntity.nodeIdentity,
 				streamNamespaceId,
 				options?.includeDeleted,
 				false,
@@ -992,7 +984,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				SchemaOrgTypes.ContextRoot
 			],
 			type: AuditableItemStreamTypes.Stream,
-			id: streamEntity.id,
+			id: `${AuditableItemStreamService.NAMESPACE}:${streamEntity.id}`,
 			dateCreated: streamEntity.dateCreated,
 			dateModified: streamEntity.dateModified,
 			nodeIdentity: streamEntity.nodeIdentity,
@@ -1167,7 +1159,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Find stream entries.
-	 * @param nodeIdentity The node identity.
 	 * @param streamId The stream id.
 	 * @param includeDeleted Should deleted entries be included.
 	 * @param verifyEntries Should the entries be verified.
@@ -1179,7 +1170,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @internal
 	 */
 	private async findEntries(
-		nodeIdentity: string,
 		streamId: string,
 		includeDeleted?: boolean,
 		verifyEntries?: boolean,
