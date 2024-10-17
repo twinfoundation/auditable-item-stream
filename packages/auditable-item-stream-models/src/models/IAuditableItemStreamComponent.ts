@@ -73,6 +73,15 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	): Promise<IAuditableItemStream>;
 
 	/**
+	 * Delete the stream.
+	 * @param id The id of the stream to remove.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
+	 * @param nodeIdentity The node identity to use for vault operations.
+	 * @returns Nothing.
+	 */
+	remove(id: string, userIdentity?: string, nodeIdentity?: string): Promise<void>;
+
+	/**
 	 * Query all the streams, will not return entries.
 	 * @param conditions Conditions to use in the query.
 	 * @param orderBy The order for the results, defaults to created.
@@ -150,14 +159,19 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	): Promise<void>;
 
 	/**
-	 * Delete from the stream.
-	 * @param id The id of the stream to update.
+	 * Remove from the stream.
+	 * @param id The id of the stream to remove from.
 	 * @param entryId The id of the entry to delete.
-	 * @param identity The identity to create the auditable item stream operation with.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
-	removeEntry(id: string, entryId: string, identity?: string, nodeIdentity?: string): Promise<void>;
+	removeEntry(
+		id: string,
+		entryId: string,
+		userIdentity?: string,
+		nodeIdentity?: string
+	): Promise<void>;
 
 	/**
 	 * Get the entries for the stream.

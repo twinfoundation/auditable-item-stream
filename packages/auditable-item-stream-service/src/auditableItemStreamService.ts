@@ -368,6 +368,43 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	}
 
 	/**
+	 * Delete the stream.
+	 * @param id The id of the stream to remove.
+	 * @param userIdentity The identity to create the auditable item stream operation with.
+	 * @param nodeIdentity The node identity to use for vault operations.
+	 * @returns Nothing.
+	 */
+	public async remove(id: string, userIdentity?: string, nodeIdentity?: string): Promise<void> {
+		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(userIdentity), userIdentity);
+		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
+
+		const urnParsed = Urn.fromValidString(id);
+
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
+				namespace: AuditableItemStreamService.NAMESPACE,
+				id
+			});
+		}
+
+		try {
+			const streamId = urnParsed.namespaceSpecific(0);
+			const streamEntity = await this._streamStorage.get(streamId);
+
+			if (Is.empty(streamEntity)) {
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+			}
+
+			await this.internalRemoveImmutable(streamEntity, nodeIdentity);
+
+			await this._streamStorage.remove(streamEntity.id);
+		} catch (error) {
+			throw new GeneralError(this.CLASS_NAME, "removingFailed", undefined, error);
+		}
+	}
+
+	/**
 	 * Query all the streams, will not return entries.
 	 * @param conditions Conditions to use in the query.
 	 * @param orderBy The order for the results, defaults to created.
@@ -422,7 +459,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			);
 
 			const list: IAuditableItemStreamList = {
-				"@context": AuditableItemStreamTypes.ContextRoot,
+				"@context": [AuditableItemStreamTypes.ContextRoot, SchemaOrgTypes.ContextRoot],
 				type: AuditableItemStreamTypes.StreamList,
 				streams: (results.entities as AuditableItemStream[]).map(e => this.streamEntityToJsonLd(e)),
 				cursor: results.cursor
@@ -688,8 +725,8 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Delete from the stream.
-	 * @param id The id of the stream to update.
-	 * @param entryId The id of the entry to delete.
+	 * @param id The id of the stream to remove from.
+	 * @param entryId The id of the entry to remove.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
@@ -933,38 +970,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
 			}
 
-			if (Is.stringValue(streamEntity.proofId)) {
-				await this._immutableProofComponent.removeImmutable(streamEntity.proofId, nodeIdentity);
-				delete streamEntity.proofId;
-				await this._streamStorage.set(streamEntity);
-			}
-
-			let entriesResult;
-			do {
-				entriesResult = await this._streamEntryStorage.query(
-					{
-						property: "streamId",
-						value: streamId,
-						comparison: ComparisonOperator.Equals
-					},
-					[
-						{
-							property: "dateCreated",
-							sortDirection: SortDirection.Ascending
-						}
-					],
-					undefined,
-					entriesResult?.cursor
-				);
-
-				for (const streamEntry of entriesResult.entities) {
-					if (Is.stringValue(streamEntry.proofId)) {
-						await this._immutableProofComponent.removeImmutable(nodeIdentity, streamEntry.proofId);
-						delete streamEntry.proofId;
-						await this._streamEntryStorage.set(streamEntry as AuditableItemStreamEntry);
-					}
-				}
-			} while (Is.stringValue(entriesResult.cursor));
+			await this.internalRemoveImmutable(streamEntity, nodeIdentity);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "removeImmutableFailed", undefined, error);
 		}
@@ -1280,5 +1286,50 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			entries: entryModels,
 			cursor: returnCursor
 		};
+	}
+
+	/**
+	 * Remove the immutable storage for the stream and entries.
+	 * @param streamEntity The stream entity.
+	 * @param nodeIdentity The node identity to use for vault operations.
+	 * @returns Nothing.
+	 * @internal
+	 */
+	private async internalRemoveImmutable(
+		streamEntity: AuditableItemStream,
+		nodeIdentity: string
+	): Promise<void> {
+		if (Is.stringValue(streamEntity.proofId)) {
+			await this._immutableProofComponent.removeImmutable(streamEntity.proofId, nodeIdentity);
+			delete streamEntity.proofId;
+			await this._streamStorage.set(streamEntity);
+		}
+
+		let entriesResult;
+		do {
+			entriesResult = await this._streamEntryStorage.query(
+				{
+					property: "streamId",
+					value: streamEntity.id,
+					comparison: ComparisonOperator.Equals
+				},
+				[
+					{
+						property: "dateCreated",
+						sortDirection: SortDirection.Ascending
+					}
+				],
+				undefined,
+				entriesResult?.cursor
+			);
+
+			for (const streamEntry of entriesResult.entities) {
+				if (Is.stringValue(streamEntry.proofId)) {
+					await this._immutableProofComponent.removeImmutable(nodeIdentity, streamEntry.proofId);
+					delete streamEntry.proofId;
+					await this._streamEntryStorage.set(streamEntry as AuditableItemStreamEntry);
+				}
+			}
+		} while (Is.stringValue(entriesResult.cursor));
 	}
 }

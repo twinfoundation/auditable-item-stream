@@ -1290,4 +1290,100 @@ describe("AuditableItemStreamService", () => {
 			]
 		});
 	});
+
+	test("Can query a list of streams", async () => {
+		const service = new AuditableItemStreamService();
+
+		for (let i = 0; i < 5; i++) {
+			await service.create(
+				{
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: `This is a simple note ${i + 1}`
+				},
+				[
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
+					}
+				],
+				undefined,
+				TEST_USER_IDENTITY,
+				TEST_NODE_IDENTITY
+			);
+		}
+
+		const result = await service.query();
+		expect(result).toEqual({
+			"@context": ["https://schema.twindev.org/ais/", "https://schema.org/"],
+			type: "AuditableItemStreamList",
+			streams: [
+				{
+					id: "0606060606060606060606060606060606060606060606060606060606060606",
+					type: "AuditableItemStream",
+					dateCreated: "2024-08-22T11:56:56.272Z",
+					dateModified: "2024-08-22T11:56:56.272Z",
+					streamObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is a simple note 2"
+					}
+				},
+				{
+					id: "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+					type: "AuditableItemStream",
+					dateCreated: "2024-08-22T11:56:56.272Z",
+					dateModified: "2024-08-22T11:56:56.272Z",
+					streamObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is a simple note 3"
+					}
+				},
+				{
+					id: "1010101010101010101010101010101010101010101010101010101010101010",
+					type: "AuditableItemStream",
+					dateCreated: "2024-08-22T11:56:56.272Z",
+					dateModified: "2024-08-22T11:56:56.272Z",
+					streamObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is a simple note 4"
+					}
+				},
+				{
+					id: "1515151515151515151515151515151515151515151515151515151515151515",
+					type: "AuditableItemStream",
+					dateCreated: "2024-08-22T11:56:56.272Z",
+					dateModified: "2024-08-22T11:56:56.272Z",
+					streamObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is a simple note 5"
+					}
+				},
+				{
+					id: "0101010101010101010101010101010101010101010101010101010101010101",
+					type: "AuditableItemStream",
+					dateCreated: "2024-08-22T11:55:16.271Z",
+					dateModified: "2024-08-22T11:55:16.271Z",
+					streamObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: "This is a simple note 1"
+					}
+				}
+			]
+		});
+	});
 });

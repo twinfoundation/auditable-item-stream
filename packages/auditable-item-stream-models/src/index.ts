@@ -4,6 +4,7 @@ export * from "./dataTypes/auditableItemStreamDataTypes";
 export * from "./models/api/IAuditableItemStreamCreateEntryRequest";
 export * from "./models/api/IAuditableItemStreamCreateRequest";
 export * from "./models/api/IAuditableItemStreamDeleteEntryRequest";
+export * from "./models/api/IAuditableItemStreamDeleteRequest";
 export * from "./models/api/IAuditableItemStreamGetEntryObjectRequest";
 export * from "./models/api/IAuditableItemStreamGetEntryObjectResponse";
 export * from "./models/api/IAuditableItemStreamGetEntryRequest";

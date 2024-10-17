@@ -13,6 +13,7 @@ import type {
 	IAuditableItemStreamCreateEntryRequest,
 	IAuditableItemStreamCreateRequest,
 	IAuditableItemStreamDeleteEntryRequest,
+	IAuditableItemStreamDeleteRequest,
 	IAuditableItemStreamEntry,
 	IAuditableItemStreamEntryList,
 	IAuditableItemStreamEntryObjectList,
@@ -149,6 +150,21 @@ export class AuditableItemStreamClient
 			},
 			body: {
 				streamObject
+			}
+		});
+	}
+
+	/**
+	 * Delete the stream.
+	 * @param id The id of the stream to remove.
+	 * @returns Nothing.
+	 */
+	public async remove(id: string): Promise<void> {
+		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+
+		await this.fetch<IAuditableItemStreamDeleteRequest, INoContentResponse>("/:id", "DELETE", {
+			pathParams: {
+				id
 			}
 		});
 	}
@@ -312,9 +328,9 @@ export class AuditableItemStreamClient
 	}
 
 	/**
-	 * Delete from the stream.
-	 * @param id The id of the stream to update.
-	 * @param entryId The id of the entry to delete.
+	 * Remove from the stream.
+	 * @param id The id of the stream to remove from.
+	 * @param entryId The id of the entry to remove.
 	 * @returns Nothing.
 	 */
 	public async removeEntry(id: string, entryId: string): Promise<void> {

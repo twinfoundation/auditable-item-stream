@@ -14,6 +14,7 @@ import {
 	type IAuditableItemStreamComponent,
 	type IAuditableItemStreamCreateEntryRequest,
 	type IAuditableItemStreamCreateRequest,
+	type IAuditableItemStreamDeleteRequest,
 	type IAuditableItemStreamDeleteEntryRequest,
 	type IAuditableItemStreamGetEntryObjectRequest,
 	type IAuditableItemStreamGetEntryObjectResponse,
@@ -270,6 +271,37 @@ export function generateRestRoutesAuditableItemStream(
 		]
 	};
 
+	const deleteRoute: IRestRoute<IAuditableItemStreamDeleteRequest, INoContentResponse> = {
+		operationId: "auditableItemStreamDelete",
+		summary: "Delete a stream",
+		tag: tagsAuditableItemStream[0].name,
+		method: "DELETE",
+		path: `${baseRouteName}/:id`,
+		handler: async (httpRequestContext, request) =>
+			auditableItemStreamDelete(httpRequestContext, componentName, request),
+		requestType: {
+			type: nameof<IAuditableItemStreamDeleteRequest>(),
+			examples: [
+				{
+					id: "auditableItemStreamDeleteRequestExample",
+					request: {
+						pathParams: {
+							id: "ais:1234567890"
+						}
+					}
+				}
+			]
+		},
+		responseType: [
+			{
+				type: nameof<INoContentResponse>()
+			},
+			{
+				type: nameof<INotFoundResponse>()
+			}
+		]
+	};
+
 	const listRoute: IRestRoute<IAuditableItemStreamListRequest, IAuditableItemStreamListResponse> = {
 		operationId: "auditableItemStreamList",
 		summary: "Query streams",
@@ -421,7 +453,7 @@ export function generateRestRoutesAuditableItemStream(
 		handler: async (httpRequestContext, request) =>
 			auditableItemStreamDeleteEntry(httpRequestContext, componentName, request),
 		requestType: {
-			type: nameof<IAuditableItemStreamGetRequest>(),
+			type: nameof<IAuditableItemStreamDeleteRequest>(),
 			examples: [
 				{
 					id: "auditableItemStreamDeleteEntryRequestExample",
@@ -770,6 +802,7 @@ export function generateRestRoutesAuditableItemStream(
 		createRoute,
 		getRoute,
 		updateRoute,
+		deleteRoute,
 		listRoute,
 		createEntryRoute,
 		getEntryRoute,
@@ -875,6 +908,37 @@ export async function auditableItemStreamUpdate(
 	await component.update(
 		request.pathParams.id,
 		request.body?.streamObject,
+		httpRequestContext.userIdentity,
+		httpRequestContext.nodeIdentity
+	);
+	return {
+		statusCode: HttpStatusCode.noContent
+	};
+}
+
+/**
+ * Delete the stream.
+ * @param httpRequestContext The request context for the API.
+ * @param componentName The name of the component to use in the routes.
+ * @param request The request.
+ * @returns The response object with additional http response properties.
+ */
+export async function auditableItemStreamDelete(
+	httpRequestContext: IHttpRequestContext,
+	componentName: string,
+	request: IAuditableItemStreamDeleteRequest
+): Promise<INoContentResponse> {
+	Guards.object<IAuditableItemStreamDeleteRequest>(ROUTES_SOURCE, nameof(request), request);
+	Guards.object<IAuditableItemStreamDeleteRequest["pathParams"]>(
+		ROUTES_SOURCE,
+		nameof(request.pathParams),
+		request.pathParams
+	);
+	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
+
+	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
+	await component.remove(
+		request.pathParams.id,
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);

@@ -5,6 +5,7 @@
 			"createFailed": "Creating the Auditable Item Stream failed",
 			"getFailed": "Getting the Auditable Item Stream failed",
 			"updatingFailed": "Updating the Auditable Item Stream failed",
+			"removingFailed": "Removing Auditable Item Stream failed",
 			"queryingFailed": "Querying the Auditable Item Stream failed",
 			"creatingEntryFailed": "Creating entry in the Auditable Item Stream failed",
 			"updatingEntryFailed": "Updating entry in the Auditable Item Stream failed",

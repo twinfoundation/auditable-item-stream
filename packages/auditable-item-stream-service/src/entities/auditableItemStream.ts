@@ -23,7 +23,7 @@ export class AuditableItemStream {
 	/**
 	 * The date/time of when the stream was modified.
 	 */
-	@property({ type: "string", format: "date-time" })
+	@property({ type: "string", format: "date-time", sortDirection: SortDirection.Descending })
 	public dateModified?: string;
 
 	/**
