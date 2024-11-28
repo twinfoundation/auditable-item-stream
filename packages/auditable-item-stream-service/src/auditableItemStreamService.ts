@@ -285,20 +285,8 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				streamModel.cursor = result.cursor;
 			}
 
-			if (options?.verifyStream ?? false) {
-				const fixedStreamModel = await this.streamEntityToJsonLd(
-					ObjectHelper.pick(
-						streamEntity,
-						AuditableItemStreamService._PROOF_KEYS_STREAM
-					) as AuditableItemStream
-				);
-
-				if (Is.stringValue(streamEntity.proofId)) {
-					streamModel.verification = await this._immutableProofComponent.verify(
-						streamEntity.proofId,
-						fixedStreamModel
-					);
-				}
+			if ((options?.verifyStream ?? false) && Is.stringValue(streamEntity.proofId)) {
+				streamModel.verification = await this._immutableProofComponent.verify(streamEntity.proofId);
 			}
 
 			const compacted = await JsonLdProcessor.compact(streamModel, streamModel["@context"]);
@@ -1138,16 +1126,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			let verification: IImmutableProofVerification | undefined;
 			if ((verifyEntry ?? false) && Is.stringValue(entity.proofId)) {
-				// Create the JSON-LD object we want to use for the proof
-				// this is a subset of fixed properties from the stream entry object.
-				const streamEntryModel = await this.streamEntryEntityToJsonLd(
-					ObjectHelper.pick(
-						entity,
-						AuditableItemStreamService._PROOF_KEYS_STREAM_ENTRY
-					) as AuditableItemStreamEntry
-				);
-
-				verification = await this._immutableProofComponent.verify(entity.proofId, streamEntryModel);
+				verification = await this._immutableProofComponent.verify(entity.proofId);
 			}
 
 			return {
@@ -1255,19 +1234,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const entryModel = this.streamEntryEntityToJsonLd(entry as AuditableItemStreamEntry);
 
 			if (needToVerify && Is.stringValue(entry.proofId)) {
-				// Create the JSON-LD object we want to use for the proof
-				// this is a subset of fixed properties from the stream entry object.
-				const streamEntryModel = await this.streamEntryEntityToJsonLd(
-					ObjectHelper.pick(
-						entry,
-						AuditableItemStreamService._PROOF_KEYS_STREAM_ENTRY
-					) as AuditableItemStreamEntry
-				);
-
-				entryModel.verification = await this._immutableProofComponent.verify(
-					entry.proofId,
-					streamEntryModel
-				);
+				entryModel.verification = await this._immutableProofComponent.verify(entry.proofId);
 			}
 			entryModels.push(entryModel);
 		}
