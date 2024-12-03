@@ -1,13 +1,20 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import {
+	AuditableItemStreamTopics,
 	AuditableItemStreamTypes,
+	type IAuditableItemStreamEventBusStreamCreated,
+	type IAuditableItemStreamEventBusStreamUpdated,
 	type IAuditableItemStream,
 	type IAuditableItemStreamComponent,
 	type IAuditableItemStreamEntry,
 	type IAuditableItemStreamEntryList,
 	type IAuditableItemStreamEntryObjectList,
-	type IAuditableItemStreamList
+	type IAuditableItemStreamList,
+	type IAuditableItemStreamEventBusStreamDeleted,
+	type IAuditableItemStreamEventBusStreamEntryCreated,
+	type IAuditableItemStreamEventBusStreamEntryUpdated,
+	type IAuditableItemStreamEventBusStreamEntryDeleted
 } from "@twin.org/auditable-item-stream-models";
 import {
 	Coerce,
@@ -37,6 +44,7 @@ import {
 	EntityStorageConnectorFactory,
 	type IEntityStorageConnector
 } from "@twin.org/entity-storage-models";
+import type { IEventBusComponent } from "@twin.org/event-bus-models";
 import {
 	ImmutableProofTypes,
 	type IImmutableProofComponent,
@@ -109,6 +117,12 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	private readonly _streamEntryStorage: IEntityStorageConnector<AuditableItemStreamEntry>;
 
 	/**
+	 * The event bus component.
+	 * @internal
+	 */
+	private readonly _eventBusComponent?: IEventBusComponent;
+
+	/**
 	 * The default interval for the integrity checks.
 	 * @internal
 	 */
@@ -121,11 +135,13 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @param options.immutableProofComponentType The immutable proof component type, defaults to "immutable-proof".
 	 * @param options.streamEntityStorageType The entity storage for stream, defaults to "auditable-item-stream".
 	 * @param options.streamEntryEntityStorageType The entity storage for stream entries, defaults to "auditable-item-stream-entry".
+	 * @param options.eventBusComponentType The event bus component type, defaults to no event bus.
 	 */
 	constructor(options?: {
 		immutableProofComponentType?: string;
 		streamEntityStorageType?: string;
 		streamEntryEntityStorageType?: string;
+		eventBusComponentType?: string;
 		config?: IAuditableItemStreamServiceConfig;
 	}) {
 		this._immutableProofComponent = ComponentFactory.get(
@@ -140,6 +156,10 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			options?.streamEntryEntityStorageType ??
 				StringHelper.kebabCase(nameof<AuditableItemStreamEntry>())
 		);
+
+		if (Is.stringValue(options?.eventBusComponentType)) {
+			this._eventBusComponent = ComponentFactory.get(options.eventBusComponentType);
+		}
 
 		this._config = options?.config ?? {};
 		this._defaultImmutableInterval = this._config.defaultImmutableInterval ?? 10;
@@ -227,6 +247,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			streamEntity.indexCounter = context.indexCounter;
 
 			await this._streamStorage.set(streamEntity);
+
+			await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamCreated>(
+				AuditableItemStreamTopics.StreamCreated,
+				{ id: streamModel.id }
+			);
 
 			return streamModel.id;
 		} catch (error) {
@@ -343,6 +368,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				streamEntity.dateModified = new Date(Date.now()).toISOString();
 
 				await this._streamStorage.set(streamEntity);
+
+				await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamUpdated>(
+					AuditableItemStreamTopics.StreamUpdated,
+					{ id }
+				);
 			}
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "updateFailed", undefined, error);
@@ -381,6 +411,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			await this.internalRemoveImmutable(streamEntity, nodeIdentity);
 
 			await this._streamStorage.remove(streamEntity.id);
+
+			await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamDeleted>(
+				AuditableItemStreamTopics.StreamDeleted,
+				{ id }
+			);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "removingFailed", undefined, error);
 		}
@@ -507,7 +542,17 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			await this._streamStorage.set(streamEntity);
 
-			return new Urn(AuditableItemStreamService.NAMESPACE, [streamEntity.id, createdId]).toString();
+			const fullId = new Urn(AuditableItemStreamService.NAMESPACE, [
+				streamEntity.id,
+				createdId
+			]).toString();
+
+			await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamEntryCreated>(
+				AuditableItemStreamTopics.StreamEntryCreated,
+				{ id, entryId: fullId }
+			);
+
+			return fullId;
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "creatingEntryFailed", undefined, error);
 		}
@@ -700,6 +745,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			streamEntity.indexCounter = context.indexCounter;
 
 			await this._streamStorage.set(streamEntity);
+
+			await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamEntryUpdated>(
+				AuditableItemStreamTopics.StreamEntryUpdated,
+				{ id, entryId }
+			);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "updatingEntryFailed", undefined, error);
 		}
@@ -776,6 +826,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				streamEntity.dateModified = context.now;
 				streamEntity.indexCounter = context.indexCounter;
 				await this._streamStorage.set(streamEntity);
+
+				await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamEntryDeleted>(
+					AuditableItemStreamTopics.StreamEntryDeleted,
+					{ id, entryId }
+				);
 			}
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "removingEntryFailed", undefined, error);

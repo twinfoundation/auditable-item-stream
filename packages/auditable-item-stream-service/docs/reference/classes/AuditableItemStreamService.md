@@ -32,6 +32,10 @@ The entity storage for stream, defaults to "auditable-item-stream".
 
 The entity storage for stream entries, defaults to "auditable-item-stream-entry".
 
+• **options.eventBusComponentType?**: `string`
+
+The event bus component type, defaults to no event bus.
+
 • **options.config?**: [`IAuditableItemStreamServiceConfig`](../interfaces/IAuditableItemStreamServiceConfig.md)
 
 The configuration for the connector.
