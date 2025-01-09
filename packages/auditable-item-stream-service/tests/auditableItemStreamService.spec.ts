@@ -22,6 +22,7 @@ import {
 	initSchema as initSchemaImmutableStorage
 } from "@twin.org/immutable-storage-connector-entity-storage";
 import { ImmutableStorageConnectorFactory } from "@twin.org/immutable-storage-models";
+import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
 import {
 	cleanupTestEnv,
@@ -62,6 +63,13 @@ describe("AuditableItemStreamService", () => {
 		initSchemaImmutableStorage();
 		initSchemaImmutableProof();
 		initSchemaBackgroundTask();
+
+		// Mock the module helper to execute the method in the same thread, so we don't have to create an engine
+		ModuleHelper.execModuleMethodThread = vi
+			.fn()
+			.mockImplementation(async (module, method, args) =>
+				ModuleHelper.execModuleMethod(module, method, args)
+			);
 	});
 
 	afterAll(async () => {

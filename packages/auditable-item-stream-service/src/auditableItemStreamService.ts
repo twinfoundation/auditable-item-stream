@@ -54,6 +54,7 @@ import { nameof } from "@twin.org/nameof";
 import type { AuditableItemStream } from "./entities/auditableItemStream";
 import type { AuditableItemStreamEntry } from "./entities/auditableItemStreamEntry";
 import type { IAuditableItemStreamServiceConfig } from "./models/IAuditableItemStreamServiceConfig";
+import type { IAuditableItemStreamServiceConstructorOptions } from "./models/IAuditableItemStreamServiceConstructorOptions";
 import type { IAuditableItemStreamServiceContext } from "./models/IAuditableItemStreamServiceContext";
 
 /**
@@ -131,19 +132,8 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	/**
 	 * Create a new instance of AuditableItemStreamService.
 	 * @param options The dependencies for the auditable item stream connector.
-	 * @param options.config The configuration for the connector.
-	 * @param options.immutableProofComponentType The immutable proof component type, defaults to "immutable-proof".
-	 * @param options.streamEntityStorageType The entity storage for stream, defaults to "auditable-item-stream".
-	 * @param options.streamEntryEntityStorageType The entity storage for stream entries, defaults to "auditable-item-stream-entry".
-	 * @param options.eventBusComponentType The event bus component type, defaults to no event bus.
 	 */
-	constructor(options?: {
-		immutableProofComponentType?: string;
-		streamEntityStorageType?: string;
-		streamEntryEntityStorageType?: string;
-		eventBusComponentType?: string;
-		config?: IAuditableItemStreamServiceConfig;
-	}) {
+	constructor(options?: IAuditableItemStreamServiceConstructorOptions) {
 		this._immutableProofComponent = ComponentFactory.get(
 			options?.immutableProofComponentType ?? "immutable-proof"
 		);
