@@ -20,7 +20,7 @@ export interface IAuditableItemStreamListRequest {
 	 */
 	query?: {
 		/**
-		 * The conditions to filter the streams, consist of property|comparison|value comma separated.
+		 * The conditions to filter the streams, JSON stringified IComparator[].
 		 */
 		conditions?: string;
 

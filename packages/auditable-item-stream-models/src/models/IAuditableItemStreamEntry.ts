@@ -56,7 +56,7 @@ export interface IAuditableItemStreamEntry {
 	index: number;
 
 	/**
-	 * The if of the immutable proof.
+	 * The id of the immutable proof.
 	 */
 	proofId?: string;
 

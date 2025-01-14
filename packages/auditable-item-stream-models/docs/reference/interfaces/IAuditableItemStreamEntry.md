@@ -80,7 +80,7 @@ The index of the entry in the stream.
 
 > `optional` **proofId**: `string`
 
-The if of the immutable proof.
+The id of the immutable proof.
 
 ***
 
