@@ -76,14 +76,14 @@ export function generateRestRoutesAuditableItemStream(
 					request: {
 						body: {
 							streamObject: {
-								"@context": "http://schema.org/",
+								"@context": "https://schema.org",
 								"@type": "Note",
 								content: "This is a simple note"
 							},
 							entries: [
 								{
 									entryObject: {
-										"@context": "http://schema.org/",
+										"@context": "https://schema.org",
 										"@type": "Event",
 										startDate: "2011-04-09T20:00:00Z",
 										description: "A description of the event"
@@ -152,7 +152,7 @@ export function generateRestRoutesAuditableItemStream(
 								dateCreated: "2024-08-22T11:55:16.271Z",
 								dateModified: "2024-08-22T11:55:16.271Z",
 								streamObject: {
-									"@context": "http://schema.org/",
+									"@context": "https://schema.org",
 									"@type": "Note",
 									content: "This is a simple note"
 								},
@@ -169,7 +169,7 @@ export function generateRestRoutesAuditableItemStream(
 										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
-											"@context": "http://schema.org/",
+											"@context": "https://schema.org",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
@@ -198,7 +198,7 @@ export function generateRestRoutesAuditableItemStream(
 								dateCreated: "2024-08-22T11:55:16.271Z",
 								dateModified: "2024-08-22T11:55:16.271Z",
 								streamObject: {
-									"@context": "http://schema.org/",
+									"@context": "https://schema.org",
 									"@type": "Note",
 									content: "This is a simple note"
 								},
@@ -215,7 +215,7 @@ export function generateRestRoutesAuditableItemStream(
 										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
-											"@context": "http://schema.org/",
+											"@context": "https://schema.org",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
@@ -252,7 +252,7 @@ export function generateRestRoutesAuditableItemStream(
 						},
 						body: {
 							streamObject: {
-								"@context": "http://schema.org/",
+								"@context": "https://schema.org",
 								"@type": "Note",
 								content: "This is a simple note"
 							}
@@ -337,7 +337,7 @@ export function generateRestRoutesAuditableItemStream(
 										dateCreated: "2024-08-22T11:55:16.271Z",
 										dateModified: "2024-08-22T11:55:16.271Z",
 										streamObject: {
-											"@context": "http://schema.org/",
+											"@context": "https://schema.org",
 											"@type": "Note",
 											content: "This is a simple note"
 										},
@@ -374,7 +374,7 @@ export function generateRestRoutesAuditableItemStream(
 										dateCreated: "2024-08-22T11:55:16.271Z",
 										dateModified: "2024-08-22T11:55:16.271Z",
 										streamObject: {
-											"@context": "http://schema.org/",
+											"@context": "https://schema.org",
 											"@type": "Note",
 											content: "This is a simple note"
 										},
@@ -415,7 +415,7 @@ export function generateRestRoutesAuditableItemStream(
 						},
 						body: {
 							entryObject: {
-								"@context": "http://schema.org/",
+								"@context": "https://schema.org",
 								"@type": "Event",
 								startDate: "2011-04-09T20:00:00Z",
 								description: "A description of the event"
@@ -496,7 +496,7 @@ export function generateRestRoutesAuditableItemStream(
 						},
 						body: {
 							entryObject: {
-								"@context": "http://schema.org/",
+								"@context": "https://schema.org",
 								"@type": "Note",
 								content: "This is a simple note"
 							}
@@ -555,7 +555,7 @@ export function generateRestRoutesAuditableItemStream(
 								proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 								index: 0,
 								entryObject: {
-									"@context": "http://schema.org/",
+									"@context": "https://schema.org",
 									"@type": "Event",
 									startDate: "2011-04-09T20:00:00Z",
 									description: "A description of the event"
@@ -583,7 +583,7 @@ export function generateRestRoutesAuditableItemStream(
 								proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 								index: 0,
 								entryObject: {
-									"@context": "http://schema.org/",
+									"@context": "https://schema.org",
 									"@type": "Event",
 									startDate: "2011-04-09T20:00:00Z",
 									description: "A description of the event"
@@ -632,7 +632,7 @@ export function generateRestRoutesAuditableItemStream(
 						id: "auditableItemStreamGetEntryObjectResponseExample",
 						response: {
 							body: {
-								"@context": "http://schema.org/",
+								"@context": "https://schema.org",
 								"@type": "Event",
 								startDate: "2011-04-09T20:00:00Z",
 								description: "A description of the event"
@@ -690,7 +690,7 @@ export function generateRestRoutesAuditableItemStream(
 										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
-											"@context": "http://schema.org/",
+											"@context": "https://schema.org",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
@@ -725,7 +725,7 @@ export function generateRestRoutesAuditableItemStream(
 										proofId: "0101010101010101010101010101010101010101010101010101010101010101",
 										index: 0,
 										entryObject: {
-											"@context": "http://schema.org/",
+											"@context": "https://schema.org",
 											"@type": "Event",
 											startDate: "2011-04-09T20:00:00Z",
 											description: "A description of the event"
@@ -780,7 +780,7 @@ export function generateRestRoutesAuditableItemStream(
 								type: AuditableItemStreamTypes.StreamEntryObjectList,
 								entryObjects: [
 									{
-										"@context": "http://schema.org/",
+										"@context": "https://schema.org",
 										"@type": "Event",
 										startDate: "2011-04-09T20:00:00Z",
 										description: "A description of the event"
