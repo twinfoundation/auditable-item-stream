@@ -72,7 +72,7 @@ Entries to store in the stream.
 
 Options for creating the stream.
 
-###### immutableInterval
+###### immutableInterval?
 
 `number`
 
@@ -121,25 +121,25 @@ The id of the stream to get.
 
 Additional options for the get operation.
 
-###### includeEntries
+###### includeEntries?
 
 `boolean`
 
 Whether to include the entries, defaults to false.
 
-###### includeDeleted
+###### includeDeleted?
 
 `boolean`
 
 Whether to include deleted entries, defaults to false.
 
-###### verifyStream
+###### verifyStream?
 
 `boolean`
 
 Should the stream be verified, defaults to false.
 
-###### verifyEntries
+###### verifyEntries?
 
 `boolean`
 
@@ -367,7 +367,7 @@ The id of the stream entry to get.
 
 Additional options for the get operation.
 
-###### verifyEntry
+###### verifyEntry?
 
 `boolean`
 
@@ -537,37 +537,37 @@ The id of the stream to get.
 
 Additional options for the get operation.
 
-###### conditions
+###### conditions?
 
 `IComparator`[]
 
 The conditions to filter the stream.
 
-###### includeDeleted
+###### includeDeleted?
 
 `boolean`
 
 Whether to include deleted entries, defaults to false.
 
-###### verifyEntries
+###### verifyEntries?
 
 `boolean`
 
 Should the entries be verified, defaults to false.
 
-###### pageSize
+###### pageSize?
 
 `number`
 
 How many entries to return.
 
-###### cursor
+###### cursor?
 
 `string`
 
 Cursor to use for next chunk of data.
 
-###### order
+###### order?
 
 `SortDirection`
 
@@ -607,31 +607,31 @@ The id of the stream to get.
 
 Additional options for the get operation.
 
-###### conditions
+###### conditions?
 
 `IComparator`[]
 
 The conditions to filter the stream.
 
-###### includeDeleted
+###### includeDeleted?
 
 `boolean`
 
 Whether to include deleted entries, defaults to false.
 
-###### pageSize
+###### pageSize?
 
 `number`
 
 How many entries to return.
 
-###### cursor
+###### cursor?
 
 `string`
 
 Cursor to use for next chunk of data.
 
-###### order
+###### order?
 
 `SortDirection`
 
