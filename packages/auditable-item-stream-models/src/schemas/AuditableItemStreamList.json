@@ -17,7 +17,7 @@
 						}
 					],
 					"additionalItems": {
-						"type": "string"
+						"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
 					}
 				}
 			],
@@ -28,12 +28,12 @@
 			"const": "AuditableItemStreamList",
 			"description": "JSON-LD Type."
 		},
-		"streams": {
+		"itemStreams": {
 			"type": "array",
 			"items": {
 				"$ref": "https://schema.twindev.org/ais/AuditableItemStream"
 			},
-			"description": "The streams."
+			"description": "The item streams."
 		},
 		"cursor": {
 			"type": "string",
@@ -43,7 +43,7 @@
 	"required": [
 		"@context",
 		"type",
-		"streams"
+		"itemStreams"
 	],
 	"additionalProperties": false,
 	"description": "Interface describing an auditable item stream list."

@@ -42,7 +42,7 @@ export class AuditableItemStream {
 	 * Object to associate with the stream as JSON-LD.
 	 */
 	@property({ type: "object", itemTypeRef: JsonLdTypes.Object })
-	public streamObject?: IJsonLdNodeObject;
+	public annotationObject?: IJsonLdNodeObject;
 
 	/**
 	 * The counter for the entry index.

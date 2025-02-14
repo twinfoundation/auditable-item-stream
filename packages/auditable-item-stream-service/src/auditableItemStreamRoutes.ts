@@ -75,7 +75,7 @@ export function generateRestRoutesAuditableItemStream(
 					id: "auditableItemStreamCreateRequestExample",
 					request: {
 						body: {
-							streamObject: {
+							annotationObject: {
 								"@context": "https://schema.org",
 								"@type": "Note",
 								content: "This is a simple note"
@@ -151,7 +151,7 @@ export function generateRestRoutesAuditableItemStream(
 								id: "ais:1234567890",
 								dateCreated: "2024-08-22T11:55:16.271Z",
 								dateModified: "2024-08-22T11:55:16.271Z",
-								streamObject: {
+								annotationObject: {
 									"@context": "https://schema.org",
 									"@type": "Note",
 									content: "This is a simple note"
@@ -197,7 +197,7 @@ export function generateRestRoutesAuditableItemStream(
 								id: "ais:1234567890",
 								dateCreated: "2024-08-22T11:55:16.271Z",
 								dateModified: "2024-08-22T11:55:16.271Z",
-								streamObject: {
+								annotationObject: {
 									"@context": "https://schema.org",
 									"@type": "Note",
 									content: "This is a simple note"
@@ -251,7 +251,7 @@ export function generateRestRoutesAuditableItemStream(
 							id: "ais:1234567890"
 						},
 						body: {
-							streamObject: {
+							annotationObject: {
 								"@context": "https://schema.org",
 								"@type": "Note",
 								content: "This is a simple note"
@@ -329,14 +329,14 @@ export function generateRestRoutesAuditableItemStream(
 							body: {
 								"@context": AuditableItemStreamTypes.ContextRoot,
 								type: AuditableItemStreamTypes.StreamList,
-								streams: [
+								itemStreams: [
 									{
 										"@context": AuditableItemStreamTypes.ContextRoot,
 										type: AuditableItemStreamTypes.Stream,
 										id: "ais:1234567890",
 										dateCreated: "2024-08-22T11:55:16.271Z",
 										dateModified: "2024-08-22T11:55:16.271Z",
-										streamObject: {
+										annotationObject: {
 											"@context": "https://schema.org",
 											"@type": "Note",
 											content: "This is a simple note"
@@ -366,14 +366,14 @@ export function generateRestRoutesAuditableItemStream(
 							body: {
 								"@context": AuditableItemStreamTypes.ContextRoot,
 								type: AuditableItemStreamTypes.StreamList,
-								streams: [
+								itemStreams: [
 									{
 										"@context": AuditableItemStreamTypes.ContextRoot,
 										type: AuditableItemStreamTypes.Stream,
 										id: "ais:1234567890",
 										dateCreated: "2024-08-22T11:55:16.271Z",
 										dateModified: "2024-08-22T11:55:16.271Z",
-										streamObject: {
+										annotationObject: {
 											"@context": "https://schema.org",
 											"@type": "Note",
 											content: "This is a simple note"
@@ -827,11 +827,18 @@ export async function auditableItemStreamCreate(
 	request: IAuditableItemStreamCreateRequest
 ): Promise<ICreatedResponse> {
 	Guards.object<IAuditableItemStreamCreateRequest>(ROUTES_SOURCE, nameof(request), request);
+	Guards.object<IAuditableItemStreamCreateRequest["body"]>(
+		ROUTES_SOURCE,
+		nameof(request.body),
+		request.body
+	);
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const id = await component.create(
-		request.body?.streamObject,
-		request.body?.entries,
+		{
+			annotationObject: request.body.annotationObject,
+			entries: request.body.entries
+		},
 		{
 			immutableInterval: request.body?.immutableInterval
 		},
@@ -903,11 +910,18 @@ export async function auditableItemStreamUpdate(
 		request.pathParams
 	);
 	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
+	Guards.object<IAuditableItemStreamUpdateRequest["body"]>(
+		ROUTES_SOURCE,
+		nameof(request.body),
+		request.body
+	);
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	await component.update(
-		request.pathParams.id,
-		request.body?.streamObject,
+		{
+			id: request.pathParams.id,
+			annotationObject: request.body.annotationObject
+		},
 		httpRequestContext.userIdentity,
 		httpRequestContext.nodeIdentity
 	);

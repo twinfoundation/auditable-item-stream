@@ -9,11 +9,11 @@ export interface IAuditableItemStreamCreateRequest {
 	/**
 	 * The data to be used in the stream.
 	 */
-	body?: {
+	body: {
 		/**
 		 * The object to be used in the stream as JSON-LD.
 		 */
-		streamObject?: IJsonLdNodeObject;
+		annotationObject?: IJsonLdNodeObject;
 
 		/**
 		 * The entries for the stream.

@@ -15,8 +15,9 @@ import type { IAuditableItemStreamList } from "./IAuditableItemStreamList";
 export interface IAuditableItemStreamComponent extends IComponent {
 	/**
 	 * Create a new stream.
-	 * @param streamObject The object for the stream as JSON-LD.
-	 * @param entries Entries to store in the stream.
+	 * @param stream The stream to create.
+	 * @param stream.annotationObject The object for the stream as JSON-LD.
+	 * @param stream.entries Entries to store in the stream.
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
 	 * A value of 0 will disable immutable checks, 1 will be every item, or any other integer for an interval.
@@ -25,10 +26,12 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @returns The id of the new stream item.
 	 */
 	create(
-		streamObject?: IJsonLdNodeObject,
-		entries?: {
-			entryObject: IJsonLdNodeObject;
-		}[],
+		stream: {
+			annotationObject?: IJsonLdNodeObject;
+			entries?: {
+				entryObject: IJsonLdNodeObject;
+			}[];
+		},
 		options?: {
 			immutableInterval?: number;
 		},
@@ -38,15 +41,18 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Update a stream.
-	 * @param id The id of the stream to update.
-	 * @param streamObject The object for the stream as JSON-LD.
+	 * @param stream The stream to update.
+	 * @param stream.id The id of the stream to update.
+	 * @param stream.annotationObject The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
 	update(
-		id: string,
-		streamObject?: IJsonLdNodeObject,
+		stream: {
+			id: string;
+			annotationObject?: IJsonLdNodeObject;
+		},
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void>;
@@ -86,7 +92,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param conditions Conditions to use in the query.
 	 * @param orderBy The order for the results, defaults to created.
 	 * @param orderByDirection The direction for the order, defaults to descending.
-	 * @param properties The properties to return, if not provided defaults to id, dateCreated, dateModified and streamObject.
+	 * @param properties The properties to return, if not provided defaults to id, dateCreated, dateModified and annotationObject.
 	 * @param cursor The cursor to request the next page of entities.
 	 * @param pageSize The maximum number of entities in a page.
 	 * @returns The entities, which can be partial if a limited keys list was provided.
@@ -102,14 +108,14 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Create an entry in the stream.
-	 * @param id The id of the stream to update.
+	 * @param streamId The id of the stream to create the entry in.
 	 * @param entryObject The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the created entry, if not provided.
 	 */
 	createEntry(
-		id: string,
+		streamId: string,
 		entryObject: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
@@ -117,7 +123,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Get the entry from the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param entryId The id of the stream entry to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.verifyEntry Should the entry be verified, defaults to false.
@@ -125,7 +131,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @throws NotFoundError if the stream is not found.
 	 */
 	getEntry(
-		id: string,
+		streamId: string,
 		entryId: string,
 		options?: {
 			verifyEntry?: boolean;
@@ -143,7 +149,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Update an entry in the stream.
-	 * @param id The id of the stream to update.
+	 * @param streamId The id of the stream to update.
 	 * @param entryId The id of the entry to update.
 	 * @param entryObject The object for the entry as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
@@ -151,7 +157,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @returns Nothing.
 	 */
 	updateEntry(
-		id: string,
+		streamId: string,
 		entryId: string,
 		entryObject: IJsonLdNodeObject,
 		userIdentity?: string,
@@ -160,14 +166,14 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Remove from the stream.
-	 * @param id The id of the stream to remove from.
+	 * @param streamId The id of the stream to remove from.
 	 * @param entryId The id of the entry to delete.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
 	removeEntry(
-		id: string,
+		streamId: string,
 		entryId: string,
 		userIdentity?: string,
 		nodeIdentity?: string
@@ -175,7 +181,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Get the entries for the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
@@ -188,7 +194,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @throws NotFoundError if the stream is not found.
 	 */
 	getEntries(
-		id: string,
+		streamId: string,
 		options?: {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
@@ -202,7 +208,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Get the entry objects for the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
@@ -213,7 +219,7 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @throws NotFoundError if the stream is not found.
 	 */
 	getEntryObjects(
-		id: string,
+		streamId: string,
 		options?: {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
@@ -225,10 +231,10 @@ export interface IAuditableItemStreamComponent extends IComponent {
 
 	/**
 	 * Remove the immutable storage for the stream and entries.
-	 * @param id The id of the stream to remove the storage from.
+	 * @param streamId The id of the stream to remove the storage from.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @throws NotFoundError if the vertex is not found.
 	 */
-	removeImmutable(id: string, nodeIdentity?: string): Promise<void>;
+	removeImmutable(streamId: string, nodeIdentity?: string): Promise<void>;
 }

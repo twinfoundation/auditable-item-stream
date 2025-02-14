@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { IJsonLdContextDefinitionElement, IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IImmutableProofVerification } from "@twin.org/immutable-proof-models";
 import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
 
@@ -13,7 +13,7 @@ export interface IAuditableItemStreamEntry {
 	 */
 	"@context":
 		| typeof AuditableItemStreamTypes.ContextRoot
-		| [typeof AuditableItemStreamTypes.ContextRoot, ...string[]];
+		| [typeof AuditableItemStreamTypes.ContextRoot, ...IJsonLdContextDefinitionElement[]];
 
 	/**
 	 * JSON-LD Type.

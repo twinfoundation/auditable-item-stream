@@ -50,19 +50,23 @@ Runtime name for the class.
 
 ### create()
 
-> **create**(`streamObject`?, `entries`?, `options`?): `Promise`\<`string`\>
+> **create**(`stream`, `options`?): `Promise`\<`string`\>
 
 Create a new stream.
 
 #### Parameters
 
-##### streamObject?
+##### stream
+
+The stream to create.
+
+###### annotationObject?
 
 `IJsonLdNodeObject`
 
 The object for the stream as JSON-LD.
 
-##### entries?
+###### entries?
 
 `object`[]
 
@@ -77,7 +81,7 @@ Options for creating the stream.
 `number`
 
 After how many entries do we add immutable checks, defaults to service configured value.
-A value of 0 will disable immutable checks, 1 will be every item, or any other integer for an interval.
+A value of 0 will disable integrity checks, 1 will be every item, or any other integer for an interval.
 
 #### Returns
 
@@ -151,19 +155,23 @@ NotFoundError if the stream is not found
 
 ### update()
 
-> **update**(`id`, `streamObject`?): `Promise`\<`void`\>
+> **update**(`stream`): `Promise`\<`void`\>
 
 Update a stream.
 
 #### Parameters
 
-##### id
+##### stream
+
+The stream to update.
+
+###### id
 
 `string`
 
 The id of the stream to update.
 
-##### streamObject?
+###### annotationObject?
 
 `IJsonLdNodeObject`
 

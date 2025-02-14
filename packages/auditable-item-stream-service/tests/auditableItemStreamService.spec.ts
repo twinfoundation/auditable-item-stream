@@ -136,13 +136,7 @@ describe("AuditableItemStreamService", () => {
 	test("Can create a stream with no data", async () => {
 		const service = new AuditableItemStreamService();
 
-		const streamId = await service.create(
-			undefined,
-			undefined,
-			undefined,
-			TEST_USER_IDENTITY,
-			TEST_NODE_IDENTITY
-		);
+		const streamId = await service.create({}, undefined, TEST_USER_IDENTITY, TEST_NODE_IDENTITY);
 
 		expect(streamId.startsWith("ais:")).toEqual(true);
 
@@ -205,26 +199,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -241,7 +237,7 @@ describe("AuditableItemStreamService", () => {
 				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
@@ -346,26 +342,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -421,7 +419,7 @@ describe("AuditableItemStreamService", () => {
 			],
 			immutableInterval: 10,
 			proofId: "immutable-proof:0202020202020202020202020202020202020202020202020202020202020202",
-			streamObject: {
+			annotationObject: {
 				"@context": "https://www.w3.org/ns/activitystreams",
 				"@type": "Note",
 				content: "This is a simple note"
@@ -501,26 +499,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -576,7 +576,7 @@ describe("AuditableItemStreamService", () => {
 			],
 			immutableInterval: 10,
 			proofId: "immutable-proof:0202020202020202020202020202020202020202020202020202020202020202",
-			streamObject: {
+			annotationObject: {
 				"@context": "https://www.w3.org/ns/activitystreams",
 				"@type": "Note",
 				content: "This is a simple note"
@@ -596,37 +596,41 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
 		);
 
 		await service.update(
-			streamId,
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note xxx"
+				id: streamId,
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note xxx"
+				}
 			},
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -646,7 +650,7 @@ describe("AuditableItemStreamService", () => {
 					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 				dateCreated: "2024-08-22T11:55:16.271Z",
 				dateModified: "2024-08-22T11:56:56.272Z",
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note xxx"
@@ -702,26 +706,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -753,7 +759,7 @@ describe("AuditableItemStreamService", () => {
 					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 				dateCreated: "2024-08-22T11:55:16.271Z",
 				dateModified: "2024-08-22T11:56:56.272Z",
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
@@ -824,26 +830,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -875,7 +883,7 @@ describe("AuditableItemStreamService", () => {
 				dateModified: "2024-08-22T11:56:56.272Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
@@ -897,26 +905,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -959,7 +969,7 @@ describe("AuditableItemStreamService", () => {
 				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
@@ -975,26 +985,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -1023,7 +1035,7 @@ describe("AuditableItemStreamService", () => {
 				dateModified: "2024-08-22T11:55:16.271Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
@@ -1039,26 +1051,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -1084,7 +1098,7 @@ describe("AuditableItemStreamService", () => {
 				dateModified: "2024-08-22T11:56:56.272Z",
 				nodeIdentity: TEST_NODE_IDENTITY,
 				userIdentity: TEST_USER_IDENTITY,
-				streamObject: {
+				annotationObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is a simple note"
@@ -1114,26 +1128,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -1189,26 +1205,28 @@ describe("AuditableItemStreamService", () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
 			{
-				"@context": "https://www.w3.org/ns/activitystreams",
-				"@type": "Note",
-				content: "This is a simple note"
-			},
-			[
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 1"
-					}
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
 				},
-				{
-					entryObject: {
-						"@context": "https://www.w3.org/ns/activitystreams",
-						"@type": "Note",
-						content: "This is an entry note 2"
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
 					}
-				}
-			],
+				]
+			},
 			undefined,
 			TEST_USER_IDENTITY,
 			TEST_NODE_IDENTITY
@@ -1262,26 +1280,28 @@ describe("AuditableItemStreamService", () => {
 		for (let i = 0; i < 5; i++) {
 			await service.create(
 				{
-					"@context": "https://www.w3.org/ns/activitystreams",
-					"@type": "Note",
-					content: `This is a simple note ${i + 1}`
-				},
-				[
-					{
-						entryObject: {
-							"@context": "https://www.w3.org/ns/activitystreams",
-							"@type": "Note",
-							content: "This is an entry note 1"
-						}
+					annotationObject: {
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
+						content: `This is a simple note ${i + 1}`
 					},
-					{
-						entryObject: {
-							"@context": "https://www.w3.org/ns/activitystreams",
-							"@type": "Note",
-							content: "This is an entry note 2"
+					entries: [
+						{
+							entryObject: {
+								"@context": "https://www.w3.org/ns/activitystreams",
+								"@type": "Note",
+								content: "This is an entry note 1"
+							}
+						},
+						{
+							entryObject: {
+								"@context": "https://www.w3.org/ns/activitystreams",
+								"@type": "Note",
+								content: "This is an entry note 2"
+							}
 						}
-					}
-				],
+					]
+				},
 				undefined,
 				TEST_USER_IDENTITY,
 				TEST_NODE_IDENTITY
@@ -1292,12 +1312,12 @@ describe("AuditableItemStreamService", () => {
 		expect(result).toMatchObject({
 			"@context": ["https://schema.twindev.org/ais/", "https://schema.org"],
 			type: "AuditableItemStreamList",
-			streams: [
+			itemStreams: [
 				{
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
-					streamObject: {
+					annotationObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is a simple note 2"
@@ -1307,7 +1327,7 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
-					streamObject: {
+					annotationObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is a simple note 3"
@@ -1317,7 +1337,7 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
-					streamObject: {
+					annotationObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is a simple note 4"
@@ -1327,7 +1347,7 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
-					streamObject: {
+					annotationObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is a simple note 5"
@@ -1337,7 +1357,7 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStream",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					dateModified: "2024-08-22T11:55:16.271Z",
-					streamObject: {
+					annotationObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is a simple note 1"

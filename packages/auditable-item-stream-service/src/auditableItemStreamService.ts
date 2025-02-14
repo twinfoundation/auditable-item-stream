@@ -159,8 +159,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Create a new stream.
-	 * @param streamObject The object for the stream as JSON-LD.
-	 * @param entries Entries to store in the stream.
+	 * @param stream The stream to create.
+	 * @param stream.annotationObject The object for the stream as JSON-LD.
+	 * @param stream.entries Entries to store in the stream.
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
 	 * A value of 0 will disable integrity checks, 1 will be every item, or any other integer for an interval.
@@ -169,24 +170,31 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @returns The id of the new stream item.
 	 */
 	public async create(
-		streamObject?: IJsonLdNodeObject,
-		entries?: {
-			entryObject: IJsonLdNodeObject;
-		}[],
+		stream: {
+			annotationObject?: IJsonLdNodeObject;
+			entries?: {
+				entryObject: IJsonLdNodeObject;
+			}[];
+		},
 		options?: {
 			immutableInterval?: number;
 		},
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<string> {
+		Guards.object(this.CLASS_NAME, nameof(stream), stream);
 		Guards.stringValue(this.CLASS_NAME, nameof(userIdentity), userIdentity);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
 		try {
-			if (Is.object(streamObject)) {
+			if (Is.object(stream.annotationObject)) {
 				const validationFailures: IValidationFailure[] = [];
-				await JsonLdHelper.validate(streamObject, validationFailures);
-				Validation.asValidationError(this.CLASS_NAME, nameof(streamObject), validationFailures);
+				await JsonLdHelper.validate(stream.annotationObject, validationFailures);
+				Validation.asValidationError(
+					this.CLASS_NAME,
+					nameof(stream.annotationObject),
+					validationFailures
+				);
 			}
 
 			const id = Converter.bytesToHex(RandomHelper.generate(32), false);
@@ -225,15 +233,15 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				nodeIdentity
 			);
 
-			if (Is.arrayValue(entries)) {
-				for (const entry of entries) {
+			if (Is.arrayValue(stream.entries)) {
+				for (const entry of stream.entries) {
 					await this.setEntry(context, id, entry);
 				}
 			}
 
 			// Add these dynamic properties to the stream object after the proof has been created.
 			streamEntity.dateModified = context.now;
-			streamEntity.streamObject = streamObject;
+			streamEntity.annotationObject = stream.annotationObject;
 			streamEntity.indexCounter = context.indexCounter;
 
 			await this._streamStorage.set(streamEntity);
@@ -314,28 +322,32 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Update a stream.
-	 * @param id The id of the stream to update.
-	 * @param streamObject The object for the stream as JSON-LD.
+	 * @param stream The stream to update.
+	 * @param stream.id The id of the stream to update.
+	 * @param stream.annotationObject The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
 	public async update(
-		id: string,
-		streamObject?: IJsonLdNodeObject,
+		stream: {
+			id: string;
+			annotationObject?: IJsonLdNodeObject;
+		},
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.object(this.CLASS_NAME, nameof(stream), stream);
+		Guards.stringValue(this.CLASS_NAME, nameof(stream.id), stream.id);
 		Guards.stringValue(this.CLASS_NAME, nameof(userIdentity), userIdentity);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(stream.id);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: stream.id
 			});
 		}
 
@@ -344,24 +356,28 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", stream.id);
 			}
 
-			if (Is.object(streamObject)) {
+			if (Is.object(stream.annotationObject)) {
 				const validationFailures: IValidationFailure[] = [];
-				await JsonLdHelper.validate(streamObject, validationFailures);
-				Validation.asValidationError(this.CLASS_NAME, nameof(streamObject), validationFailures);
+				await JsonLdHelper.validate(stream.annotationObject, validationFailures);
+				Validation.asValidationError(
+					this.CLASS_NAME,
+					nameof(stream.annotationObject),
+					validationFailures
+				);
 			}
 
-			if (!ObjectHelper.equal(streamEntity.streamObject, streamObject, false)) {
-				streamEntity.streamObject = streamObject;
+			if (!ObjectHelper.equal(streamEntity.annotationObject, stream.annotationObject, false)) {
+				streamEntity.annotationObject = stream.annotationObject;
 				streamEntity.dateModified = new Date(Date.now()).toISOString();
 
 				await this._streamStorage.set(streamEntity);
 
 				await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamUpdated>(
 					AuditableItemStreamTopics.StreamUpdated,
-					{ id }
+					{ id: stream.id }
 				);
 			}
 		} catch (error) {
@@ -434,7 +450,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				"id",
 				"dateCreated",
 				"dateModified",
-				"streamObject"
+				"annotationObject"
 			];
 			const orderProperty: keyof IAuditableItemStream = orderBy ?? "dateCreated";
 			const orderDirection = orderByDirection ?? SortDirection.Descending;
@@ -468,7 +484,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const list: IAuditableItemStreamList = {
 				"@context": [AuditableItemStreamTypes.ContextRoot, SchemaOrgTypes.ContextRoot],
 				type: AuditableItemStreamTypes.StreamList,
-				streams: (results.entities as AuditableItemStream[]).map(e => this.streamEntityToJsonLd(e)),
+				itemStreams: (results.entities as AuditableItemStream[]).map(e =>
+					this.streamEntityToJsonLd(e)
+				),
 				cursor: results.cursor
 			};
 
@@ -482,37 +500,37 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Create an entry in the stream.
-	 * @param id The id of the stream to update.
+	 * @param streamId The id of the stream to update.
 	 * @param entryObject The object for the stream as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns The id of the created entry, if not provided.
 	 */
 	public async createEntry(
-		id: string,
+		streamId: string,
 		entryObject: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<string> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(userIdentity), userIdentity);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
 		try {
-			const streamId = urnParsed.namespaceSpecific(0);
-			const streamEntity = await this._streamStorage.get(streamId);
+			const streamIdParts = urnParsed.namespaceSpecific(0);
+			const streamEntity = await this._streamStorage.get(streamIdParts);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamIdParts);
 			}
 
 			const context: IAuditableItemStreamServiceContext = {
@@ -539,7 +557,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamEntryCreated>(
 				AuditableItemStreamTopics.StreamEntryCreated,
-				{ id, entryId: fullId }
+				{ id: streamId, entryId: fullId }
 			);
 
 			return fullId;
@@ -550,7 +568,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Get the entry from the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param entryId The id of the stream entry to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.verifyEntry Should the entry be verified, defaults to false.
@@ -558,20 +576,20 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @throws NotFoundError if the stream is not found.
 	 */
 	public async getEntry(
-		id: string,
+		streamId: string,
 		entryId: string,
 		options?: {
 			verifyEntry?: boolean;
 		}
 	): Promise<IAuditableItemStreamEntry> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
@@ -588,7 +606,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
 			const entryNamespaceId = urnParsedEntry.namespaceSpecific(1);
@@ -614,21 +632,21 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Get the entry object from the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param entryId The id of the stream entry to get.
 	 * @returns The stream and entries if found.
 	 * @throws NotFoundError if the stream is not found.
 	 */
-	public async getEntryObject(id: string, entryId: string): Promise<IJsonLdNodeObject> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+	public async getEntryObject(streamId: string, entryId: string): Promise<IJsonLdNodeObject> {
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
@@ -646,7 +664,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
 			const entryNamespaceId = urnParsedEntry.namespaceSpecific(1);
@@ -667,7 +685,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Update an entry in the stream.
-	 * @param id The id of the stream to update.
+	 * @param streamId The id of the stream to update.
 	 * @param entryId The id of the entry to update.
 	 * @param entryObject The object for the entry as JSON-LD.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
@@ -675,23 +693,23 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @returns Nothing.
 	 */
 	public async updateEntry(
-		id: string,
+		streamId: string,
 		entryId: string,
 		entryObject: IJsonLdNodeObject,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 		Guards.stringValue(this.CLASS_NAME, nameof(userIdentity), userIdentity);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
@@ -709,7 +727,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
 			const entryNamespaceId = urnParsedEntry.namespaceSpecific(1);
@@ -738,7 +756,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamEntryUpdated>(
 				AuditableItemStreamTopics.StreamEntryUpdated,
-				{ id, entryId }
+				{ id: streamId, entryId }
 			);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "updatingEntryFailed", undefined, error);
@@ -747,29 +765,29 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Delete from the stream.
-	 * @param id The id of the stream to remove from.
+	 * @param streamId The id of the stream to remove from.
 	 * @param entryId The id of the entry to remove.
 	 * @param userIdentity The identity to create the auditable item stream operation with.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 */
 	public async removeEntry(
-		id: string,
+		streamId: string,
 		entryId: string,
 		userIdentity?: string,
 		nodeIdentity?: string
 	): Promise<void> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 		Guards.stringValue(this.CLASS_NAME, nameof(userIdentity), userIdentity);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
@@ -786,7 +804,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
 			const entryNamespaceId = urnParsedEntry.namespaceSpecific(1);
@@ -819,7 +837,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 				await this._eventBusComponent?.publish<IAuditableItemStreamEventBusStreamEntryDeleted>(
 					AuditableItemStreamTopics.StreamEntryDeleted,
-					{ id, entryId }
+					{ id: streamId, entryId }
 				);
 			}
 		} catch (error) {
@@ -829,7 +847,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Get the entries for the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
@@ -841,7 +859,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @throws NotFoundError if the stream is not found.
 	 */
 	public async getEntries(
-		id: string,
+		streamId: string,
 		options?: {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
@@ -851,14 +869,14 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			order?: SortDirection;
 		}
 	): Promise<IAuditableItemStreamEntryList> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
@@ -867,7 +885,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
 			const result = await this.findEntries(
@@ -902,7 +920,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Get the entry objects for the stream.
-	 * @param id The id of the stream to get.
+	 * @param streamId The id of the stream to get.
 	 * @param options Additional options for the get operation.
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
@@ -913,7 +931,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	 * @throws NotFoundError if the stream is not found.
 	 */
 	public async getEntryObjects(
-		id: string,
+		streamId: string,
 		options?: {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
@@ -922,14 +940,14 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			order?: SortDirection;
 		}
 	): Promise<IAuditableItemStreamEntryObjectList> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
@@ -938,7 +956,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
 			const result = await this.findEntries(
@@ -969,30 +987,30 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * Remove the immutable storage for the stream and entries.
-	 * @param id The id of the stream to remove the storage from.
+	 * @param streamId The id of the stream to remove the storage from.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @throws NotFoundError if the vertex is not found.
 	 */
-	public async removeImmutable(id: string, nodeIdentity?: string): Promise<void> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+	public async removeImmutable(streamId: string, nodeIdentity?: string): Promise<void> {
+		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
-		const urnParsed = Urn.fromValidString(id);
+		const urnParsed = Urn.fromValidString(streamId);
 
 		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
 				namespace: AuditableItemStreamService.NAMESPACE,
-				id
+				id: streamId
 			});
 		}
 
 		try {
-			const streamId = urnParsed.namespaceSpecific(0);
-			const streamEntity = await this._streamStorage.get(streamId);
+			const streamIdParts = urnParsed.namespaceSpecific(0);
+			const streamEntity = await this._streamStorage.get(streamIdParts);
 
 			if (Is.empty(streamEntity)) {
-				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
+				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamIdParts);
 			}
 
 			await this.internalRemoveImmutable(streamEntity, nodeIdentity);
@@ -1022,7 +1040,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			dateModified: streamEntity.dateModified,
 			nodeIdentity: streamEntity.nodeIdentity,
 			userIdentity: streamEntity.userIdentity,
-			streamObject: streamEntity.streamObject,
+			annotationObject: streamEntity.annotationObject,
 			immutableInterval: streamEntity.immutableInterval,
 			proofId: streamEntity.proofId
 		};

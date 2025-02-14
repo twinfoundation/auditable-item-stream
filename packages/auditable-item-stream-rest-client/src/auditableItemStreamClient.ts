@@ -61,29 +61,32 @@ export class AuditableItemStreamClient
 
 	/**
 	 * Create a new stream.
-	 * @param streamObject The object for the stream as JSON-LD.
-	 * @param entries Entries to store in the stream.
+	 * @param stream The stream to create.
+	 * @param stream.annotationObject The object for the stream as JSON-LD.
+	 * @param stream.entries Entries to store in the stream.
 	 * @param options Options for creating the stream.
 	 * @param options.immutableInterval After how many entries do we add immutable checks, defaults to service configured value.
-	 * A value of 0 will disable immutable checks, 1 will be every item, or any other integer for an interval.
+	 * A value of 0 will disable integrity checks, 1 will be every item, or any other integer for an interval.
 	 * @returns The id of the new stream item.
 	 */
 	public async create(
-		streamObject?: IJsonLdNodeObject,
-		entries?: {
-			entryObject: IJsonLdNodeObject;
-		}[],
+		stream: {
+			annotationObject?: IJsonLdNodeObject;
+			entries?: {
+				entryObject: IJsonLdNodeObject;
+			}[];
+		},
 		options?: {
 			immutableInterval?: number;
 		}
 	): Promise<string> {
+		Guards.object(this.CLASS_NAME, nameof(stream), stream);
 		const response = await this.fetch<IAuditableItemStreamCreateRequest, ICreatedResponse>(
 			"/",
 			"POST",
 			{
 				body: {
-					streamObject,
-					entries,
+					...stream,
 					immutableInterval: options?.immutableInterval
 				}
 			}
@@ -137,19 +140,22 @@ export class AuditableItemStreamClient
 
 	/**
 	 * Update a stream.
-	 * @param id The id of the stream to update.
-	 * @param streamObject The object for the stream as JSON-LD.
+	 * @param stream The stream to update.
+	 * @param stream.id The id of the stream to update.
+	 * @param stream.annotationObject The object for the stream as JSON-LD.
 	 * @returns Nothing.
 	 */
-	public async update(id: string, streamObject?: IJsonLdNodeObject): Promise<void> {
-		Guards.stringValue(this.CLASS_NAME, nameof(id), id);
+	public async update(stream: { id: string; annotationObject?: IJsonLdNodeObject }): Promise<void> {
+		Guards.object(this.CLASS_NAME, nameof(stream), stream);
+		Guards.stringValue(this.CLASS_NAME, nameof(stream.id), stream.id);
 
+		const { id, annotationObject } = stream;
 		await this.fetch<IAuditableItemStreamUpdateRequest, INoContentResponse>("/:id", "PUT", {
 			pathParams: {
 				id
 			},
 			body: {
-				streamObject
+				annotationObject
 			}
 		});
 	}

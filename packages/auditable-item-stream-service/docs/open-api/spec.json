@@ -44,7 +44,7 @@
 							"examples": {
 								"auditableItemStreamCreateRequestExample": {
 									"value": {
-										"streamObject": {
+										"annotationObject": {
 											"@context": "https://schema.org",
 											"@type": "Note",
 											"content": "This is a simple note"
@@ -229,14 +229,14 @@
 										"value": {
 											"@context": "https://schema.twindev.org/ais/",
 											"type": "AuditableItemStreamList",
-											"streams": [
+											"itemStreams": [
 												{
 													"@context": "https://schema.twindev.org/ais/",
 													"type": "AuditableItemStream",
 													"id": "ais:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
 													"dateModified": "2024-08-22T11:55:16.271Z",
-													"streamObject": {
+													"annotationObject": {
 														"@context": "https://schema.org",
 														"@type": "Note",
 														"content": "This is a simple note"
@@ -261,14 +261,14 @@
 										"value": {
 											"@context": "https://schema.twindev.org/ais/",
 											"type": "AuditableItemStreamList",
-											"streams": [
+											"itemStreams": [
 												{
 													"@context": "https://schema.twindev.org/ais/",
 													"type": "AuditableItemStream",
 													"id": "ais:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
 													"dateModified": "2024-08-22T11:55:16.271Z",
-													"streamObject": {
+													"annotationObject": {
 														"@context": "https://schema.org",
 														"@type": "Note",
 														"content": "This is a simple note"
@@ -462,7 +462,7 @@
 											"id": "ais:1234567890",
 											"dateCreated": "2024-08-22T11:55:16.271Z",
 											"dateModified": "2024-08-22T11:55:16.271Z",
-											"streamObject": {
+											"annotationObject": {
 												"@context": "https://schema.org",
 												"@type": "Note",
 												"content": "This is a simple note"
@@ -503,7 +503,7 @@
 											"id": "ais:1234567890",
 											"dateCreated": "2024-08-22T11:55:16.271Z",
 											"dateModified": "2024-08-22T11:55:16.271Z",
-											"streamObject": {
+											"annotationObject": {
 												"@context": "https://schema.org",
 												"@type": "Note",
 												"content": "This is a simple note"
@@ -657,7 +657,7 @@
 							"examples": {
 								"auditableItemStreamUpdateRequestExample": {
 									"value": {
-										"streamObject": {
+										"annotationObject": {
 											"@context": "https://schema.org",
 											"@type": "Note",
 											"content": "This is a simple note"
@@ -2022,7 +2022,7 @@
 			"AuditableItemStreamCreateRequest": {
 				"type": "object",
 				"properties": {
-					"streamObject": {
+					"annotationObject": {
 						"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
 					},
 					"entries": {
@@ -2065,7 +2065,7 @@
 			"AuditableItemStreamUpdateRequest": {
 				"type": "object",
 				"properties": {
-					"streamObject": {
+					"annotationObject": {
 						"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
 					}
 				},

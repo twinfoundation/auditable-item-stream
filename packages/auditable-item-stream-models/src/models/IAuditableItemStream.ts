@@ -1,6 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { IJsonLdContextDefinitionElement, IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IImmutableProofVerification } from "@twin.org/immutable-proof-models";
 import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
 import type { IAuditableItemStreamEntry } from "./IAuditableItemStreamEntry";
@@ -14,7 +14,7 @@ export interface IAuditableItemStream {
 	 */
 	"@context":
 		| typeof AuditableItemStreamTypes.ContextRoot
-		| [typeof AuditableItemStreamTypes.ContextRoot, ...string[]];
+		| [typeof AuditableItemStreamTypes.ContextRoot, ...IJsonLdContextDefinitionElement[]];
 
 	/**
 	 * JSON-LD Type.
@@ -49,7 +49,7 @@ export interface IAuditableItemStream {
 	/**
 	 * The object to associate with the entry as JSON-LD.
 	 */
-	streamObject?: IJsonLdNodeObject;
+	annotationObject?: IJsonLdNodeObject;
 
 	/**
 	 * The id of the immutable proof for the stream.
