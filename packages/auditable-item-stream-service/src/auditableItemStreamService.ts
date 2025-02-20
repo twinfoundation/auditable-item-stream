@@ -312,9 +312,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				streamModel.verification = await this._immutableProofComponent.verify(streamEntity.proofId);
 			}
 
-			const compacted = await JsonLdProcessor.compact(streamModel, streamModel["@context"]);
-
-			return compacted as IAuditableItemStream;
+			return JsonLdProcessor.compact(streamModel);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "getFailed", undefined, error);
 		}
@@ -482,7 +480,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			);
 
 			const list: IAuditableItemStreamList = {
-				"@context": [AuditableItemStreamTypes.ContextRoot, SchemaOrgTypes.ContextRoot],
+				"@context": [
+					AuditableItemStreamTypes.ContextRoot,
+					AuditableItemStreamTypes.ContextRootCommon,
+					SchemaOrgTypes.ContextRoot
+				],
 				type: AuditableItemStreamTypes.StreamList,
 				itemStreams: (results.entities as AuditableItemStream[]).map(e =>
 					this.streamEntityToJsonLd(e)
@@ -490,9 +492,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				cursor: results.cursor
 			};
 
-			const compacted = await JsonLdProcessor.compact(list, list["@context"]);
-
-			return compacted as IAuditableItemStreamList;
+			return JsonLdProcessor.compact(list);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "queryingFailed", undefined, error);
 		}
@@ -622,9 +622,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const entry = this.streamEntryEntityToJsonLd(result.entity);
 
-			const compacted = await JsonLdProcessor.compact(entry, entry["@context"]);
-
-			return compacted as IAuditableItemStreamEntry;
+			return JsonLdProcessor.compact(entry);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "gettingEntryFailed", undefined, error);
 		}
@@ -902,7 +900,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			const list: IAuditableItemStreamEntryList = {
 				"@context": [
 					AuditableItemStreamTypes.ContextRoot,
-					ImmutableProofTypes.ContextRoot,
+					AuditableItemStreamTypes.ContextRootCommon,
 					SchemaOrgTypes.ContextRoot
 				],
 				type: AuditableItemStreamTypes.StreamEntryList,
@@ -910,9 +908,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				cursor: result.cursor
 			};
 
-			const compacted = await JsonLdProcessor.compact(list, list["@context"]);
-
-			return compacted as IAuditableItemStreamEntryList;
+			return JsonLdProcessor.compact(list);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "gettingEntriesFailed", undefined, error);
 		}
@@ -971,15 +967,16 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			);
 
 			const list: IAuditableItemStreamEntryObjectList = {
-				"@context": AuditableItemStreamTypes.ContextRoot,
+				"@context": [
+					AuditableItemStreamTypes.ContextRoot,
+					AuditableItemStreamTypes.ContextRootCommon
+				],
 				type: AuditableItemStreamTypes.StreamEntryObjectList,
 				entryObjects: result.entries.map(m => m.entryObject),
 				cursor: result.cursor
 			};
 
-			const compacted = await JsonLdProcessor.compact(list, list["@context"]);
-
-			return compacted as IAuditableItemStreamEntryObjectList;
+			return JsonLdProcessor.compact(list);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "gettingEntryObjectsFailed", undefined, error);
 		}
@@ -1031,6 +1028,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		const model: IAuditableItemStream & IJsonLdNodeObject = {
 			"@context": [
 				AuditableItemStreamTypes.ContextRoot,
+				AuditableItemStreamTypes.ContextRootCommon,
 				ImmutableProofTypes.ContextRoot,
 				SchemaOrgTypes.ContextRoot
 			],
@@ -1060,6 +1058,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		const streamEntryModel: IAuditableItemStreamEntry & IJsonLdNodeObject = {
 			"@context": [
 				AuditableItemStreamTypes.ContextRoot,
+				AuditableItemStreamTypes.ContextRootCommon,
 				ImmutableProofTypes.ContextRoot,
 				SchemaOrgTypes.ContextRoot
 			],

@@ -11,9 +11,11 @@ export interface IAuditableItemStreamEntryList {
 	/**
 	 * JSON-LD Context.
 	 */
-	"@context":
-		| typeof AuditableItemStreamTypes.ContextRoot
-		| [typeof AuditableItemStreamTypes.ContextRoot, ...IJsonLdContextDefinitionElement[]];
+	"@context": [
+		typeof AuditableItemStreamTypes.ContextRoot,
+		typeof AuditableItemStreamTypes.ContextRootCommon,
+		...IJsonLdContextDefinitionElement[]
+	];
 
 	/**
 	 * JSON-LD Type.

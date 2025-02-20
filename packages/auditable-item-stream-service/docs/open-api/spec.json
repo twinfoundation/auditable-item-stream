@@ -227,11 +227,17 @@
 								"examples": {
 									"auditableItemStreamListResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamList",
 											"itemStreams": [
 												{
-													"@context": "https://schema.twindev.org/ais/",
+													"@context": [
+														"https://schema.twindev.org/ais/",
+														"https://schema.twindev.org/common/"
+													],
 													"type": "AuditableItemStream",
 													"id": "ais:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -259,11 +265,17 @@
 								"examples": {
 									"auditableItemStreamJsonLdListResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamList",
 											"itemStreams": [
 												{
-													"@context": "https://schema.twindev.org/ais/",
+													"@context": [
+														"https://schema.twindev.org/ais/",
+														"https://schema.twindev.org/common/"
+													],
 													"type": "AuditableItemStream",
 													"id": "ais:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -457,7 +469,10 @@
 								"examples": {
 									"auditableItemStreamGetResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStream",
 											"id": "ais:1234567890",
 											"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -473,7 +488,10 @@
 											"immutableInterval": 10,
 											"entries": [
 												{
-													"@context": "https://schema.twindev.org/ais/",
+													"@context": [
+														"https://schema.twindev.org/ais/",
+														"https://schema.twindev.org/common/"
+													],
 													"type": "AuditableItemStreamEntry",
 													"id": "tst:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -498,7 +516,10 @@
 								"examples": {
 									"auditableItemStreamJsonLdGetResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStream",
 											"id": "ais:1234567890",
 											"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -514,7 +535,10 @@
 											"immutableInterval": 10,
 											"entries": [
 												{
-													"@context": "https://schema.twindev.org/ais/",
+													"@context": [
+														"https://schema.twindev.org/ais/",
+														"https://schema.twindev.org/common/"
+													],
 													"type": "AuditableItemStreamEntry",
 													"id": "tst:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -1044,7 +1068,10 @@
 								"examples": {
 									"auditableItemStreamGetEntryResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamEntry",
 											"id": "tst:1234567890",
 											"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -1067,7 +1094,10 @@
 								"examples": {
 									"auditableItemStreamJsonLdGetEntryResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamEntry",
 											"id": "tst:1234567890",
 											"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -1671,11 +1701,17 @@
 								"examples": {
 									"auditableItemStreamListEntriesResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamEntryList",
 											"entries": [
 												{
-													"@context": "https://schema.twindev.org/ais/",
+													"@context": [
+														"https://schema.twindev.org/ais/",
+														"https://schema.twindev.org/common/"
+													],
 													"type": "AuditableItemStreamEntry",
 													"id": "tst:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -1701,11 +1737,17 @@
 								"examples": {
 									"auditableItemStreamJsonLdListEntriesResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamEntryList",
 											"entries": [
 												{
-													"@context": "https://schema.twindev.org/ais/",
+													"@context": [
+														"https://schema.twindev.org/ais/",
+														"https://schema.twindev.org/common/"
+													],
 													"type": "AuditableItemStreamEntry",
 													"id": "tst:1234567890",
 													"dateCreated": "2024-08-22T11:55:16.271Z",
@@ -1905,7 +1947,10 @@
 								"examples": {
 									"auditableItemStreamListEntryObjectsResponseExample": {
 										"value": {
-											"@context": "https://schema.twindev.org/ais/",
+											"@context": [
+												"https://schema.twindev.org/ais/",
+												"https://schema.twindev.org/common/"
+											],
 											"type": "AuditableItemStreamEntryObjectList",
 											"entryObjects": [
 												{

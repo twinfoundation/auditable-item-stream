@@ -36,7 +36,10 @@ describe("AuditableItemStreamDataTypes", () => {
 			"",
 			AuditableItemStreamTypes.Stream,
 			{
-				"@context": [AuditableItemStreamTypes.ContextRoot],
+				"@context": [
+					AuditableItemStreamTypes.ContextRoot,
+					AuditableItemStreamTypes.ContextRootCommon
+				],
 				type: AuditableItemStreamTypes.Stream,
 				id: "foo",
 				dateCreated: new Date().toISOString(),

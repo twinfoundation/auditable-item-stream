@@ -1,6 +1,6 @@
 {
 	"name": "@twin.org/auditable-item-stream",
-	"version": "0.0.1-next.20",
+	"version": "0.0.1-next.21",
 	"description": "Auditable Item Stream",
 	"repository": {
 		"type": "git",

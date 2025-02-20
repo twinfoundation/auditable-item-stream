@@ -12,6 +12,11 @@ export const AuditableItemStreamTypes = {
 	ContextRoot: "https://schema.twindev.org/ais/",
 
 	/**
+	 * The context root for the common types.
+	 */
+	ContextRootCommon: "https://schema.twindev.org/common/",
+
+	/**
 	 * Represents auditable item stream.
 	 */
 	Stream: "AuditableItemStream",
