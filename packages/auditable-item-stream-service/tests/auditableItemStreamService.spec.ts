@@ -180,7 +180,7 @@ describe("AuditableItemStreamService", () => {
 			],
 			id: "0202020202020202020202020202020202020202020202020202020202020202",
 			type: "ImmutableProof",
-			proofObjectHash: "ERrmUcdVSNqSOwYO8BeAEWwvNrruAqgR/kBRrN4ow1s=",
+			proofObjectHash: "J3QRGWAt42E/Gyt8pt/DBG2x+x7KBBsUIwuxrLuSYbc=",
 			proofObjectId: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
@@ -189,7 +189,7 @@ describe("AuditableItemStreamService", () => {
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"421XUrXzvcEm36rwFBfL6VSkxrCzq3HA5PTsi21pfgXVS36k28vXsW8RyRmu2VveUNSf5o7btKi95zYgZ4ZuWjaS",
+					"2jSGxaHozcgvYGwBCgkQaHsHHGGTA1YdT73Pz8HMWy3Td6pgrr5afdSeF6fHWYGuUrn22hcqTbWBMs943hFbYBgH",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -301,7 +301,7 @@ describe("AuditableItemStreamService", () => {
 			],
 			id: "0202020202020202020202020202020202020202020202020202020202020202",
 			type: "ImmutableProof",
-			proofObjectHash: "ERrmUcdVSNqSOwYO8BeAEWwvNrruAqgR/kBRrN4ow1s=",
+			proofObjectHash: "J3QRGWAt42E/Gyt8pt/DBG2x+x7KBBsUIwuxrLuSYbc=",
 			proofObjectId: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
@@ -310,7 +310,7 @@ describe("AuditableItemStreamService", () => {
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"421XUrXzvcEm36rwFBfL6VSkxrCzq3HA5PTsi21pfgXVS36k28vXsW8RyRmu2VveUNSf5o7btKi95zYgZ4ZuWjaS",
+					"2jSGxaHozcgvYGwBCgkQaHsHHGGTA1YdT73Pz8HMWy3Td6pgrr5afdSeF6fHWYGuUrn22hcqTbWBMs943hFbYBgH",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -326,7 +326,7 @@ describe("AuditableItemStreamService", () => {
 				"https://w3id.org/security/data-integrity/v2"
 			],
 			type: "ImmutableProof",
-			proofObjectHash: "Lsr2uY+M5ugUXt1QnEufOZgaL1Zv2hXAy+jCNiE+6Tc=",
+			proofObjectHash: "RhUCgPRhty1p19WrtkuhQTy7rZeiJo0KoaPLwFerLvY=",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
@@ -334,7 +334,7 @@ describe("AuditableItemStreamService", () => {
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"2BP6ZRssSqPG9AAHNoT3rqoFiWTbNxmabHzGbVvhu8eEGxQ9jZRZ5cM5RMVJHQVhVBWeaYFmxU78Z4LZFgyLNWfS",
+					"5ro9D2bP9jNuK3tyMMUACcqijNf7zFNRz1pdfLLX2dcjSaxonSiGeF8t84G1WgaV2MYzUfroPeKJeXM16m5Y7yrf",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -384,9 +384,8 @@ describe("AuditableItemStreamService", () => {
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.org",
-				"https://www.w3.org/ns/activitystreams"
+				"https://schema.twindev.org/immutable-proof/"
 			],
 			id: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			type: "AuditableItemStream",
@@ -397,7 +396,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 1"
 					},
 					verification: {
@@ -412,7 +412,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 2"
 					},
 					index: 1,
@@ -423,7 +424,8 @@ describe("AuditableItemStreamService", () => {
 			immutableInterval: 10,
 			proofId: "immutable-proof:0202020202020202020202020202020202020202020202020202020202020202",
 			annotationObject: {
-				type: "Note",
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
 				content: "This is a simple note"
 			},
 			verification: {
@@ -459,7 +461,7 @@ describe("AuditableItemStreamService", () => {
 			],
 			id: "0202020202020202020202020202020202020202020202020202020202020202",
 			type: "ImmutableProof",
-			proofObjectHash: "ERrmUcdVSNqSOwYO8BeAEWwvNrruAqgR/kBRrN4ow1s=",
+			proofObjectHash: "J3QRGWAt42E/Gyt8pt/DBG2x+x7KBBsUIwuxrLuSYbc=",
 			proofObjectId: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
@@ -468,7 +470,7 @@ describe("AuditableItemStreamService", () => {
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"421XUrXzvcEm36rwFBfL6VSkxrCzq3HA5PTsi21pfgXVS36k28vXsW8RyRmu2VveUNSf5o7btKi95zYgZ4ZuWjaS",
+					"2jSGxaHozcgvYGwBCgkQaHsHHGGTA1YdT73Pz8HMWy3Td6pgrr5afdSeF6fHWYGuUrn22hcqTbWBMs943hFbYBgH",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -484,7 +486,7 @@ describe("AuditableItemStreamService", () => {
 				"https://w3id.org/security/data-integrity/v2"
 			],
 			type: "ImmutableProof",
-			proofObjectHash: "Lsr2uY+M5ugUXt1QnEufOZgaL1Zv2hXAy+jCNiE+6Tc=",
+			proofObjectHash: "RhUCgPRhty1p19WrtkuhQTy7rZeiJo0KoaPLwFerLvY=",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
@@ -492,7 +494,7 @@ describe("AuditableItemStreamService", () => {
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"2BP6ZRssSqPG9AAHNoT3rqoFiWTbNxmabHzGbVvhu8eEGxQ9jZRZ5cM5RMVJHQVhVBWeaYFmxU78Z4LZFgyLNWfS",
+					"5ro9D2bP9jNuK3tyMMUACcqijNf7zFNRz1pdfLLX2dcjSaxonSiGeF8t84G1WgaV2MYzUfroPeKJeXM16m5Y7yrf",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -542,9 +544,8 @@ describe("AuditableItemStreamService", () => {
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.org",
-				"https://www.w3.org/ns/activitystreams"
+				"https://schema.twindev.org/immutable-proof/"
 			],
 			id: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 			type: "AuditableItemStream",
@@ -555,7 +556,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 1"
 					},
 					index: 0,
@@ -570,7 +572,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 2"
 					},
 					index: 1,
@@ -581,7 +584,8 @@ describe("AuditableItemStreamService", () => {
 			immutableInterval: 10,
 			proofId: "immutable-proof:0202020202020202020202020202020202020202020202020202020202020202",
 			annotationObject: {
-				type: "Note",
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
 				content: "This is a simple note"
 			},
 			verification: {
@@ -949,14 +953,13 @@ describe("AuditableItemStreamService", () => {
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.twindev.org/immutable-proof/",
-				"https://schema.org",
-				"https://www.w3.org/ns/activitystreams"
+				"https://schema.org"
 			],
 			type: "AuditableItemStreamEntry",
 			dateCreated: "2024-08-22T11:55:16.271Z",
 			entryObject: {
-				type: "Note",
+				"@context": "https://www.w3.org/ns/activitystreams",
+				"@type": "Note",
 				content: "This is an entry note 1"
 			},
 			userIdentity:
@@ -1170,8 +1173,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
 				"https://schema.org",
-				"https://schema.twindev.org/immutable-proof/",
-				"https://www.w3.org/ns/activitystreams"
+				"https://schema.twindev.org/immutable-proof/"
 			],
 			type: "AuditableItemStreamEntryList",
 			entries: [
@@ -1179,7 +1181,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 1"
 					},
 					verification: {
@@ -1194,7 +1197,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 2"
 					},
 					index: 1,
@@ -1259,8 +1263,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
 				"https://schema.org",
-				"https://schema.twindev.org/immutable-proof/",
-				"https://www.w3.org/ns/activitystreams"
+				"https://schema.twindev.org/immutable-proof/"
 			],
 			type: "AuditableItemStreamEntryList",
 			entries: [
@@ -1268,7 +1271,8 @@ describe("AuditableItemStreamService", () => {
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is an entry note 2"
 					},
 					index: 1,
@@ -1318,9 +1322,7 @@ describe("AuditableItemStreamService", () => {
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.org",
-				"https://schema.twindev.org/immutable-proof/",
-				"https://www.w3.org/ns/activitystreams"
+				"https://schema.org"
 			],
 			type: "AuditableItemStreamList",
 			itemStreams: [
@@ -1329,7 +1331,8 @@ describe("AuditableItemStreamService", () => {
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is a simple note 2"
 					}
 				},
@@ -1338,7 +1341,8 @@ describe("AuditableItemStreamService", () => {
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is a simple note 3"
 					}
 				},
@@ -1347,7 +1351,8 @@ describe("AuditableItemStreamService", () => {
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is a simple note 4"
 					}
 				},
@@ -1356,7 +1361,8 @@ describe("AuditableItemStreamService", () => {
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is a simple note 5"
 					}
 				},
@@ -1365,7 +1371,8 @@ describe("AuditableItemStreamService", () => {
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					dateModified: "2024-08-22T11:55:16.271Z",
 					annotationObject: {
-						type: "Note",
+						"@context": "https://www.w3.org/ns/activitystreams",
+						"@type": "Note",
 						content: "This is a simple note 1"
 					}
 				}

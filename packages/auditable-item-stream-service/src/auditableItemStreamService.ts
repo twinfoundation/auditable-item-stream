@@ -296,23 +296,26 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
 			}
 
+			const verifyStream = options?.verifyStream ?? false;
+			const verifyEntries = options?.verifyEntries ?? false;
+
 			const streamModel = await this.streamEntityToJsonLd(streamEntity);
 
 			if (options?.includeEntries) {
-				const result = await this.findEntries(
-					streamId,
-					options?.includeDeleted,
-					options?.verifyEntries
-				);
+				const result = await this.findEntries(streamId, options?.includeDeleted, verifyEntries);
 				streamModel.entries = result.entries;
 				streamModel.cursor = result.cursor;
 			}
 
-			if ((options?.verifyStream ?? false) && Is.stringValue(streamEntity.proofId)) {
+			if (verifyStream && Is.stringValue(streamEntity.proofId)) {
 				streamModel.verification = await this._immutableProofComponent.verify(streamEntity.proofId);
 			}
 
-			return JsonLdProcessor.compact(streamModel);
+			if (verifyStream || verifyEntries) {
+				streamModel["@context"].push(ImmutableProofTypes.ContextRoot);
+			}
+
+			return JsonLdProcessor.compact(streamModel, streamModel["@context"]);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "getFailed", undefined, error);
 		}
@@ -492,7 +495,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				cursor: results.cursor
 			};
 
-			return JsonLdProcessor.compact(list);
+			return JsonLdProcessor.compact(list, list["@context"]);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "queryingFailed", undefined, error);
 		}
@@ -609,12 +612,14 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
+			const verifyEntry = options?.verifyEntry ?? false;
+
 			const entryNamespaceId = urnParsedEntry.namespaceSpecific(1);
 			const result = await this.findEntry(
 				streamEntity.nodeIdentity,
 				streamEntity.id,
 				entryNamespaceId,
-				options?.verifyEntry
+				verifyEntry
 			);
 			if (Is.empty(result)) {
 				throw new NotFoundError(this.CLASS_NAME, "streamEntryNotFound", entryId);
@@ -622,7 +627,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const entry = this.streamEntryEntityToJsonLd(result.entity);
 
-			return JsonLdProcessor.compact(entry);
+			if (verifyEntry) {
+				entry.verification = result.verification;
+			}
+
+			return JsonLdProcessor.compact(entry, entry["@context"]);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "gettingEntryFailed", undefined, error);
 		}
@@ -886,10 +895,12 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamId);
 			}
 
+			const verifyEntries = options?.verifyEntries ?? false;
+
 			const result = await this.findEntries(
 				streamNamespaceId,
 				options?.includeDeleted,
-				options?.verifyEntries,
+				verifyEntries,
 				options?.conditions,
 				options?.order,
 				undefined,
@@ -908,7 +919,11 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				cursor: result.cursor
 			};
 
-			return JsonLdProcessor.compact(list);
+			if (verifyEntries) {
+				list["@context"].push(ImmutableProofTypes.ContextRoot);
+			}
+
+			return JsonLdProcessor.compact(list, list["@context"]);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "gettingEntriesFailed", undefined, error);
 		}
@@ -976,7 +991,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				cursor: result.cursor
 			};
 
-			return JsonLdProcessor.compact(list);
+			return JsonLdProcessor.compact(list, list["@context"]);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "gettingEntryObjectsFailed", undefined, error);
 		}
@@ -1029,7 +1044,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			"@context": [
 				AuditableItemStreamTypes.ContextRoot,
 				AuditableItemStreamTypes.ContextRootCommon,
-				ImmutableProofTypes.ContextRoot,
 				SchemaOrgTypes.ContextRoot
 			],
 			type: AuditableItemStreamTypes.Stream,
@@ -1059,7 +1073,6 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			"@context": [
 				AuditableItemStreamTypes.ContextRoot,
 				AuditableItemStreamTypes.ContextRootCommon,
-				ImmutableProofTypes.ContextRoot,
 				SchemaOrgTypes.ContextRoot
 			],
 			type: AuditableItemStreamTypes.StreamEntry,
