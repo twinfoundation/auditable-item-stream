@@ -61,7 +61,14 @@
 			"description": "The verification of the entry."
 		}
 	},
-	"required": ["@context", "type", "id", "dateCreated", "entryObject", "index"],
+	"required": [
+		"@context",
+		"type",
+		"id",
+		"dateCreated",
+		"entryObject",
+		"index"
+	],
 	"additionalProperties": false,
 	"description": "Interface describing an entry for the stream."
 }
