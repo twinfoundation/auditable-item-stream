@@ -23,7 +23,12 @@ export class AuditableItemStream {
 	/**
 	 * The date/time of when the stream was modified.
 	 */
-	@property({ type: "string", format: "date-time", sortDirection: SortDirection.Descending })
+	@property({
+		type: "string",
+		format: "date-time",
+		sortDirection: SortDirection.Descending,
+		optional: true
+	})
 	public dateModified?: string;
 
 	/**
@@ -41,7 +46,7 @@ export class AuditableItemStream {
 	/**
 	 * Object to associate with the stream as JSON-LD.
 	 */
-	@property({ type: "object", itemTypeRef: JsonLdTypes.Object })
+	@property({ type: "object", itemTypeRef: JsonLdTypes.Object, optional: true })
 	public annotationObject?: IJsonLdNodeObject;
 
 	/**
@@ -59,6 +64,6 @@ export class AuditableItemStream {
 	/**
 	 * The immutable proof id.
 	 */
-	@property({ type: "string" })
+	@property({ type: "string", optional: true })
 	public proofId?: string;
 }

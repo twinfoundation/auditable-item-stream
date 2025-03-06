@@ -29,13 +29,18 @@ export class AuditableItemStreamEntry {
 	/**
 	 * The date/time of when the entry was modified.
 	 */
-	@property({ type: "string", format: "date-time", sortDirection: SortDirection.Descending })
+	@property({
+		type: "string",
+		format: "date-time",
+		sortDirection: SortDirection.Descending,
+		optional: true
+	})
 	public dateModified?: string;
 
 	/**
 	 * The date/time of when the entry was deleted, as we never actually remove items.
 	 */
-	@property({ type: "string", format: "date-time" })
+	@property({ type: "string", format: "date-time", optional: true })
 	public dateDeleted?: string;
 
 	/**
@@ -59,6 +64,6 @@ export class AuditableItemStreamEntry {
 	/**
 	 * The immutable proof id.
 	 */
-	@property({ type: "string" })
+	@property({ type: "string", optional: true })
 	public proofId?: string;
 }
