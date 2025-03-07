@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import {
+	AuditableItemStreamContexts,
 	AuditableItemStreamTopics,
 	AuditableItemStreamTypes,
 	type IAuditableItemStream,
@@ -45,12 +46,12 @@ import {
 } from "@twin.org/entity-storage-models";
 import type { IEventBusComponent } from "@twin.org/event-bus-models";
 import {
-	ImmutableProofTypes,
+	ImmutableProofContexts,
 	type IImmutableProofComponent,
 	type IImmutableProofVerification
 } from "@twin.org/immutable-proof-models";
 import { nameof } from "@twin.org/nameof";
-import { SchemaOrgDataTypes, SchemaOrgTypes } from "@twin.org/standards-schema-org";
+import { SchemaOrgContexts, SchemaOrgDataTypes } from "@twin.org/standards-schema-org";
 import type { AuditableItemStream } from "./entities/auditableItemStream";
 import type { AuditableItemStreamEntry } from "./entities/auditableItemStreamEntry";
 import type { IAuditableItemStreamServiceConfig } from "./models/IAuditableItemStreamServiceConfig";
@@ -312,7 +313,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			}
 
 			if (verifyStream || verifyEntries) {
-				streamModel["@context"].push(ImmutableProofTypes.ContextRoot);
+				streamModel["@context"].push(ImmutableProofContexts.ContextRoot);
 			}
 
 			return JsonLdProcessor.compact(streamModel, streamModel["@context"]);
@@ -484,9 +485,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const list: IAuditableItemStreamList = {
 				"@context": [
-					AuditableItemStreamTypes.ContextRoot,
-					AuditableItemStreamTypes.ContextRootCommon,
-					SchemaOrgTypes.ContextRoot
+					AuditableItemStreamContexts.ContextRoot,
+					AuditableItemStreamContexts.ContextRootCommon,
+					SchemaOrgContexts.ContextRoot
 				],
 				type: AuditableItemStreamTypes.StreamList,
 				itemStreams: (results.entities as AuditableItemStream[]).map(e =>
@@ -910,9 +911,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const list: IAuditableItemStreamEntryList = {
 				"@context": [
-					AuditableItemStreamTypes.ContextRoot,
-					AuditableItemStreamTypes.ContextRootCommon,
-					SchemaOrgTypes.ContextRoot
+					AuditableItemStreamContexts.ContextRoot,
+					AuditableItemStreamContexts.ContextRootCommon,
+					SchemaOrgContexts.ContextRoot
 				],
 				type: AuditableItemStreamTypes.StreamEntryList,
 				entries: result.entries,
@@ -920,7 +921,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			};
 
 			if (verifyEntries) {
-				list["@context"].push(ImmutableProofTypes.ContextRoot);
+				list["@context"].push(ImmutableProofContexts.ContextRoot);
 			}
 
 			return JsonLdProcessor.compact(list, list["@context"]);
@@ -983,8 +984,8 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const list: IAuditableItemStreamEntryObjectList = {
 				"@context": [
-					AuditableItemStreamTypes.ContextRoot,
-					AuditableItemStreamTypes.ContextRootCommon
+					AuditableItemStreamContexts.ContextRoot,
+					AuditableItemStreamContexts.ContextRootCommon
 				],
 				type: AuditableItemStreamTypes.StreamEntryObjectList,
 				entryObjects: result.entries.map(m => m.entryObject),
@@ -1042,9 +1043,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	): IAuditableItemStream & IJsonLdNodeObject {
 		const model: IAuditableItemStream & IJsonLdNodeObject = {
 			"@context": [
-				AuditableItemStreamTypes.ContextRoot,
-				AuditableItemStreamTypes.ContextRootCommon,
-				SchemaOrgTypes.ContextRoot
+				AuditableItemStreamContexts.ContextRoot,
+				AuditableItemStreamContexts.ContextRootCommon,
+				SchemaOrgContexts.ContextRoot
 			],
 			type: AuditableItemStreamTypes.Stream,
 			id: `${AuditableItemStreamService.NAMESPACE}:${streamEntity.id}`,
@@ -1071,9 +1072,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	): IAuditableItemStreamEntry & IJsonLdNodeObject {
 		const streamEntryModel: IAuditableItemStreamEntry & IJsonLdNodeObject = {
 			"@context": [
-				AuditableItemStreamTypes.ContextRoot,
-				AuditableItemStreamTypes.ContextRootCommon,
-				SchemaOrgTypes.ContextRoot
+				AuditableItemStreamContexts.ContextRoot,
+				AuditableItemStreamContexts.ContextRootCommon,
+				SchemaOrgContexts.ContextRoot
 			],
 			type: AuditableItemStreamTypes.StreamEntry,
 			id: `${AuditableItemStreamService.NAMESPACE}:${streamEntryEntity.streamId}:${streamEntryEntity.id}`,

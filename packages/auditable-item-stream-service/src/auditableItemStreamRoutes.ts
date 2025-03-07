@@ -10,12 +10,13 @@ import {
 	type ITag
 } from "@twin.org/api-models";
 import {
+	AuditableItemStreamContexts,
 	AuditableItemStreamTypes,
 	type IAuditableItemStreamComponent,
 	type IAuditableItemStreamCreateEntryRequest,
 	type IAuditableItemStreamCreateRequest,
-	type IAuditableItemStreamDeleteRequest,
 	type IAuditableItemStreamDeleteEntryRequest,
+	type IAuditableItemStreamDeleteRequest,
 	type IAuditableItemStreamGetEntryObjectRequest,
 	type IAuditableItemStreamGetEntryObjectResponse,
 	type IAuditableItemStreamGetEntryRequest,
@@ -147,8 +148,8 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.Stream,
 								id: "ais:1234567890",
@@ -166,8 +167,8 @@ export function generateRestRoutesAuditableItemStream(
 								entries: [
 									{
 										"@context": [
-											AuditableItemStreamTypes.ContextRoot,
-											AuditableItemStreamTypes.ContextRootCommon
+											AuditableItemStreamContexts.ContextRoot,
+											AuditableItemStreamContexts.ContextRootCommon
 										],
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
@@ -199,8 +200,8 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.Stream,
 								id: "ais:1234567890",
@@ -218,8 +219,8 @@ export function generateRestRoutesAuditableItemStream(
 								entries: [
 									{
 										"@context": [
-											AuditableItemStreamTypes.ContextRoot,
-											AuditableItemStreamTypes.ContextRootCommon
+											AuditableItemStreamContexts.ContextRoot,
+											AuditableItemStreamContexts.ContextRootCommon
 										],
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
@@ -340,15 +341,15 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamList,
 								itemStreams: [
 									{
 										"@context": [
-											AuditableItemStreamTypes.ContextRoot,
-											AuditableItemStreamTypes.ContextRootCommon
+											AuditableItemStreamContexts.ContextRoot,
+											AuditableItemStreamContexts.ContextRootCommon
 										],
 										type: AuditableItemStreamTypes.Stream,
 										id: "ais:1234567890",
@@ -383,15 +384,15 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamList,
 								itemStreams: [
 									{
 										"@context": [
-											AuditableItemStreamTypes.ContextRoot,
-											AuditableItemStreamTypes.ContextRootCommon
+											AuditableItemStreamContexts.ContextRoot,
+											AuditableItemStreamContexts.ContextRootCommon
 										],
 										type: AuditableItemStreamTypes.Stream,
 										id: "ais:1234567890",
@@ -573,8 +574,8 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamEntry,
 								id: "tst:1234567890",
@@ -604,8 +605,8 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamEntry,
 								id: "tst:1234567890",
@@ -710,15 +711,15 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamEntryList,
 								entries: [
 									{
 										"@context": [
-											AuditableItemStreamTypes.ContextRoot,
-											AuditableItemStreamTypes.ContextRootCommon
+											AuditableItemStreamContexts.ContextRoot,
+											AuditableItemStreamContexts.ContextRootCommon
 										],
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
@@ -751,15 +752,15 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamEntryList,
 								entries: [
 									{
 										"@context": [
-											AuditableItemStreamTypes.ContextRoot,
-											AuditableItemStreamTypes.ContextRootCommon
+											AuditableItemStreamContexts.ContextRoot,
+											AuditableItemStreamContexts.ContextRootCommon
 										],
 										type: AuditableItemStreamTypes.StreamEntry,
 										id: "tst:1234567890",
@@ -819,8 +820,8 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
-									AuditableItemStreamTypes.ContextRoot,
-									AuditableItemStreamTypes.ContextRootCommon
+									AuditableItemStreamContexts.ContextRoot,
+									AuditableItemStreamContexts.ContextRootCommon
 								],
 								type: AuditableItemStreamTypes.StreamEntryObjectList,
 								entryObjects: [

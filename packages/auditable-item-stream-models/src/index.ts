@@ -19,6 +19,7 @@ export * from "./models/api/IAuditableItemStreamListRequest";
 export * from "./models/api/IAuditableItemStreamListResponse";
 export * from "./models/api/IAuditableItemStreamUpdateEntryRequest";
 export * from "./models/api/IAuditableItemStreamUpdateRequest";
+export * from "./models/auditableItemStreamContexts";
 export * from "./models/auditableItemStreamTopics";
 export * from "./models/auditableItemStreamTypes";
 export * from "./models/eventBus/IAuditableItemStreamEventBusStreamCreated";

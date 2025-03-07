@@ -4,6 +4,7 @@ import type { IValidationFailure } from "@twin.org/core";
 import { DataTypeHelper } from "@twin.org/data-core";
 import { JsonLdDataTypes } from "@twin.org/data-json-ld";
 import { AuditableItemStreamDataTypes } from "../../src/dataTypes/auditableItemStreamDataTypes";
+import { AuditableItemStreamContexts } from "../../src/models/auditableItemStreamContexts";
 import { AuditableItemStreamTypes } from "../../src/models/auditableItemStreamTypes";
 
 describe("AuditableItemStreamDataTypes", () => {
@@ -37,8 +38,8 @@ describe("AuditableItemStreamDataTypes", () => {
 			AuditableItemStreamTypes.Stream,
 			{
 				"@context": [
-					AuditableItemStreamTypes.ContextRoot,
-					AuditableItemStreamTypes.ContextRootCommon
+					AuditableItemStreamContexts.ContextRoot,
+					AuditableItemStreamContexts.ContextRootCommon
 				],
 				type: AuditableItemStreamTypes.Stream,
 				id: "foo",
