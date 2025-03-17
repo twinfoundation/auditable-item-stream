@@ -416,7 +416,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
 			}
 
-			await this.internalRemoveImmutable(streamEntity, nodeIdentity);
+			await this.internalRemoveVerifiable(streamEntity, nodeIdentity);
 
 			await this._streamStorage.remove(streamEntity.id);
 
@@ -999,13 +999,13 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	}
 
 	/**
-	 * Remove the immutable storage for the stream and entries.
+	 * Remove the verifiable storage for the stream and entries.
 	 * @param streamId The id of the stream to remove the storage from.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @throws NotFoundError if the vertex is not found.
 	 */
-	public async removeImmutable(streamId: string, nodeIdentity?: string): Promise<void> {
+	public async removeVerifiable(streamId: string, nodeIdentity?: string): Promise<void> {
 		Guards.stringValue(this.CLASS_NAME, nameof(streamId), streamId);
 		Guards.stringValue(this.CLASS_NAME, nameof(nodeIdentity), nodeIdentity);
 
@@ -1026,9 +1026,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamIdParts);
 			}
 
-			await this.internalRemoveImmutable(streamEntity, nodeIdentity);
+			await this.internalRemoveVerifiable(streamEntity, nodeIdentity);
 		} catch (error) {
-			throw new GeneralError(this.CLASS_NAME, "removeImmutableFailed", undefined, error);
+			throw new GeneralError(this.CLASS_NAME, "removeVerifiableFailed", undefined, error);
 		}
 	}
 
@@ -1322,18 +1322,18 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	}
 
 	/**
-	 * Remove the immutable storage for the stream and entries.
+	 * Remove the verifiable storage for the stream and entries.
 	 * @param streamEntity The stream entity.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @internal
 	 */
-	private async internalRemoveImmutable(
+	private async internalRemoveVerifiable(
 		streamEntity: AuditableItemStream,
 		nodeIdentity: string
 	): Promise<void> {
 		if (Is.stringValue(streamEntity.proofId)) {
-			await this._immutableProofComponent.removeImmutable(streamEntity.proofId, nodeIdentity);
+			await this._immutableProofComponent.removeVerifiable(streamEntity.proofId, nodeIdentity);
 			delete streamEntity.proofId;
 			await this._streamStorage.set(streamEntity);
 		}
@@ -1358,7 +1358,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			for (const streamEntry of entriesResult.entities) {
 				if (Is.stringValue(streamEntry.proofId)) {
-					await this._immutableProofComponent.removeImmutable(nodeIdentity, streamEntry.proofId);
+					await this._immutableProofComponent.removeVerifiable(nodeIdentity, streamEntry.proofId);
 					delete streamEntry.proofId;
 					await this._streamEntryStorage.set(streamEntry as AuditableItemStreamEntry);
 				}

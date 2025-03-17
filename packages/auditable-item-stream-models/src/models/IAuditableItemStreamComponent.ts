@@ -230,11 +230,11 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	): Promise<IAuditableItemStreamEntryObjectList>;
 
 	/**
-	 * Remove the immutable storage for the stream and entries.
+	 * Remove the verifiable storage for the stream and entries.
 	 * @param streamId The id of the stream to remove the storage from.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @throws NotFoundError if the vertex is not found.
 	 */
-	removeImmutable(streamId: string, nodeIdentity?: string): Promise<void>;
+	removeVerifiable(streamId: string, nodeIdentity?: string): Promise<void>;
 }

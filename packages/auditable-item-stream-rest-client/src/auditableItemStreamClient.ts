@@ -451,14 +451,14 @@ export class AuditableItemStreamClient
 	}
 
 	/**
-	 * Remove the immutable storage for the stream and entries.
+	 * Remove the verifiable storage for the stream and entries.
 	 * @param id The id of the stream to remove the storage from.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @throws NotFoundError if the vertex is not found.
 	 * @internal
 	 */
-	public async removeImmutable(id: string, nodeIdentity?: string): Promise<void> {
-		throw new NotSupportedError(this.CLASS_NAME, "removeImmutable");
+	public async removeVerifiable(id: string, nodeIdentity?: string): Promise<void> {
+		throw new NotSupportedError(this.CLASS_NAME, "removeVerifiable");
 	}
 }

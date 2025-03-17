@@ -16,14 +16,14 @@ import {
 	ImmutableProofService,
 	initSchema as initSchemaImmutableProof
 } from "@twin.org/immutable-proof-service";
-import {
-	EntityStorageImmutableStorageConnector,
-	type ImmutableItem,
-	initSchema as initSchemaImmutableStorage
-} from "@twin.org/immutable-storage-connector-entity-storage";
-import { ImmutableStorageConnectorFactory } from "@twin.org/immutable-storage-models";
 import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
+import {
+	EntityStorageVerifiableStorageConnector,
+	initSchema as initSchemaVerifiableStorage,
+	type VerifiableItem
+} from "@twin.org/verifiable-storage-connector-entity-storage";
+import { VerifiableStorageConnectorFactory } from "@twin.org/verifiable-storage-models";
 import {
 	cleanupTestEnv,
 	setupTestEnv,
@@ -38,7 +38,7 @@ import { initSchema } from "../src/schema";
 let streamStorage: MemoryEntityStorageConnector<AuditableItemStream>;
 let streamEntryStorage: MemoryEntityStorageConnector<AuditableItemStreamEntry>;
 let immutableProofStorage: MemoryEntityStorageConnector<ImmutableProof>;
-let immutableStorage: MemoryEntityStorageConnector<ImmutableItem>;
+let verifiableStorage: MemoryEntityStorageConnector<VerifiableItem>;
 let backgroundTaskStorage: MemoryEntityStorageConnector<BackgroundTask>;
 
 const FIRST_TICK = 1724327716271;
@@ -52,7 +52,7 @@ async function waitForProofGeneration(proofCount: number = 1): Promise<void> {
 	let count = 0;
 	do {
 		await new Promise(resolve => setTimeout(resolve, 200));
-	} while (immutableStorage.getStore().length < proofCount && count++ < proofCount * 40);
+	} while (verifiableStorage.getStore().length < proofCount && count++ < proofCount * 40);
 }
 
 describe("AuditableItemStreamService", () => {
@@ -60,7 +60,7 @@ describe("AuditableItemStreamService", () => {
 		await setupTestEnv();
 
 		initSchema();
-		initSchemaImmutableStorage();
+		initSchemaVerifiableStorage();
 		initSchemaImmutableProof();
 		initSchemaBackgroundTask();
 
@@ -88,14 +88,14 @@ describe("AuditableItemStreamService", () => {
 		EntityStorageConnectorFactory.register("auditable-item-stream", () => streamStorage);
 		EntityStorageConnectorFactory.register("auditable-item-stream-entry", () => streamEntryStorage);
 
-		immutableStorage = new MemoryEntityStorageConnector<ImmutableItem>({
-			entitySchema: nameof<ImmutableItem>()
+		verifiableStorage = new MemoryEntityStorageConnector<VerifiableItem>({
+			entitySchema: nameof<VerifiableItem>()
 		});
-		EntityStorageConnectorFactory.register("immutable-item", () => immutableStorage);
+		EntityStorageConnectorFactory.register("verifiable-item", () => verifiableStorage);
 
-		ImmutableStorageConnectorFactory.register(
-			"immutable-storage",
-			() => new EntityStorageImmutableStorageConnector()
+		VerifiableStorageConnectorFactory.register(
+			"verifiable-storage",
+			() => new EntityStorageVerifiableStorageConnector()
 		);
 
 		immutableProofStorage = new MemoryEntityStorageConnector<ImmutableProof>({
@@ -160,8 +160,8 @@ describe("AuditableItemStreamService", () => {
 
 		await waitForProofGeneration();
 
-		const immutableStore = immutableStorage.getStore();
-		expect(immutableStore).toMatchObject([
+		const verifiableStore = verifiableStorage.getStore();
+		expect(verifiableStore).toMatchObject([
 			{
 				id: "0404040404040404040404040404040404040404040404040404040404040404",
 				controller:
@@ -170,7 +170,7 @@ describe("AuditableItemStreamService", () => {
 		]);
 
 		const immutableProof = ObjectHelper.fromBytes<IImmutableProof>(
-			Converter.base64ToBytes(immutableStore[0].data)
+			Converter.base64ToBytes(verifiableStore[0].data)
 		);
 		expect(immutableProof).toMatchObject({
 			"@context": [
@@ -278,8 +278,8 @@ describe("AuditableItemStreamService", () => {
 
 		await waitForProofGeneration(2);
 
-		const immutableStore = immutableStorage.getStore();
-		expect(immutableStore).toMatchObject([
+		const verifiableStore = verifiableStorage.getStore();
+		expect(verifiableStore).toMatchObject([
 			{
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
@@ -291,7 +291,7 @@ describe("AuditableItemStreamService", () => {
 		]);
 
 		const immutableProof = ObjectHelper.fromBytes<IImmutableProof>(
-			Converter.base64ToBytes(immutableStore[0].data)
+			Converter.base64ToBytes(verifiableStore[0].data)
 		);
 		expect(immutableProof).toMatchObject({
 			"@context": [
@@ -317,7 +317,7 @@ describe("AuditableItemStreamService", () => {
 		});
 
 		const immutableProofEntry = ObjectHelper.fromBytes<IImmutableProof>(
-			Converter.base64ToBytes(immutableStore[1].data)
+			Converter.base64ToBytes(verifiableStore[1].data)
 		);
 		expect(immutableProofEntry).toMatchObject({
 			"@context": [
@@ -438,8 +438,8 @@ describe("AuditableItemStreamService", () => {
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 		});
 
-		const immutableStore = immutableStorage.getStore();
-		expect(immutableStore).toMatchObject([
+		const verifiableStore = verifiableStorage.getStore();
+		expect(verifiableStore).toMatchObject([
 			{
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
@@ -451,7 +451,7 @@ describe("AuditableItemStreamService", () => {
 		]);
 
 		const immutableProof = ObjectHelper.fromBytes<IImmutableProof>(
-			Converter.base64ToBytes(immutableStore[0].data)
+			Converter.base64ToBytes(verifiableStore[0].data)
 		);
 		expect(immutableProof).toMatchObject({
 			"@context": [
@@ -477,7 +477,7 @@ describe("AuditableItemStreamService", () => {
 		});
 
 		const immutableProofEntry = ObjectHelper.fromBytes<IImmutableProof>(
-			Converter.base64ToBytes(immutableStore[1].data)
+			Converter.base64ToBytes(verifiableStore[1].data)
 		);
 		expect(immutableProofEntry).toMatchObject({
 			"@context": [
@@ -696,8 +696,8 @@ describe("AuditableItemStreamService", () => {
 			}
 		]);
 
-		const immutableStore = immutableStorage.getStore();
-		expect(immutableStore).toMatchObject([
+		const verifiableStore = verifiableStorage.getStore();
+		expect(verifiableStore).toMatchObject([
 			{
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
@@ -820,8 +820,8 @@ describe("AuditableItemStreamService", () => {
 			}
 		]);
 
-		const immutableStore = immutableStorage.getStore();
-		expect(immutableStore).toMatchObject([
+		const verifiableStore = verifiableStorage.getStore();
+		expect(verifiableStore).toMatchObject([
 			{
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
@@ -904,8 +904,8 @@ describe("AuditableItemStreamService", () => {
 		const entryStore = streamEntryStorage.getStore();
 		expect(entryStore).toHaveLength(12);
 
-		const immutableStore = immutableStorage.getStore();
-		expect(immutableStore).toHaveLength(3);
+		const verifiableStore = verifiableStorage.getStore();
+		expect(verifiableStore).toHaveLength(3);
 	});
 
 	test("Can get an entry from the stream", async () => {
