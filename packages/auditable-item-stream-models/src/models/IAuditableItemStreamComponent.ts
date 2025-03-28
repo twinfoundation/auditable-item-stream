@@ -10,7 +10,7 @@ import type { IAuditableItemStreamEntryObjectList } from "./IAuditableItemStream
 import type { IAuditableItemStreamList } from "./IAuditableItemStreamList";
 
 /**
- * Interface describing an auditable item stream contract.
+ * Interface describing an auditable item stream component.
  */
 export interface IAuditableItemStreamComponent extends IComponent {
 	/**

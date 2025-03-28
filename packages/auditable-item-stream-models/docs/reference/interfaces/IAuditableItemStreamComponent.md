@@ -1,6 +1,6 @@
 # Interface: IAuditableItemStreamComponent
 
-Interface describing an auditable item stream contract.
+Interface describing an auditable item stream component.
 
 ## Extends
 
