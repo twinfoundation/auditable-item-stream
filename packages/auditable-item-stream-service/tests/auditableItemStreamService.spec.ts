@@ -161,9 +161,10 @@ describe("AuditableItemStreamService", () => {
 		await waitForProofGeneration();
 
 		const verifiableStore = verifiableStorage.getStore();
-		expect(verifiableStore).toMatchObject([
+		expect(verifiableStore).toEqual([
 			{
 				id: "0404040404040404040404040404040404040404040404040404040404040404",
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6NWZkeWRZZjNtNXJEcnN1cEtZU29tZE05MnBtYkpYZjduTW1qSjlMQnVuZHhBNHNqM21GWlhScWo1Z1dLUVVuUGE4eGRxYVY0ejV4REREZ3d4UUhvY3dweCIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6QzlqaGh1dDhpUDJJMkIwUUFzam1TazgxNmpXL1RDM1l0Q3E2cWN6R0VVQT0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEifQ==",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			}
@@ -172,13 +173,15 @@ describe("AuditableItemStreamService", () => {
 		const immutableProof = ObjectHelper.fromBytes<IImmutableProof>(
 			Converter.base64ToBytes(verifiableStore[0].data)
 		);
-		expect(immutableProof).toMatchObject({
+		expect(immutableProof).toEqual({
 			"@context": [
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.twindev.org/common/",
 				"https://www.w3.org/ns/credentials/v2"
 			],
 			id: "0202020202020202020202020202020202020202020202020202020202020202",
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
 			type: "ImmutableProof",
 			proofObjectHash: "sha256:C9jhhut8iP2I2B0QAsjmSk816jW/TC3YtCq6qczGEUA=",
 			proofObjectId: "ais:0101010101010101010101010101010101010101010101010101010101010101",
@@ -186,6 +189,7 @@ describe("AuditableItemStreamService", () => {
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
 				type: "DataIntegrityProof",
+				created: "2024-08-22T11:56:56.272Z",
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
@@ -251,21 +255,24 @@ describe("AuditableItemStreamService", () => {
 
 		const entryStore = streamEntryStorage.getStore();
 
-		expect(entryStore).toMatchObject([
+		expect(entryStore).toEqual([
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				dateCreated: "2024-08-22T11:55:16.271Z",
+				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
 				},
+				proofId: "immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 				userIdentity: TEST_USER_IDENTITY,
 				index: 0
 			},
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				dateCreated: "2024-08-22T11:55:16.271Z",
+				id: "0909090909090909090909090909090909090909090909090909090909090909",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
@@ -279,12 +286,16 @@ describe("AuditableItemStreamService", () => {
 		await waitForProofGeneration(2);
 
 		const verifiableStore = verifiableStorage.getStore();
-		expect(verifiableStore).toMatchObject([
+		expect(verifiableStore).toEqual([
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6NWZkeWRZZjNtNXJEcnN1cEtZU29tZE05MnBtYkpYZjduTW1qSjlMQnVuZHhBNHNqM21GWlhScWo1Z1dLUVVuUGE4eGRxYVY0ejV4REREZ3d4UUhvY3dweCIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6QzlqaGh1dDhpUDJJMkIwUUFzam1TazgxNmpXL1RDM1l0Q3E2cWN6R0VVQT0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEifQ==",
+				id: "0404040404040404040404040404040404040404040404040404040404040404",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			},
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6Mnpqc0ZwYzdWTTRVaFZRaXpoajRRS1JVU0Q3SGhyRWlGRzRDYnZnS2ZzWXE2WTN4RkNxSnhLYjVaMVQ1dzVqaE1QTGQ0RDVxYWR4S3dydlBCTGN6NEc2ZyIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6UE5VRVBQUTBJOFpCTXFJVVZuQlNrcXlOSGovMitMSkJ2S1I3ZEQ1UUpFMD0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNSJ9",
+				id: "0808080808080808080808080808080808080808080808080808080808080808",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			}
@@ -293,7 +304,7 @@ describe("AuditableItemStreamService", () => {
 		const immutableProof = ObjectHelper.fromBytes<IImmutableProof>(
 			Converter.base64ToBytes(verifiableStore[0].data)
 		);
-		expect(immutableProof).toMatchObject({
+		expect(immutableProof).toEqual({
 			"@context": [
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.twindev.org/common/",
@@ -303,10 +314,13 @@ describe("AuditableItemStreamService", () => {
 			type: "ImmutableProof",
 			proofObjectHash: "sha256:C9jhhut8iP2I2B0QAsjmSk816jW/TC3YtCq6qczGEUA=",
 			proofObjectId: "ais:0101010101010101010101010101010101010101010101010101010101010101",
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
 				type: "DataIntegrityProof",
+				created: "2024-08-22T11:56:56.272Z",
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
@@ -319,22 +333,28 @@ describe("AuditableItemStreamService", () => {
 		const immutableProofEntry = ObjectHelper.fromBytes<IImmutableProof>(
 			Converter.base64ToBytes(verifiableStore[1].data)
 		);
-		expect(immutableProofEntry).toMatchObject({
+		expect(immutableProofEntry).toEqual({
 			"@context": [
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.twindev.org/common/",
 				"https://www.w3.org/ns/credentials/v2"
 			],
 			type: "ImmutableProof",
-			proofObjectHash: "sha256:PhC5SYEn9TuxqvcbVPxQV7djBRsMm9rglvL+2CgKDRo=",
+			proofObjectHash: "sha256:PNUEPPQ0I8ZBMqIUVnBSkqyNHj/2+LJBvKR7dD5QJE0=",
+			proofObjectId:
+				"ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
+			id: "0606060606060606060606060606060606060606060606060606060606060606",
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
 				type: "DataIntegrityProof",
+				created: "2024-08-22T11:56:56.272Z",
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"zs1fbjn1QgVTizra3S74AvoRerZsgjwWbccFcjacYbPp1qsGqySPGt4WM56NPj2qSu5GLuRhgnZkFaxt8hyqQaFU",
+					"z2zjsFpc7VM4UhVQizhj4QKRUSD7HhrEiFG4CbvgKfsYq6Y3xFCqJxKb5Z1T5w5jhMPLd4D5qadxKwrvPBLcz4G6g",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -380,7 +400,7 @@ describe("AuditableItemStreamService", () => {
 			verifyEntries: true
 		});
 
-		expect(result).toMatchObject({
+		expect(result).toEqual({
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
@@ -394,7 +414,10 @@ describe("AuditableItemStreamService", () => {
 			entries: [
 				{
 					type: "AuditableItemStreamEntry",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 					dateCreated: "2024-08-22T11:55:16.271Z",
+					proofId:
+						"immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
@@ -410,6 +433,7 @@ describe("AuditableItemStreamService", () => {
 				},
 				{
 					type: "AuditableItemStreamEntry",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0909090909090909090909090909090909090909090909090909090909090909",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
@@ -439,12 +463,16 @@ describe("AuditableItemStreamService", () => {
 		});
 
 		const verifiableStore = verifiableStorage.getStore();
-		expect(verifiableStore).toMatchObject([
+		expect(verifiableStore).toEqual([
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6NWZkeWRZZjNtNXJEcnN1cEtZU29tZE05MnBtYkpYZjduTW1qSjlMQnVuZHhBNHNqM21GWlhScWo1Z1dLUVVuUGE4eGRxYVY0ejV4REREZ3d4UUhvY3dweCIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6QzlqaGh1dDhpUDJJMkIwUUFzam1TazgxNmpXL1RDM1l0Q3E2cWN6R0VVQT0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEifQ==",
+				id: "0404040404040404040404040404040404040404040404040404040404040404",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			},
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6Mnpqc0ZwYzdWTTRVaFZRaXpoajRRS1JVU0Q3SGhyRWlGRzRDYnZnS2ZzWXE2WTN4RkNxSnhLYjVaMVQ1dzVqaE1QTGQ0RDVxYWR4S3dydlBCTGN6NEc2ZyIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6UE5VRVBQUTBJOFpCTXFJVVZuQlNrcXlOSGovMitMSkJ2S1I3ZEQ1UUpFMD0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNSJ9",
+				id: "0808080808080808080808080808080808080808080808080808080808080808",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			}
@@ -453,7 +481,7 @@ describe("AuditableItemStreamService", () => {
 		const immutableProof = ObjectHelper.fromBytes<IImmutableProof>(
 			Converter.base64ToBytes(verifiableStore[0].data)
 		);
-		expect(immutableProof).toMatchObject({
+		expect(immutableProof).toEqual({
 			"@context": [
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.twindev.org/common/",
@@ -463,10 +491,13 @@ describe("AuditableItemStreamService", () => {
 			type: "ImmutableProof",
 			proofObjectHash: "sha256:C9jhhut8iP2I2B0QAsjmSk816jW/TC3YtCq6qczGEUA=",
 			proofObjectId: "ais:0101010101010101010101010101010101010101010101010101010101010101",
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
 				type: "DataIntegrityProof",
+				created: "2024-08-22T11:56:56.272Z",
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
@@ -479,22 +510,28 @@ describe("AuditableItemStreamService", () => {
 		const immutableProofEntry = ObjectHelper.fromBytes<IImmutableProof>(
 			Converter.base64ToBytes(verifiableStore[1].data)
 		);
-		expect(immutableProofEntry).toMatchObject({
+		expect(immutableProofEntry).toEqual({
 			"@context": [
 				"https://schema.twindev.org/immutable-proof/",
 				"https://schema.twindev.org/common/",
 				"https://www.w3.org/ns/credentials/v2"
 			],
 			type: "ImmutableProof",
-			proofObjectHash: "sha256:PhC5SYEn9TuxqvcbVPxQV7djBRsMm9rglvL+2CgKDRo=",
+			proofObjectHash: "sha256:PNUEPPQ0I8ZBMqIUVnBSkqyNHj/2+LJBvKR7dD5QJE0=",
+			proofObjectId:
+				"ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
+			id: "0606060606060606060606060606060606060606060606060606060606060606",
+			nodeIdentity:
+				"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 			proof: {
 				type: "DataIntegrityProof",
+				created: "2024-08-22T11:56:56.272Z",
 				cryptosuite: "eddsa-jcs-2022",
 				proofPurpose: "assertionMethod",
 				proofValue:
-					"zs1fbjn1QgVTizra3S74AvoRerZsgjwWbccFcjacYbPp1qsGqySPGt4WM56NPj2qSu5GLuRhgnZkFaxt8hyqQaFU",
+					"z2zjsFpc7VM4UhVQizhj4QKRUSD7HhrEiFG4CbvgKfsYq6Y3xFCqJxKb5Z1T5w5jhMPLd4D5qadxKwrvPBLcz4G6g",
 				verificationMethod:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363#immutable-proof-assertion"
 			}
@@ -540,7 +577,7 @@ describe("AuditableItemStreamService", () => {
 			verifyEntries: true
 		});
 
-		expect(result).toMatchObject({
+		expect(result).toEqual({
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
@@ -553,6 +590,7 @@ describe("AuditableItemStreamService", () => {
 			dateModified: "2024-08-22T11:55:16.271Z",
 			entries: [
 				{
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 					type: "AuditableItemStreamEntry",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
@@ -565,11 +603,14 @@ describe("AuditableItemStreamService", () => {
 						type: "ImmutableProofVerification",
 						verified: true
 					},
+					proofId:
+						"immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 					userIdentity:
 						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
 				},
 				{
 					type: "AuditableItemStreamEntry",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0909090909090909090909090909090909090909090909090909090909090909",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
@@ -669,21 +710,24 @@ describe("AuditableItemStreamService", () => {
 		]);
 
 		const entryStore = streamEntryStorage.getStore();
-		expect(entryStore).toMatchObject([
+		expect(entryStore).toEqual([
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
+				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
 				},
+				proofId: "immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 				userIdentity:
 					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 				index: 0
 			},
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
+				id: "0909090909090909090909090909090909090909090909090909090909090909",
 				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
@@ -697,12 +741,16 @@ describe("AuditableItemStreamService", () => {
 		]);
 
 		const verifiableStore = verifiableStorage.getStore();
-		expect(verifiableStore).toMatchObject([
+		expect(verifiableStore).toEqual([
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6NWZkeWRZZjNtNXJEcnN1cEtZU29tZE05MnBtYkpYZjduTW1qSjlMQnVuZHhBNHNqM21GWlhScWo1Z1dLUVVuUGE4eGRxYVY0ejV4REREZ3d4UUhvY3dweCIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6QzlqaGh1dDhpUDJJMkIwUUFzam1TazgxNmpXL1RDM1l0Q3E2cWN6R0VVQT0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEifQ==",
+				id: "0404040404040404040404040404040404040404040404040404040404040404",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			},
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6Mnpqc0ZwYzdWTTRVaFZRaXpoajRRS1JVU0Q3SGhyRWlGRzRDYnZnS2ZzWXE2WTN4RkNxSnhLYjVaMVQ1dzVqaE1QTGQ0RDVxYWR4S3dydlBCTGN6NEc2ZyIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6UE5VRVBQUTBJOFpCTXFJVVZuQlNrcXlOSGovMitMSkJ2S1I3ZEQ1UUpFMD0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNSJ9",
+				id: "0808080808080808080808080808080808080808080808080808080808080808",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			}
@@ -781,21 +829,24 @@ describe("AuditableItemStreamService", () => {
 
 		const entryStore = streamEntryStorage.getStore();
 
-		expect(entryStore).toMatchObject([
+		expect(entryStore).toEqual([
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
 				dateCreated: "2024-08-22T11:55:16.271Z",
+				id: "0505050505050505050505050505050505050505050505050505050505050505",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
 					"@type": "Note",
 					content: "This is an entry note 1"
 				},
+				proofId: "immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 				userIdentity:
 					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
 				index: 0
 			},
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
+				id: "0909090909090909090909090909090909090909090909090909090909090909",
 				dateCreated: "2024-08-22T11:55:16.271Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
@@ -808,6 +859,7 @@ describe("AuditableItemStreamService", () => {
 			},
 			{
 				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
+				id: "0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a",
 				dateCreated: "2024-08-22T11:56:56.272Z",
 				entryObject: {
 					"@context": "https://www.w3.org/ns/activitystreams",
@@ -821,12 +873,16 @@ describe("AuditableItemStreamService", () => {
 		]);
 
 		const verifiableStore = verifiableStorage.getStore();
-		expect(verifiableStore).toMatchObject([
+		expect(verifiableStore).toEqual([
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6NWZkeWRZZjNtNXJEcnN1cEtZU29tZE05MnBtYkpYZjduTW1qSjlMQnVuZHhBNHNqM21GWlhScWo1Z1dLUVVuUGE4eGRxYVY0ejV4REREZ3d4UUhvY3dweCIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6QzlqaGh1dDhpUDJJMkIwUUFzam1TazgxNmpXL1RDM1l0Q3E2cWN6R0VVQT0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEifQ==",
+				id: "0404040404040404040404040404040404040404040404040404040404040404",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			},
 			{
+				data: "eyJAY29udGV4dCI6WyJodHRwczovL3NjaGVtYS50d2luZGV2Lm9yZy9pbW11dGFibGUtcHJvb2YvIiwiaHR0cHM6Ly9zY2hlbWEudHdpbmRldi5vcmcvY29tbW9uLyIsImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiJdLCJpZCI6IjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYiLCJ0eXBlIjoiSW1tdXRhYmxlUHJvb2YiLCJub2RlSWRlbnRpdHkiOiJkaWQ6ZW50aXR5LXN0b3JhZ2U6MHg2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzIiwidXNlcklkZW50aXR5IjoiZGlkOmVudGl0eS1zdG9yYWdlOjB4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1ODU4NTg1OCIsInByb29mIjp7InR5cGUiOiJEYXRhSW50ZWdyaXR5UHJvb2YiLCJjcmVhdGVkIjoiMjAyNC0wOC0yMlQxMTo1Njo1Ni4yNzJaIiwiY3J5cHRvc3VpdGUiOiJlZGRzYS1qY3MtMjAyMiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInByb29mVmFsdWUiOiJ6Mnpqc0ZwYzdWTTRVaFZRaXpoajRRS1JVU0Q3SGhyRWlGRzRDYnZnS2ZzWXE2WTN4RkNxSnhLYjVaMVQ1dzVqaE1QTGQ0RDVxYWR4S3dydlBCTGN6NEc2ZyIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDplbnRpdHktc3RvcmFnZToweDYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjM2MzYzNjMjaW1tdXRhYmxlLXByb29mLWFzc2VydGlvbiJ9LCJwcm9vZk9iamVjdEhhc2giOiJzaGEyNTY6UE5VRVBQUTBJOFpCTXFJVVZuQlNrcXlOSGovMitMSkJ2S1I3ZEQ1UUpFMD0iLCJwcm9vZk9iamVjdElkIjoiYWlzOjAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNTA1MDUwNSJ9",
+				id: "0808080808080808080808080808080808080808080808080808080808080808",
 				controller:
 					"did:entity-storage:0x6363636363636363636363636363636363636363636363636363636363636363"
 			}
@@ -949,22 +1005,29 @@ describe("AuditableItemStreamService", () => {
 			verifyEntry: true
 		});
 
-		expect(entry).toMatchObject({
+		expect(entry).toEqual({
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.org"
+				"https://schema.org",
+				"https://schema.twindev.org/immutable-proof/"
 			],
 			type: "AuditableItemStreamEntry",
+			id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 			dateCreated: "2024-08-22T11:55:16.271Z",
 			entryObject: {
 				"@context": "https://www.w3.org/ns/activitystreams",
 				"@type": "Note",
 				content: "This is an entry note 1"
 			},
+			proofId: "immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 			userIdentity:
 				"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
-			index: 0
+			index: 0,
+			verification: {
+				type: "ImmutableProofVerification",
+				verified: true
+			}
 		});
 
 		const streamStore = streamStorage.getStore();
@@ -1168,7 +1231,7 @@ describe("AuditableItemStreamService", () => {
 
 		const entries = await service.getEntries(streamId, { verifyEntries: true });
 
-		expect(entries).toMatchObject({
+		expect(entries).toEqual({
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
@@ -1179,12 +1242,15 @@ describe("AuditableItemStreamService", () => {
 			entries: [
 				{
 					type: "AuditableItemStreamEntry",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
 						"@type": "Note",
 						content: "This is an entry note 1"
 					},
+					proofId:
+						"immutable-proof:0606060606060606060606060606060606060606060606060606060606060606",
 					verification: {
 						type: "ImmutableProofVerification",
 						verified: true
@@ -1201,6 +1267,7 @@ describe("AuditableItemStreamService", () => {
 						"@type": "Note",
 						content: "This is an entry note 2"
 					},
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0909090909090909090909090909090909090909090909090909090909090909",
 					index: 1,
 					userIdentity:
 						"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858"
@@ -1258,7 +1325,7 @@ describe("AuditableItemStreamService", () => {
 			]
 		});
 
-		expect(entries).toMatchObject({
+		expect(entries).toEqual({
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
@@ -1269,6 +1336,7 @@ describe("AuditableItemStreamService", () => {
 			entries: [
 				{
 					type: "AuditableItemStreamEntry",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0909090909090909090909090909090909090909090909090909090909090909",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					entryObject: {
 						"@context": "https://www.w3.org/ns/activitystreams",
@@ -1318,7 +1386,7 @@ describe("AuditableItemStreamService", () => {
 		}
 
 		const result = await service.query();
-		expect(result).toMatchObject({
+		expect(result).toEqual({
 			"@context": [
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
@@ -1328,6 +1396,7 @@ describe("AuditableItemStreamService", () => {
 			itemStreams: [
 				{
 					type: "AuditableItemStream",
+					id: "ais:0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
@@ -1338,6 +1407,7 @@ describe("AuditableItemStreamService", () => {
 				},
 				{
 					type: "AuditableItemStream",
+					id: "ais:1313131313131313131313131313131313131313131313131313131313131313",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
@@ -1348,6 +1418,7 @@ describe("AuditableItemStreamService", () => {
 				},
 				{
 					type: "AuditableItemStream",
+					id: "ais:1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
@@ -1358,6 +1429,7 @@ describe("AuditableItemStreamService", () => {
 				},
 				{
 					type: "AuditableItemStream",
+					id: "ais:2525252525252525252525252525252525252525252525252525252525252525",
 					dateCreated: "2024-08-22T11:56:56.272Z",
 					dateModified: "2024-08-22T11:56:56.272Z",
 					annotationObject: {
@@ -1368,6 +1440,7 @@ describe("AuditableItemStreamService", () => {
 				},
 				{
 					type: "AuditableItemStream",
+					id: "ais:0101010101010101010101010101010101010101010101010101010101010101",
 					dateCreated: "2024-08-22T11:55:16.271Z",
 					dateModified: "2024-08-22T11:55:16.271Z",
 					annotationObject: {
