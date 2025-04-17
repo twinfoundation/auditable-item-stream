@@ -1,5 +1,12 @@
 # @twin.org/auditable-item-stream-models - Changelog
 
+## [0.0.1-next.28](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-models-v0.0.1-next.27...auditable-item-stream-models-v0.0.1-next.28) (2025-04-17)
+
+
+### Features
+
+* use shared store mechanism ([#7](https://github.com/twinfoundation/auditable-item-stream/issues/7)) ([2aca4b8](https://github.com/twinfoundation/auditable-item-stream/commit/2aca4b85b0102f91c90619f02b116541786cf539))
+
 ## [0.0.1-next.27](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-models-v0.0.1-next.26...auditable-item-stream-models-v0.0.1-next.27) (2025-04-11)
 
 
