@@ -732,7 +732,16 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		}
 
 		try {
-			const streamNamespaceId = urnParsed.namespaceSpecific(0);
+			const streamNamespaceId = urnParsed.namespaceMethod();
+			const streamEntryNamespaceId = urnParsedEntry.namespaceMethod();
+
+			if (streamNamespaceId !== streamEntryNamespaceId) {
+				throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
+					streamNamespaceId,
+					streamEntryNamespaceId
+				});
+			}
+
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {
@@ -754,7 +763,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			};
 
 			await this.setEntry(context, streamEntity.id, {
-				...existing,
+				...existing.entity,
 				entryObject
 			});
 
@@ -809,7 +818,16 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		}
 
 		try {
-			const streamNamespaceId = urnParsed.namespaceSpecific(0);
+			const streamNamespaceId = urnParsed.namespaceMethod();
+			const streamEntryNamespaceId = urnParsedEntry.namespaceMethod();
+
+			if (streamNamespaceId !== streamEntryNamespaceId) {
+				throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
+					streamNamespaceId,
+					streamEntryNamespaceId
+				});
+			}
+
 			const streamEntity = await this._streamStorage.get(streamNamespaceId);
 
 			if (Is.empty(streamEntity)) {

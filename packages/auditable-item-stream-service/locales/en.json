@@ -16,7 +16,8 @@
 			"gettingEntryObjectsFailed": "Getting entry objects from the Auditable Item Stream failed",
 			"removeImmutableFailed": "Removing immutable entry from the Auditable Item Stream failed",
 			"streamNotFound": "The stream with the Id \"{notFoundId}\" was not found",
-			"streamEntryNotFound": "The stream entry with the Id \"{notFoundId}\" was not found"
+			"streamEntryNotFound": "The stream entry with the Id \"{notFoundId}\" was not found",
+			"streamMismatch": "The stream Id in the entry Id \"{streamEntryNamespaceId}\" does not match the stream Id \"{streamNamespaceId}\""
 		}
 	}
 }
