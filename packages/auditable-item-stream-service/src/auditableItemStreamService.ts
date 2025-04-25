@@ -416,7 +416,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", id);
 			}
 
-			await this.internalRemoveVerifiable(streamEntity, nodeIdentity);
+			await this.internalRemoveEntries(streamEntity, false, nodeIdentity);
 
 			await this._streamStorage.remove(streamEntity.id);
 
@@ -1045,7 +1045,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				throw new NotFoundError(this.CLASS_NAME, "streamNotFound", streamIdParts);
 			}
 
-			await this.internalRemoveVerifiable(streamEntity, nodeIdentity);
+			await this.internalRemoveEntries(streamEntity, true, nodeIdentity);
 		} catch (error) {
 			throw new GeneralError(this.CLASS_NAME, "removeVerifiableFailed", undefined, error);
 		}
@@ -1343,12 +1343,14 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 	/**
 	 * Remove the verifiable storage for the stream and entries.
 	 * @param streamEntity The stream entity.
+	 * @param removeOnlyProof Should only the proof be removed.
 	 * @param nodeIdentity The node identity to use for vault operations.
 	 * @returns Nothing.
 	 * @internal
 	 */
-	private async internalRemoveVerifiable(
+	private async internalRemoveEntries(
 		streamEntity: AuditableItemStream,
+		removeOnlyProof: boolean,
 		nodeIdentity: string
 	): Promise<void> {
 		if (Is.stringValue(streamEntity.proofId)) {
@@ -1357,6 +1359,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			await this._streamStorage.set(streamEntity);
 		}
 
+		const entryIds: string[] = [];
 		let entriesResult;
 		do {
 			entriesResult = await this._streamEntryStorage.query(
@@ -1376,12 +1379,24 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 			);
 
 			for (const streamEntry of entriesResult.entities) {
+				entryIds.push(streamEntry.id as string);
 				if (Is.stringValue(streamEntry.proofId)) {
 					await this._immutableProofComponent.removeVerifiable(streamEntry.proofId, nodeIdentity);
 					delete streamEntry.proofId;
-					await this._streamEntryStorage.set(streamEntry as AuditableItemStreamEntry);
+
+					// If we are only removing the proof, we need to set the entry
+					// otherwise the entry is going to be removed later anyway.
+					if (removeOnlyProof) {
+						await this._streamEntryStorage.set(streamEntry as AuditableItemStreamEntry);
+					}
 				}
 			}
 		} while (Is.stringValue(entriesResult.cursor));
+
+		if (!removeOnlyProof) {
+			for (const entryId of entryIds) {
+				await this._streamEntryStorage.remove(entryId);
+			}
+		}
 	}
 }

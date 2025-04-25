@@ -1194,6 +1194,134 @@ describe("AuditableItemStreamService", () => {
 		expect(streamWithDeleted.entries).toHaveLength(2);
 	});
 
+	test("Can delete the proof from a stream", async () => {
+		const service = new AuditableItemStreamService();
+		const streamId = await service.create(
+			{
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
+				},
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
+					}
+				]
+			},
+			{
+				immutableInterval: 1
+			},
+			TEST_USER_IDENTITY,
+			TEST_NODE_IDENTITY
+		);
+
+		await service.removeVerifiable(streamId, TEST_NODE_IDENTITY);
+
+		expect(streamId.startsWith("ais:")).toEqual(true);
+
+		const streamStore = streamStorage.getStore();
+		expect(streamStore).toEqual([
+			{
+				id: "0101010101010101010101010101010101010101010101010101010101010101",
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateModified: "2024-08-22T11:55:16.271Z",
+				nodeIdentity: TEST_NODE_IDENTITY,
+				userIdentity: TEST_USER_IDENTITY,
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
+				},
+				immutableInterval: 1,
+				indexCounter: 2
+			}
+		]);
+
+		const streamEntryStore = streamEntryStorage.getStore();
+		expect(streamEntryStore).toEqual([
+			{
+				id: "0505050505050505050505050505050505050505050505050505050505050505",
+				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateDeleted: undefined,
+				entryObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is an entry note 1"
+				},
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				index: 0
+			},
+			{
+				id: "0909090909090909090909090909090909090909090909090909090909090909",
+				streamId: "0101010101010101010101010101010101010101010101010101010101010101",
+				dateCreated: "2024-08-22T11:55:16.271Z",
+				dateDeleted: undefined,
+				entryObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is an entry note 2"
+				},
+				userIdentity:
+					"did:entity-storage:0x5858585858585858585858585858585858585858585858585858585858585858",
+				index: 1
+			}
+		]);
+	});
+
+	test("Can delete a stream", async () => {
+		const service = new AuditableItemStreamService();
+		const streamId = await service.create(
+			{
+				annotationObject: {
+					"@context": "https://www.w3.org/ns/activitystreams",
+					"@type": "Note",
+					content: "This is a simple note"
+				},
+				entries: [
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 1"
+						}
+					},
+					{
+						entryObject: {
+							"@context": "https://www.w3.org/ns/activitystreams",
+							"@type": "Note",
+							content: "This is an entry note 2"
+						}
+					}
+				]
+			},
+			undefined,
+			TEST_USER_IDENTITY,
+			TEST_NODE_IDENTITY
+		);
+
+		await service.remove(streamId, TEST_USER_IDENTITY, TEST_NODE_IDENTITY);
+
+		const streamStore = streamStorage.getStore();
+		expect(streamStore).toEqual([]);
+
+		const entryStore = streamEntryStorage.getStore();
+		expect(entryStore).toEqual([]);
+	});
+
 	test("Can get entries from a stream", async () => {
 		const service = new AuditableItemStreamService();
 		const streamId = await service.create(
