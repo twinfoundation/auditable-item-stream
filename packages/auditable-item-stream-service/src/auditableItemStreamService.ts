@@ -1359,7 +1359,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			for (const streamEntry of entriesResult.entities) {
 				if (Is.stringValue(streamEntry.proofId)) {
-					await this._immutableProofComponent.removeVerifiable(nodeIdentity, streamEntry.proofId);
+					await this._immutableProofComponent.removeVerifiable(streamEntry.proofId, nodeIdentity);
 					delete streamEntry.proofId;
 					await this._streamEntryStorage.set(streamEntry as AuditableItemStreamEntry);
 				}
