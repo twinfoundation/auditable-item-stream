@@ -1,5 +1,19 @@
 # @twin.org/auditable-item-stream-service - Changelog
 
+## [0.0.1-next.31](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-service-v0.0.1-next.30...auditable-item-stream-service-v0.0.1-next.31) (2025-04-25)
+
+
+### Bug Fixes
+
+* remove misses removing entries ([a58bc09](https://github.com/twinfoundation/auditable-item-stream/commit/a58bc0943ea6e77ca7c854b2f41cfaba3fb9b10b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/auditable-item-stream-models bumped from 0.0.1-next.30 to 0.0.1-next.31
+
 ## [0.0.1-next.30](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-service-v0.0.1-next.29...auditable-item-stream-service-v0.0.1-next.30) (2025-04-25)
 
 
