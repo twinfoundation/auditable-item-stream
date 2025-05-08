@@ -186,7 +186,6 @@ export interface IAuditableItemStreamComponent extends IComponent {
 	 * @param options.conditions The conditions to filter the stream.
 	 * @param options.includeDeleted Whether to include deleted entries, defaults to false.
 	 * @param options.verifyEntries Should the entries be verified, defaults to false.
-	 * @param options.entryObjects Return just the embedded entry objects, defaults to false.
 	 * @param options.pageSize How many entries to return.
 	 * @param options.cursor Cursor to use for next chunk of data.
 	 * @param options.order Retrieve the entries in ascending/descending time order, defaults to Ascending.
@@ -199,7 +198,6 @@ export interface IAuditableItemStreamComponent extends IComponent {
 			conditions?: IComparator[];
 			includeDeleted?: boolean;
 			verifyEntries?: boolean;
-			entryObjects?: boolean;
 			pageSize?: number;
 			cursor?: string;
 			order?: SortDirection;
