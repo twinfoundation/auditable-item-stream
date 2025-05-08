@@ -1361,13 +1361,13 @@ describe("AuditableItemStreamService", () => {
 
 		expect(entries).toEqual({
 			"@context": [
+				"https://schema.org",
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.org",
 				"https://schema.twindev.org/immutable-proof/"
 			],
-			type: "AuditableItemStreamEntryList",
-			entries: [
+			type: "ItemList",
+			itemListElement: [
 				{
 					type: "AuditableItemStreamEntry",
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0505050505050505050505050505050505050505050505050505050505050505",
@@ -1455,13 +1455,13 @@ describe("AuditableItemStreamService", () => {
 
 		expect(entries).toEqual({
 			"@context": [
+				"https://schema.org",
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/",
-				"https://schema.org",
 				"https://schema.twindev.org/immutable-proof/"
 			],
-			type: "AuditableItemStreamEntryList",
-			entries: [
+			type: "ItemList",
+			itemListElement: [
 				{
 					type: "AuditableItemStreamEntry",
 					id: "ais:0101010101010101010101010101010101010101010101010101010101010101:0909090909090909090909090909090909090909090909090909090909090909",
@@ -1516,12 +1516,12 @@ describe("AuditableItemStreamService", () => {
 		const result = await service.query();
 		expect(result).toEqual({
 			"@context": [
+				"https://schema.org",
 				"https://schema.twindev.org/ais/",
-				"https://schema.twindev.org/common/",
-				"https://schema.org"
+				"https://schema.twindev.org/common/"
 			],
-			type: "AuditableItemStreamList",
-			itemStreams: [
+			type: "ItemList",
+			itemListElement: [
 				{
 					type: "AuditableItemStream",
 					id: "ais:0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a",

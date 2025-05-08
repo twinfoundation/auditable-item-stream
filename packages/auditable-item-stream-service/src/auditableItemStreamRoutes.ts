@@ -34,6 +34,7 @@ import {
 } from "@twin.org/auditable-item-stream-models";
 import { ComponentFactory, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
+import { SchemaOrgContexts, SchemaOrgTypes } from "@twin.org/standards-schema-org";
 import { HeaderTypes, HttpStatusCode, MimeTypes } from "@twin.org/web";
 
 /**
@@ -341,11 +342,12 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
+									SchemaOrgContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: AuditableItemStreamTypes.StreamList,
-								itemStreams: [
+								type: SchemaOrgTypes.ItemList,
+								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
 											AuditableItemStreamContexts.ContextRoot,
@@ -366,7 +368,7 @@ export function generateRestRoutesAuditableItemStream(
 										immutableInterval: 10
 									}
 								],
-								cursor: "1"
+								[SchemaOrgTypes.NextItem]: "1"
 							}
 						}
 					}
@@ -384,11 +386,12 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							body: {
 								"@context": [
+									SchemaOrgContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: AuditableItemStreamTypes.StreamList,
-								itemStreams: [
+								type: SchemaOrgTypes.ItemList,
+								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
 											AuditableItemStreamContexts.ContextRoot,
@@ -409,7 +412,7 @@ export function generateRestRoutesAuditableItemStream(
 										immutableInterval: 10
 									}
 								],
-								cursor: "1"
+								[SchemaOrgTypes.NextItem]: "1"
 							}
 						}
 					}
@@ -711,11 +714,12 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
+									SchemaOrgContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: AuditableItemStreamTypes.StreamEntryList,
-								entries: [
+								type: SchemaOrgTypes.ItemList,
+								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
 											AuditableItemStreamContexts.ContextRoot,
@@ -734,7 +738,7 @@ export function generateRestRoutesAuditableItemStream(
 										}
 									}
 								],
-								cursor: "1"
+								[SchemaOrgTypes.NextItem]: "1"
 							}
 						}
 					}
@@ -752,11 +756,12 @@ export function generateRestRoutesAuditableItemStream(
 							},
 							body: {
 								"@context": [
+									SchemaOrgContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: AuditableItemStreamTypes.StreamEntryList,
-								entries: [
+								type: SchemaOrgTypes.ItemList,
+								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
 											AuditableItemStreamContexts.ContextRoot,
@@ -775,7 +780,7 @@ export function generateRestRoutesAuditableItemStream(
 										}
 									}
 								],
-								cursor: "1"
+								[SchemaOrgTypes.NextItem]: "1"
 							}
 						}
 					}
@@ -820,11 +825,12 @@ export function generateRestRoutesAuditableItemStream(
 						response: {
 							body: {
 								"@context": [
+									SchemaOrgContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: AuditableItemStreamTypes.StreamEntryObjectList,
-								entryObjects: [
+								type: SchemaOrgTypes.ItemList,
+								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": "https://schema.org",
 										"@type": "Event",
@@ -832,7 +838,7 @@ export function generateRestRoutesAuditableItemStream(
 										description: "A description of the event"
 									}
 								],
-								cursor: "1"
+								[SchemaOrgTypes.NextItem]: "1"
 							}
 						}
 					}

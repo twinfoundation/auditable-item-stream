@@ -51,7 +51,11 @@ import {
 	type IImmutableProofVerification
 } from "@twin.org/immutable-proof-models";
 import { nameof } from "@twin.org/nameof";
-import { SchemaOrgContexts, SchemaOrgDataTypes } from "@twin.org/standards-schema-org";
+import {
+	SchemaOrgContexts,
+	SchemaOrgDataTypes,
+	SchemaOrgTypes
+} from "@twin.org/standards-schema-org";
 import type { AuditableItemStream } from "./entities/auditableItemStream";
 import type { AuditableItemStreamEntry } from "./entities/auditableItemStreamEntry";
 import type { IAuditableItemStreamServiceConfig } from "./models/IAuditableItemStreamServiceConfig";
@@ -485,15 +489,15 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const list: IAuditableItemStreamList = {
 				"@context": [
+					SchemaOrgContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRoot,
-					AuditableItemStreamContexts.ContextRootCommon,
-					SchemaOrgContexts.ContextRoot
+					AuditableItemStreamContexts.ContextRootCommon
 				],
-				type: AuditableItemStreamTypes.StreamList,
-				itemStreams: (results.entities as AuditableItemStream[]).map(e =>
+				type: SchemaOrgTypes.ItemList,
+				[SchemaOrgTypes.ItemListElement]: (results.entities as AuditableItemStream[]).map(e =>
 					this.streamEntityToJsonLd(e)
 				),
-				cursor: results.cursor
+				[SchemaOrgTypes.NextItem]: results.cursor
 			};
 
 			return JsonLdProcessor.compact(list, list["@context"]);
@@ -930,13 +934,13 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const list: IAuditableItemStreamEntryList = {
 				"@context": [
+					SchemaOrgContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRoot,
-					AuditableItemStreamContexts.ContextRootCommon,
-					SchemaOrgContexts.ContextRoot
+					AuditableItemStreamContexts.ContextRootCommon
 				],
-				type: AuditableItemStreamTypes.StreamEntryList,
-				entries: result.entries,
-				cursor: result.cursor
+				type: SchemaOrgTypes.ItemList,
+				[SchemaOrgTypes.ItemListElement]: result.entries,
+				[SchemaOrgTypes.NextItem]: result.cursor
 			};
 
 			if (verifyEntries) {
@@ -1003,12 +1007,13 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			const list: IAuditableItemStreamEntryObjectList = {
 				"@context": [
+					SchemaOrgContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRootCommon
 				],
-				type: AuditableItemStreamTypes.StreamEntryObjectList,
-				entryObjects: result.entries.map(m => m.entryObject),
-				cursor: result.cursor
+				type: SchemaOrgTypes.ItemList,
+				[SchemaOrgTypes.ItemListElement]: result.entries.map(m => m.entryObject),
+				[SchemaOrgTypes.NextItem]: result.cursor
 			};
 
 			return JsonLdProcessor.compact(list, list["@context"]);

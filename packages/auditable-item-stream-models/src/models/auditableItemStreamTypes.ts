@@ -12,11 +12,6 @@ export const AuditableItemStreamTypes = {
 	Stream: "AuditableItemStream",
 
 	/**
-	 * Represents auditable item stream list.
-	 */
-	StreamList: "AuditableItemStreamList",
-
-	/**
 	 * Represents auditable item stream credential.
 	 */
 	StreamCredential: "AuditableItemStreamCredential",
@@ -27,19 +22,9 @@ export const AuditableItemStreamTypes = {
 	StreamEntry: "AuditableItemStreamEntry",
 
 	/**
-	 * Represents auditable item stream entry list.
-	 */
-	StreamEntryList: "AuditableItemStreamEntryList",
-
-	/**
 	 * Represents auditable item stream entry credential.
 	 */
 	StreamEntryCredential: "AuditableItemStreamEntryCredential",
-
-	/**
-	 * Represents auditable item stream entry object list.
-	 */
-	StreamEntryObjectList: "AuditableItemStreamEntryObjectList",
 
 	/**
 	 * Represents auditable item stream verification.
