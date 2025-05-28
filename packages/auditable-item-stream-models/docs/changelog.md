@@ -1,5 +1,12 @@
 # @twin.org/auditable-item-stream-models - Changelog
 
+## [0.0.1-next.33](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-models-v0.0.1-next.32...auditable-item-stream-models-v0.0.1-next.33) (2025-05-28)
+
+
+### Features
+
+* data types registered with fully qualified names ([3bcd927](https://github.com/twinfoundation/auditable-item-stream/commit/3bcd92788bfe4976bc88caf230501f5bbf8637f9))
+
 ## [0.0.1-next.32](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-models-v0.0.1-next.31...auditable-item-stream-models-v0.0.1-next.32) (2025-05-08)
 
 
