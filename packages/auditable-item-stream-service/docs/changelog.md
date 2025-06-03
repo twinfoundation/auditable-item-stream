@@ -1,5 +1,19 @@
 # @twin.org/auditable-item-stream-service - Changelog
 
+## [0.0.1-next.34](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-service-v0.0.1-next.33...auditable-item-stream-service-v0.0.1-next.34) (2025-06-03)
+
+
+### Miscellaneous Chores
+
+* **auditable-item-stream-service:** Synchronize repo versions
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @twin.org/auditable-item-stream-models bumped from 0.0.1-next.33 to 0.0.1-next.34
+
 ## [0.0.1-next.33](https://github.com/twinfoundation/auditable-item-stream/compare/auditable-item-stream-service-v0.0.1-next.32...auditable-item-stream-service-v0.0.1-next.33) (2025-05-28)
 
 
