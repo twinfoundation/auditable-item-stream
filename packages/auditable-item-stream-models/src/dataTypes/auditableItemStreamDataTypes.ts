@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { DataTypeHandlerFactory } from "@twin.org/data-core";
-import type { JSONSchema7 } from "json-schema";
+import { DataTypeHandlerFactory, type IJsonSchema } from "@twin.org/data-core";
 import { AuditableItemStreamContexts } from "../models/auditableItemStreamContexts";
 import { AuditableItemStreamTypes } from "../models/auditableItemStreamTypes";
 import AuditableItemStreamSchema from "../schemas/AuditableItemStream.json";
@@ -21,7 +20,7 @@ export class AuditableItemStreamDataTypes {
 				context: AuditableItemStreamContexts.ContextRoot,
 				type: AuditableItemStreamTypes.Stream,
 				defaultValue: {},
-				jsonSchema: async () => AuditableItemStreamSchema as JSONSchema7
+				jsonSchema: async () => AuditableItemStreamSchema as IJsonSchema
 			})
 		);
 		DataTypeHandlerFactory.register(
@@ -30,7 +29,7 @@ export class AuditableItemStreamDataTypes {
 				context: AuditableItemStreamContexts.ContextRoot,
 				type: AuditableItemStreamTypes.StreamEntry,
 				defaultValue: {},
-				jsonSchema: async () => AuditableItemStreamEntrySchema as JSONSchema7
+				jsonSchema: async () => AuditableItemStreamEntrySchema as IJsonSchema
 			})
 		);
 	}
