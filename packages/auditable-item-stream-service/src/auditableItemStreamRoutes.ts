@@ -829,7 +829,7 @@ export function generateRestRoutesAuditableItemStream(
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: SchemaOrgTypes.ItemList,
+								type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamEntryObjectList],
 								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": "https://schema.org",

@@ -6,6 +6,7 @@ import { AuditableItemStreamTypes } from "../models/auditableItemStreamTypes";
 import AuditableItemStreamSchema from "../schemas/AuditableItemStream.json";
 import AuditableItemStreamEntrySchema from "../schemas/AuditableItemStreamEntry.json";
 import AuditableItemStreamEntryListSchema from "../schemas/AuditableItemStreamEntryList.json";
+import AuditableItemStreamEntryObjectListSchema from "../schemas/AuditableItemStreamEntryObjectList.json";
 import AuditableItemStreamListSchema from "../schemas/AuditableItemStreamList.json";
 
 /**
@@ -50,6 +51,16 @@ export class AuditableItemStreamDataTypes {
 				type: AuditableItemStreamTypes.StreamEntryList,
 				defaultValue: {},
 				jsonSchema: async () => AuditableItemStreamEntryListSchema as IJsonSchema
+			})
+		);
+
+		DataTypeHandlerFactory.register(
+			`${AuditableItemStreamContexts.ContextRoot}${AuditableItemStreamTypes.StreamEntryObjectList}`,
+			() => ({
+				context: AuditableItemStreamContexts.ContextRoot,
+				type: AuditableItemStreamTypes.StreamEntryObjectList,
+				defaultValue: {},
+				jsonSchema: async () => AuditableItemStreamEntryObjectListSchema as IJsonSchema
 			})
 		);
 	}

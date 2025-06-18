@@ -1968,7 +1968,10 @@
 												"https://schema.twindev.org/ais/",
 												"https://schema.twindev.org/common/"
 											],
-											"type": "ItemList",
+											"type": [
+												"ItemList",
+												"AuditableItemStreamEntryObjectList"
+											],
 											"itemListElement": [
 												{
 													"@context": "https://schema.org",

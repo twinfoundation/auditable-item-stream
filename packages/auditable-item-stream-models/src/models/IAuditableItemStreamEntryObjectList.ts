@@ -3,6 +3,7 @@
 import type { IJsonLdContextDefinitionElement, IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { SchemaOrgContexts, SchemaOrgTypes } from "@twin.org/standards-schema-org";
 import type { AuditableItemStreamContexts } from "./auditableItemStreamContexts";
+import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
 
 /**
  * Interface describing an auditable item stream entries object list.
@@ -21,7 +22,7 @@ export interface IAuditableItemStreamEntryObjectList {
 	/**
 	 * JSON-LD Type.
 	 */
-	type: typeof SchemaOrgTypes.ItemList;
+	type: [typeof SchemaOrgTypes.ItemList, typeof AuditableItemStreamTypes.StreamEntryObjectList];
 
 	/**
 	 * The entry objects in the stream.

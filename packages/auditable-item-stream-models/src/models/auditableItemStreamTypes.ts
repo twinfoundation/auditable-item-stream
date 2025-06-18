@@ -24,7 +24,12 @@ export const AuditableItemStreamTypes = {
 	/**
 	 * Represents auditable item stream entry list.
 	 */
-	StreamEntryList: "AuditableItemStreamEntryList"
+	StreamEntryList: "AuditableItemStreamEntryList",
+
+	/**
+	 * Represents auditable item stream entry object list.
+	 */
+	StreamEntryObjectList: "AuditableItemStreamEntryObjectList"
 } as const;
 
 /**

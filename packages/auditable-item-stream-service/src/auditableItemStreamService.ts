@@ -1011,7 +1011,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 					AuditableItemStreamContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRootCommon
 				],
-				type: SchemaOrgTypes.ItemList,
+				type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamEntryObjectList],
 				[SchemaOrgTypes.ItemListElement]: result.entries.map(m => m.entryObject),
 				[SchemaOrgTypes.NextItem]: result.cursor
 			};
