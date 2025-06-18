@@ -1,6 +1,11 @@
 {
 	"baseUrl": "https://schema.twindev.org/ais/",
-	"types": ["./src/models/IAuditableItemStream.ts", "./src/models/IAuditableItemStreamEntry.ts"],
+	"types": [
+		"./src/models/IAuditableItemStream.ts",
+		"./src/models/IAuditableItemStreamList.ts",
+		"./src/models/IAuditableItemStreamEntry.ts",
+		"./src/models/IAuditableItemStreamEntryList.ts"
+	],
 	"externalReferences": {
 		"IJsonLd(.*)": "https://schema.twindev.org/json-ld/JsonLd$1",
 		"IImmutableProof(.*)": "https://schema.twindev.org/immutable-proof/ImmutableProof$1"

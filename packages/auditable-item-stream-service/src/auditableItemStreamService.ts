@@ -493,7 +493,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 					AuditableItemStreamContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRootCommon
 				],
-				type: SchemaOrgTypes.ItemList,
+				type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamList],
 				[SchemaOrgTypes.ItemListElement]: (results.entities as AuditableItemStream[]).map(e =>
 					this.streamEntityToJsonLd(e)
 				),
@@ -938,7 +938,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 					AuditableItemStreamContexts.ContextRoot,
 					AuditableItemStreamContexts.ContextRootCommon
 				],
-				type: SchemaOrgTypes.ItemList,
+				type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamEntryList],
 				[SchemaOrgTypes.ItemListElement]: result.entries,
 				[SchemaOrgTypes.NextItem]: result.cursor
 			};

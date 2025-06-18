@@ -3,6 +3,7 @@
 import type { IJsonLdContextDefinitionElement } from "@twin.org/data-json-ld";
 import type { SchemaOrgContexts, SchemaOrgTypes } from "@twin.org/standards-schema-org";
 import type { AuditableItemStreamContexts } from "./auditableItemStreamContexts";
+import type { AuditableItemStreamTypes } from "./auditableItemStreamTypes";
 import type { IAuditableItemStream } from "./IAuditableItemStream";
 
 /**
@@ -22,7 +23,7 @@ export interface IAuditableItemStreamList {
 	/**
 	 * JSON-LD Type.
 	 */
-	type: typeof SchemaOrgTypes.ItemList;
+	type: [typeof SchemaOrgTypes.ItemList, typeof AuditableItemStreamTypes.StreamList];
 
 	/**
 	 * The item streams.

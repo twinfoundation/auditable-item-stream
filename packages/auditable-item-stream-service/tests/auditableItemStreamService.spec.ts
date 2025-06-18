@@ -1402,7 +1402,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/common/",
 				"https://schema.twindev.org/immutable-proof/"
 			],
-			type: "ItemList",
+			type: ["ItemList", "AuditableItemStreamEntryList"],
 			itemListElement: [
 				{
 					type: "AuditableItemStreamEntry",
@@ -1496,7 +1496,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/common/",
 				"https://schema.twindev.org/immutable-proof/"
 			],
-			type: "ItemList",
+			type: ["ItemList", "AuditableItemStreamEntryList"],
 			itemListElement: [
 				{
 					type: "AuditableItemStreamEntry",
@@ -1556,7 +1556,7 @@ describe("AuditableItemStreamService", () => {
 				"https://schema.twindev.org/ais/",
 				"https://schema.twindev.org/common/"
 			],
-			type: "ItemList",
+			type: ["ItemList", "AuditableItemStreamList"],
 			itemListElement: [
 				{
 					type: "AuditableItemStream",

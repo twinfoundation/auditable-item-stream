@@ -346,7 +346,7 @@ export function generateRestRoutesAuditableItemStream(
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: SchemaOrgTypes.ItemList,
+								type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamList],
 								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
@@ -390,7 +390,7 @@ export function generateRestRoutesAuditableItemStream(
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: SchemaOrgTypes.ItemList,
+								type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamList],
 								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
@@ -718,7 +718,7 @@ export function generateRestRoutesAuditableItemStream(
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: SchemaOrgTypes.ItemList,
+								type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamEntryList],
 								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
@@ -760,7 +760,7 @@ export function generateRestRoutesAuditableItemStream(
 									AuditableItemStreamContexts.ContextRoot,
 									AuditableItemStreamContexts.ContextRootCommon
 								],
-								type: SchemaOrgTypes.ItemList,
+								type: [SchemaOrgTypes.ItemList, AuditableItemStreamTypes.StreamEntryList],
 								[SchemaOrgTypes.ItemListElement]: [
 									{
 										"@context": [
