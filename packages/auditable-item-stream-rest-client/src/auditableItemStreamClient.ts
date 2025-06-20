@@ -33,7 +33,7 @@ import type {
 	IAuditableItemStreamUpdateEntryRequest,
 	IAuditableItemStreamUpdateRequest
 } from "@twin.org/auditable-item-stream-models";
-import { Guards, NotSupportedError } from "@twin.org/core";
+import { Coerce, Guards, NotSupportedError } from "@twin.org/core";
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IComparator, SortDirection } from "@twin.org/entity";
 import { nameof } from "@twin.org/nameof";
@@ -128,10 +128,10 @@ export class AuditableItemStreamClient
 				id
 			},
 			query: {
-				includeEntries: options?.includeEntries,
-				includeDeleted: options?.includeDeleted,
-				verifyStream: options?.verifyStream,
-				verifyEntries: options?.verifyEntries
+				includeEntries: Coerce.string(options?.includeEntries),
+				includeDeleted: Coerce.string(options?.includeDeleted),
+				verifyStream: Coerce.string(options?.verifyStream),
+				verifyEntries: Coerce.string(options?.verifyEntries)
 			}
 		});
 
@@ -206,7 +206,7 @@ export class AuditableItemStreamClient
 				orderByDirection,
 				properties: HttpParameterHelper.arrayToString(properties),
 				cursor,
-				pageSize
+				pageSize: Coerce.string(pageSize)
 			}
 		});
 
@@ -265,7 +265,7 @@ export class AuditableItemStreamClient
 				[HeaderTypes.Accept]: MimeTypes.JsonLd
 			},
 			query: {
-				verifyEntry: options?.verifyEntry
+				verifyEntry: Coerce.string(options?.verifyEntry)
 			},
 			pathParams: {
 				id,
@@ -393,9 +393,9 @@ export class AuditableItemStreamClient
 			},
 			query: {
 				conditions: HttpParameterHelper.objectToString(options?.conditions),
-				includeDeleted: options?.includeDeleted,
-				verifyEntries: options?.verifyEntries,
-				pageSize: options?.pageSize,
+				includeDeleted: Coerce.string(options?.includeDeleted),
+				verifyEntries: Coerce.string(options?.verifyEntries),
+				pageSize: Coerce.string(options?.pageSize),
 				cursor: options?.cursor,
 				order: options?.order
 			}
@@ -440,9 +440,9 @@ export class AuditableItemStreamClient
 			},
 			query: {
 				conditions: HttpParameterHelper.objectToString(options?.conditions),
-				includeDeleted: options?.includeDeleted,
-				pageSize: options?.pageSize,
-				cursor: options?.cursor,
+				includeDeleted: Coerce.string(options?.includeDeleted),
+				pageSize: Coerce.string(options?.pageSize),
+				cursor: Coerce.string(options?.cursor),
 				order: options?.order
 			}
 		});

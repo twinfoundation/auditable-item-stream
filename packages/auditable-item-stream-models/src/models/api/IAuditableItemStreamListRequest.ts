@@ -47,6 +47,6 @@ export interface IAuditableItemStreamListRequest {
 		/**
 		 * The maximum number of entities in a page.
 		 */
-		pageSize?: number;
+		pageSize?: number | string;
 	};
 }

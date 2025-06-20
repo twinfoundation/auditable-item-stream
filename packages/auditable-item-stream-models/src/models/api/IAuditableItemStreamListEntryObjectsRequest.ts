@@ -36,7 +36,7 @@ export interface IAuditableItemStreamListEntryObjectsRequest {
 		/**
 		 * Whether to include deleted entries, defaults to false.
 		 */
-		includeDeleted?: boolean;
+		includeDeleted?: boolean | string;
 
 		/**
 		 * Retrieve the entries in ascending/descending time order, defaults to Ascending.
@@ -46,7 +46,7 @@ export interface IAuditableItemStreamListEntryObjectsRequest {
 		/**
 		 * How many entries to return.
 		 */
-		pageSize?: number;
+		pageSize?: number | string;
 
 		/**
 		 * Cursor to use for next chunk of data.

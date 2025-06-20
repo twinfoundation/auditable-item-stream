@@ -32,7 +32,7 @@ import {
 	type IAuditableItemStreamUpdateEntryRequest,
 	type IAuditableItemStreamUpdateRequest
 } from "@twin.org/auditable-item-stream-models";
-import { ComponentFactory, Guards } from "@twin.org/core";
+import { Coerce, ComponentFactory, Guards } from "@twin.org/core";
 import { nameof } from "@twin.org/nameof";
 import { SchemaOrgContexts, SchemaOrgTypes } from "@twin.org/standards-schema-org";
 import { HeaderTypes, HttpStatusCode, MimeTypes } from "@twin.org/web";
@@ -929,10 +929,10 @@ export async function auditableItemStreamGet(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const result = await component.get(request.pathParams.id, {
-		includeEntries: request.query?.includeEntries,
-		includeDeleted: request.query?.includeDeleted,
-		verifyStream: request.query?.verifyStream,
-		verifyEntries: request.query?.verifyEntries
+		includeEntries: Coerce.boolean(request.query?.includeEntries),
+		includeDeleted: Coerce.boolean(request.query?.includeDeleted),
+		verifyStream: Coerce.boolean(request.query?.verifyStream),
+		verifyEntries: Coerce.boolean(request.query?.verifyEntries)
 	});
 
 	return {
@@ -1042,7 +1042,7 @@ export async function auditableItemStreamList(
 		request.query?.orderByDirection,
 		HttpParameterHelper.arrayFromString(request.query?.properties),
 		request.query?.cursor,
-		request.query?.pageSize
+		Coerce.integer(request.query?.pageSize)
 	);
 
 	return {
@@ -1193,7 +1193,7 @@ export async function auditableItemStreamGetEntry(
 
 	const component = ComponentFactory.get<IAuditableItemStreamComponent>(componentName);
 	const result = await component.getEntry(request.pathParams.id, request.pathParams.entryId, {
-		verifyEntry: request.query?.verifyEntry
+		verifyEntry: Coerce.boolean(request.query?.verifyEntry)
 	});
 
 	return {
@@ -1264,10 +1264,10 @@ export async function auditableItemStreamListEntries(
 
 	const result = await component.getEntries(request.pathParams.id, {
 		conditions: HttpParameterHelper.objectFromString(request.query?.conditions),
-		includeDeleted: request.query?.includeDeleted,
-		verifyEntries: request.query?.verifyEntries,
+		includeDeleted: Coerce.boolean(request.query?.includeDeleted),
+		verifyEntries: Coerce.boolean(request.query?.verifyEntries),
 		order: request.query?.order,
-		pageSize: request.query?.pageSize,
+		pageSize: Coerce.integer(request.query?.pageSize),
 		cursor: request.query?.cursor
 	});
 
@@ -1309,9 +1309,9 @@ export async function auditableItemStreamListEntryObjects(
 
 	const result = await component.getEntryObjects(request.pathParams.id, {
 		conditions: HttpParameterHelper.objectFromString(request.query?.conditions),
-		includeDeleted: request.query?.includeDeleted,
+		includeDeleted: Coerce.boolean(request.query?.includeDeleted),
 		order: request.query?.order,
-		pageSize: request.query?.pageSize,
+		pageSize: Coerce.integer(request.query?.pageSize),
 		cursor: request.query?.cursor
 	});
 
