@@ -2125,19 +2125,21 @@
 					},
 					"entries": {
 						"type": "array",
-						"items": {
-							"type": "object",
-							"properties": {
-								"entryObject": {
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-								}
-							},
-							"required": [
-								"entryObject"
-							],
-							"additionalProperties": false
-						},
-						"description": "The entries for the stream."
+						"description": "The entries for the stream.",
+						"prefixItems": [
+							{
+								"type": "object",
+								"properties": {
+									"entryObject": {
+										"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
+									}
+								},
+								"required": [
+									"entryObject"
+								],
+								"additionalProperties": false
+							}
+						]
 					},
 					"immutableInterval": {
 						"type": "number",
