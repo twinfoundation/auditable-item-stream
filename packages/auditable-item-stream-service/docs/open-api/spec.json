@@ -2125,6 +2125,7 @@
 					},
 					"entries": {
 						"type": "array",
+						"items": false,
 						"description": "The entries for the stream.",
 						"prefixItems": [
 							{
