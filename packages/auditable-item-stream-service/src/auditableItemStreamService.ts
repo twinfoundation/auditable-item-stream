@@ -68,11 +68,13 @@ import type { IAuditableItemStreamServiceContext } from "./models/IAuditableItem
 export class AuditableItemStreamService implements IAuditableItemStreamComponent {
 	/**
 	 * The namespace for the service.
+	 * @internal
 	 */
-	public static readonly NAMESPACE: string = "ais";
+	private static readonly _NAMESPACE: string = "ais";
 
 	/**
 	 * The keys to pick when creating the proof for the stream.
+	 * @internal
 	 */
 	private static readonly _PROOF_KEYS_STREAM: (keyof AuditableItemStream)[] = [
 		"id",
@@ -83,6 +85,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 	/**
 	 * The keys to pick when creating the proof for the stream entry.
+	 * @internal
 	 */
 	private static readonly _PROOF_KEYS_STREAM_ENTRY: (keyof AuditableItemStreamEntry)[] = [
 		"id",
@@ -286,9 +289,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(id);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id
 			});
 		}
@@ -350,9 +353,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(stream.id);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: stream.id
 			});
 		}
@@ -405,9 +408,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(id);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id
 			});
 		}
@@ -526,9 +529,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
@@ -558,7 +561,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 			await this._streamStorage.set(streamEntity);
 
-			const fullId = new Urn(AuditableItemStreamService.NAMESPACE, [
+			const fullId = new Urn(AuditableItemStreamService._NAMESPACE, [
 				streamEntity.id,
 				createdId
 			]).toString();
@@ -594,17 +597,17 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 		Guards.stringValue(this.CLASS_NAME, nameof(entryId), entryId);
 
 		const urnParsed = Urn.fromValidString(streamId);
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
 
 		const urnParsedEntry = Urn.fromValidString(entryId);
-		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: entryId
 			});
 		}
@@ -656,18 +659,18 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
 
 		const urnParsedEntry = Urn.fromValidString(entryId);
 
-		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: entryId
 			});
 		}
@@ -719,18 +722,18 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
 
 		const urnParsedEntry = Urn.fromValidString(entryId);
 
-		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: entryId
 			});
 		}
@@ -806,17 +809,17 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
 
 		const urnParsedEntry = Urn.fromValidString(entryId);
-		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsedEntry.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: entryId
 			});
 		}
@@ -904,9 +907,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
@@ -979,9 +982,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
@@ -1035,9 +1038,9 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 
 		const urnParsed = Urn.fromValidString(streamId);
 
-		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService.NAMESPACE) {
+		if (urnParsed.namespaceIdentifier() !== AuditableItemStreamService._NAMESPACE) {
 			throw new GeneralError(this.CLASS_NAME, "namespaceMismatch", {
-				namespace: AuditableItemStreamService.NAMESPACE,
+				namespace: AuditableItemStreamService._NAMESPACE,
 				id: streamId
 			});
 		}
@@ -1072,7 +1075,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				SchemaOrgContexts.ContextRoot
 			],
 			type: AuditableItemStreamTypes.Stream,
-			id: `${AuditableItemStreamService.NAMESPACE}:${streamEntity.id}`,
+			id: `${AuditableItemStreamService._NAMESPACE}:${streamEntity.id}`,
 			dateCreated: streamEntity.dateCreated,
 			dateModified: streamEntity.dateModified,
 			nodeIdentity: streamEntity.nodeIdentity,
@@ -1101,7 +1104,7 @@ export class AuditableItemStreamService implements IAuditableItemStreamComponent
 				SchemaOrgContexts.ContextRoot
 			],
 			type: AuditableItemStreamTypes.StreamEntry,
-			id: `${AuditableItemStreamService.NAMESPACE}:${streamEntryEntity.streamId}:${streamEntryEntity.id}`,
+			id: `${AuditableItemStreamService._NAMESPACE}:${streamEntryEntity.streamId}:${streamEntryEntity.id}`,
 			dateCreated: streamEntryEntity.dateCreated,
 			dateModified: streamEntryEntity.dateModified,
 			dateDeleted: streamEntryEntity.dateDeleted,
